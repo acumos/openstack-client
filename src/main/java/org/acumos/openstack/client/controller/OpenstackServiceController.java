@@ -87,7 +87,7 @@ public class OpenstackServiceController extends AbstractController {
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_SINGLE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String singleImageOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
-		System.out.println("=======singleImageOpenstackDeployment=========");
+		//System.out.println("=======singleImageOpenstackDeployment=========");
 		//logger.debug("=======singleImageOpenstackDeployment===1======");
 		//logger.info("=======singleImageOpenstackDeployment===2======");
 		String uidNumStr="";
@@ -100,7 +100,7 @@ public class OpenstackServiceController extends AbstractController {
 			securityGropName="E6E-Access";
 			
 			UUID uidNumber = UUID.randomUUID();
-			System.out.println("=======singleImageOpenstackDeployment===2======"+uidNumber);
+			//System.out.println("=======singleImageOpenstackDeployment===2======"+uidNumber);
 			os = OSFactory.builderV3().endpoint(auth.getIdentityEndpoint())
 					.credentials(auth.getUserName(), auth.getPassword(), Identifier.byName(auth.getIdentifierName()))
 					.scopeToProject(Identifier.byId(auth.getProjectScopeId())).authenticate();
