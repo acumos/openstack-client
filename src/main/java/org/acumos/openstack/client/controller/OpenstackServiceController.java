@@ -117,7 +117,7 @@ public class OpenstackServiceController extends AbstractController {
 			e.printStackTrace();
 		}
 		//logger.debug("<------start----singleImageOpenstackDeployment------------>");
-		System.out.println("=======singleImageOpenstackDeployment===jsonOutput.toString()===="+jsonOutput.toString());
+		//System.out.println("=======singleImageOpenstackDeployment===jsonOutput.toString()===="+jsonOutput.toString());
 		return jsonOutput.toString();
 	}
 }
