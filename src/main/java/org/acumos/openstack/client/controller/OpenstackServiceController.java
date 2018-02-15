@@ -90,7 +90,7 @@ public class OpenstackServiceController extends AbstractController {
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_SINGLE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String singleImageOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
-		
+		logger.debug("=======singleImageOpenstackDeployment===Start==============");
 		String uidNumStr="";
 		String flavourName="";
 		String securityGropName="";
@@ -154,7 +154,92 @@ public class OpenstackServiceController extends AbstractController {
 			e.printStackTrace();
 		}
 		//logger.debug("<------start----singleImageOpenstackDeployment------------>");
-		System.out.println("=======singleImageOpenstackDeployment===jsonOutput.toString()===="+jsonOutput.toString());
+		System.out.println("=======singleImageOpenstackDeployment=End first thread==jsonOutput.toString()===="+jsonOutput.toString());
 		return jsonOutput.toString();
 	}
+	
+	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
+	@ResponseBody
+	public String compositeOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
+		logger.debug("=======compositeOpenstackDeployment===Start==============");
+		
+		String uidNumStr="";
+		String flavourName="";
+		String securityGropName="";
+		String endpoint="";
+		String userName="";
+		String password="";
+		String scopeProject="";
+		String key="";
+		String keyName="";
+		String IdentifierName="";
+		String vmRegisterNumber="";
+		String hostOpenStack="";
+		String hostUserName="";
+		String vmUserName="";
+		String dockerUserName="";
+		String dockerPassword="";
+		String bluePrintImage="";
+		String bluePrintName="";
+		String bluePrintUserName="";
+		String bluePrintPassword="";
+		JSONObject  jsonOutput = new JSONObject();
+		try{
+			 flavourName=env.getProperty("docker.openstack.flavourName");
+			 securityGropName=env.getProperty("docker.openstack.securityGroupName");
+			 endpoint=env.getProperty("docker.openstack.endpoint");
+			 userName=env.getProperty("docker.openstack.userName");
+			 password=env.getProperty("docker.openstack.password");
+			 scopeProject=env.getProperty("docker.openstack.scopeProject");
+			 key=env.getProperty("docker.openstack.key");
+			 keyName=env.getProperty("docker.openstack.keyName");
+			 IdentifierName=env.getProperty("docker.openstack.IdentifierName");
+			 vmRegisterNumber=env.getProperty("docker.openstack.vmRegisterNumber");
+			 hostOpenStack=env.getProperty("docker.openstack.hostOpenStack");
+			 hostUserName=env.getProperty("docker.openstack.hostUserName");
+			 vmUserName=env.getProperty("docker.openstack.vmUserName");
+			 dockerUserName=env.getProperty("docker.openstack.dockerUserName");
+			 dockerPassword=env.getProperty("docker.openstack.dockerPassword");
+			 bluePrintImage=env.getProperty("docker.openstack.bluePrintImageName");
+			 bluePrintName=env.getProperty("docker.openstack.bluePrintName");
+			 bluePrintUserName=env.getProperty("docker.openstack.bluePrintUserName");
+			 bluePrintPassword=env.getProperty("docker.openstack.bluePrintPassword");
+			 
+			 logger.debug("<-----flavourName------->"+flavourName);
+			 logger.debug("<----securityGropName--->"+securityGropName);
+			 logger.debug("<----endpoint----------->"+endpoint);
+			 logger.debug("<----userName----------->"+userName);
+			 logger.debug("<----password----------->"+password);
+			 logger.debug("<----scopeProject----------->"+scopeProject);
+			 logger.debug("<----key----------->"+key);
+			 logger.debug("<----keyName----------->"+keyName);
+			 logger.debug("<----IdentifierName----------->"+IdentifierName);
+			 logger.debug("<----vnRegisterNumber----------->"+vmRegisterNumber);
+			 logger.debug("<----hostOpenStack----------->"+hostOpenStack);
+			 logger.debug("<----hostUserName----------->"+hostUserName);
+			 logger.debug("<----vmUserName----------->"+vmUserName);
+			 logger.debug("<----dockerUserName----------->"+dockerUserName);
+			 logger.debug("<----dockerPassword----------->"+dockerPassword);
+			 logger.debug("<----bluePrintImage----------->"+bluePrintImage);
+			 logger.debug("<----bluePrintName----------->"+bluePrintName);
+			 logger.debug("<----bluePrintUserName----------->"+bluePrintUserName);
+			 logger.debug("<----bluePrintPassword----------->"+bluePrintPassword);
+			 UUID uidNumber = UUID.randomUUID();
+			 uidNumStr=uidNumber.toString();
+			 /*jsonOutput.put("Status", uidNumStr);
+			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
+					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
+					 vmUserName,dockerUserName,dockerPassword);
+			 Thread t = new Thread(opSingleSolution);
+	         t.start();*/
+		 
+		 
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		logger.debug("=======compositeOpenstackDeployment===End first thread==============");
+		return jsonOutput.toString();
+	}
+	
 }

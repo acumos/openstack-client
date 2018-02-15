@@ -17,23 +17,51 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
+package org.acumos.openstack.client.util;
+import java.util.ArrayList;
+import java.util.List;
 
-package org.acumos.openstack.client.api;
-
-/**
- * Constants class to list all the REST API endpoints
- */
-public class APINames {
-
-	// charset
-	public static final String CHARSET = "application/json;charset=utf-8";
-	public static final String SUCCESS_RESPONSE = "SUCCESS";
-	public static final String AUTH_FAILED = "AUTHORIZATION FAILED";
-	public static final String FAILED = "FAILED";
-
-	// Service APIs
-	
-	public static final String OPENSTACK_AUTH_PUSH_SINGLE_IMAGE = "/openstack/singleImageOpenstackDeployment";
-	public static final String OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE = "/openstack/compositeOpenstackDeployment";
-	
+public class NodeTree<T> {
+ 
+	private T data = null;
+ 
+	private List<NodeTree<T>> children = new ArrayList<>();
+ 
+	private NodeTree<T> parent = null;
+ 
+	public NodeTree(T data) {
+		this.data = data;
+	}
+ 
+	public NodeTree<T> addChild(NodeTree<T> child) {
+		child.setParent(this);
+		this.children.add(child);
+		return child;
+	}
+ 
+	public void addChildren(List<NodeTree<T>> children) {
+		children.forEach(each -> each.setParent(this));
+		this.children.addAll(children);
+	}
+ 
+	public List<NodeTree<T>> getChildren() {
+		return children;
+	}
+ 
+	public T getData() {
+		return data;
+	}
+ 
+	public void setData(T data) {
+		this.data = data;
+	}
+ 
+	private void setParent(NodeTree<T> parent) {
+		this.parent = parent;
+	}
+ 
+	public NodeTree<T> getParent() {
+		return parent;
+	}
+ 
 }

@@ -17,23 +17,8 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
+package org.acumos.openstack.client.service.impl;
 
-package org.acumos.openstack.client.api;
+public class OpenstackCompositeSolution {
 
-/**
- * Constants class to list all the REST API endpoints
- */
-public class APINames {
-
-	// charset
-	public static final String CHARSET = "application/json;charset=utf-8";
-	public static final String SUCCESS_RESPONSE = "SUCCESS";
-	public static final String AUTH_FAILED = "AUTHORIZATION FAILED";
-	public static final String FAILED = "FAILED";
-
-	// Service APIs
-	
-	public static final String OPENSTACK_AUTH_PUSH_SINGLE_IMAGE = "/openstack/singleImageOpenstackDeployment";
-	public static final String OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE = "/openstack/compositeOpenstackDeployment";
-	
 }
