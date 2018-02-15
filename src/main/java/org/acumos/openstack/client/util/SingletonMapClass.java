@@ -17,49 +17,21 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-package org.acumos.openstack.client.transport;
+package org.acumos.openstack.client.util;
 
-public class OpenstackDeployBean {
+import java.util.HashMap;
+
+public class SingletonMapClass {
 	
-	private String vmName;
-	private String imagetag;
-	private String solutionId;
-	private String solutionRevisionId;
-	private String userId;
-	
-	
-	public String getVmName() {
-		return vmName;
-	}
-	public void setVmName(String vmName) {
-		this.vmName = vmName;
-	}
-	public String getImagetag() {
-		return imagetag;
-	}
-	public void setImagetag(String imagetag) {
-		this.imagetag = imagetag;
-	}
-	public String getSolutionId() {
-		return solutionId;
-	}
-	public void setSolutionId(String solutionId) {
-		this.solutionId = solutionId;
-	}
-	public String getSolutionRevisionId() {
-		return solutionRevisionId;
-	}
-	public void setSolutionRevisionId(String solutionRevisionId) {
-		this.solutionRevisionId = solutionRevisionId;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	
-	
-	
+private static HashMap<String,String> singlatonMap;
+    
+    private SingletonMapClass(){}
+    
+    public static synchronized HashMap<String,String> getInstance(){
+        if(singlatonMap == null){
+        	singlatonMap = new HashMap<String,String>();
+        }
+        return singlatonMap;
+    }
+
 }

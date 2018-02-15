@@ -71,6 +71,9 @@ import org.slf4j.LoggerFactory;
 public class OpenstackServiceController extends AbstractController {
 	
 	Logger logger = LoggerFactory.getLogger(OpenstackServiceController.class);
+	
+	@Autowired
+	private Environment env;
 	/*@RequestMapping(value ="/getUIDDetails",  method = RequestMethod.GET, produces=APPLICATION_JSON)
 	@ResponseBody
 	public String getUIDDetails() {
@@ -87,30 +90,64 @@ public class OpenstackServiceController extends AbstractController {
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_SINGLE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String singleImageOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
-		//System.out.println("=======singleImageOpenstackDeployment=========");
-		//logger.debug("=======singleImageOpenstackDeployment===1======");
-		//logger.info("=======singleImageOpenstackDeployment===2======");
+		
 		String uidNumStr="";
-		OSClientV3 os = null;
 		String flavourName="";
 		String securityGropName="";
+		String endpoint="";
+		String userName="";
+		String password="";
+		String scopeProject="";
+		String key="";
+		String keyName="";
+		String IdentifierName="";
+		String vmRegisterNumber="";
+		String hostOpenStack="";
+		String hostUserName="";
+		String vmUserName="";
+		String dockerUserName="";
+		String dockerPassword="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
-			flavourName="e6esmall";
-			securityGropName="E6E-Access";
-			
-			UUID uidNumber = UUID.randomUUID();
-			//System.out.println("=======singleImageOpenstackDeployment===2======"+uidNumber);
-			os = OSFactory.builderV3().endpoint(auth.getIdentityEndpoint())
-					.credentials(auth.getUserName(), auth.getPassword(), Identifier.byName(auth.getIdentifierName()))
-					.scopeToProject(Identifier.byId(auth.getProjectScopeId())).authenticate();
-			//logger.debug("<--------os is created in openstack----------->");
-		
-		 uidNumStr=uidNumber.toString();
-		 jsonOutput.put("Status", uidNumStr);
-		 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(os,flavourName,securityGropName,auth);
-		 Thread t = new Thread(opSingleSolution);
-         t.start();
+			 flavourName=env.getProperty("docker.openstack.flavourName");
+			 securityGropName=env.getProperty("docker.openstack.securityGroupName");
+			 endpoint=env.getProperty("docker.openstack.endpoint");
+			 userName=env.getProperty("docker.openstack.userName");
+			 password=env.getProperty("docker.openstack.password");
+			 scopeProject=env.getProperty("docker.openstack.scopeProject");
+			 key=env.getProperty("docker.openstack.key");
+			 keyName=env.getProperty("docker.openstack.keyName");
+			 IdentifierName=env.getProperty("docker.openstack.IdentifierName");
+			 vmRegisterNumber=env.getProperty("docker.openstack.vmRegisterNumber");
+			 hostOpenStack=env.getProperty("docker.openstack.hostOpenStack");
+			 hostUserName=env.getProperty("docker.openstack.hostUserName");
+			 vmUserName=env.getProperty("docker.openstack.vmUserName");
+			 dockerUserName=env.getProperty("docker.openstack.dockerUserName");
+			 dockerPassword=env.getProperty("docker.openstack.dockerPassword");
+			 
+			 logger.debug("<-----flavourName------->"+flavourName);
+			 logger.debug("<----securityGropName--->"+securityGropName);
+			 logger.debug("<----endpoint----------->"+endpoint);
+			 logger.debug("<----userName----------->"+userName);
+			 logger.debug("<----password----------->"+password);
+			 logger.debug("<----scopeProject----------->"+scopeProject);
+			 logger.debug("<----key----------->"+key);
+			 logger.debug("<----keyName----------->"+keyName);
+			 logger.debug("<----IdentifierName----------->"+IdentifierName);
+			 logger.debug("<----vnRegisterNumber----------->"+vmRegisterNumber);
+			 logger.debug("<----hostOpenStack----------->"+hostOpenStack);
+			 logger.debug("<----hostUserName----------->"+hostUserName);
+			 logger.debug("<----vmUserName----------->"+vmUserName);
+			 logger.debug("<----dockerUserName----------->"+dockerUserName);
+			 logger.debug("<----dockerPassword----------->"+dockerPassword);
+			 UUID uidNumber = UUID.randomUUID();
+			 uidNumStr=uidNumber.toString();
+			 jsonOutput.put("Status", uidNumStr);
+			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
+					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
+					 vmUserName,dockerUserName,dockerPassword);
+			 Thread t = new Thread(opSingleSolution);
+	         t.start();
 		 
 		 
 		}catch(Exception e){
