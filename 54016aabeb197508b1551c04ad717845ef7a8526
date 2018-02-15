@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f8db4e2_c85686ed",
+        "filename": "src/main/java/org/acumos/openstack/client/transport/CompositeDeployBean.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-15T16:30:01Z",
+      "side": 1,
+      "message": "Please add license text",
+      "revId": "54016aabeb197508b1551c04ad717845ef7a8526",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
