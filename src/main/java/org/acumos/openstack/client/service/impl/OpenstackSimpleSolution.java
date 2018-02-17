@@ -277,12 +277,12 @@ public class OpenstackSimpleSolution implements Runnable{
 	 logger.debug("====================End Simple Image deployment==================");
 	  }catch(Exception e){
 		  logger.error("Error in OpenStackSimpleSolution===========" + e.getMessage());
-		  try{
+		 /* try{
 			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
 						 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "FA");  
 		  }catch(Exception ex){
 				logger.error("Error in saving data===========" +ex.getMessage());
-			}
+			}*/
 		  e.printStackTrace();
 	  }
 	}
