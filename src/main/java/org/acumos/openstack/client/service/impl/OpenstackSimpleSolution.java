@@ -143,10 +143,13 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("<--SimpleSolution--cmndatasvcuser----------->"+cmndatasvcuser);
 			 logger.debug("<--SimpleSolution--cmndatasvcpwd---------->"+cmndatasvcpwd);
 			 
-			os = OSFactory.builderV3().endpoint(endpoint)
+			/*os = OSFactory.builderV3().endpoint(endpoint)
 					.credentials(userName, password, Identifier.byName(IdentifierName))
-					.scopeToProject(Identifier.byId(scopeProject)).authenticate();
-			logger.debug("byId Authnetication success");
+					.scopeToProject(Identifier.byId(scopeProject)).authenticate();*/
+			 os = OSFactory.builderV3().endpoint("http://10.1.0.100/identity/v3")
+						.credentials("e6euser", "password", Identifier.byName("Default"))
+						.scopeToProject(Identifier.byId("7badda19df524dd58c2fe249fd02e7f6")).authenticate();
+			logger.debug("==============byId Authnetication success===========");
 			
 			logger.debug("flavourName==============>"+flavourName);
 			List< ? extends Flavor> flavourList= os.compute().flavors().list();
