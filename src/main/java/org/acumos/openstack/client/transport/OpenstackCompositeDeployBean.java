@@ -19,14 +19,12 @@
  */
 package org.acumos.openstack.client.transport;
 
-public class CompositeDeployBean {
+public class OpenstackCompositeDeployBean {
 	
 	private String vmName;
 	private String solutionId;
 	private String solutionRevisionId;
 	private String userId;
-	
-	
 	public String getVmName() {
 		return vmName;
 	}

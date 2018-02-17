@@ -341,7 +341,6 @@ public final class SSHShell {
 		return new Closure() {
 			public void run(ExpectState expectState) throws Exception {
 				String outputBuffer = expectState.getBuffer();
-				System.out.println(outputBuffer);
 				shellBuffer.append(outputBuffer);
 				expectState.exp_continue();
 			}

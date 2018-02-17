@@ -3,7 +3,7 @@
 <configuration>
 
     <contextName>AcumosONM</contextName>
-	<property name="LOG_HOME" value="../log" />
+	<property name="LOG_HOME" value="openstack" />
 	<timestamp key="bySecond" datePattern="yyyyMMdd.HHmmss" />
     <jmxConfigurator/>
     
@@ -18,7 +18,7 @@
 
     <!-- This appender to catch all except trace -->
     <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/Azure_log_${bySecond}.log</file>
+        <file>${LOG_HOME}/openstack_log_${bySecond}.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logback_example_debug.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
@@ -33,7 +33,7 @@
 
     <!-- This appender to catch only errors -->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/Azure_error_${bySecond}.log</file>
+        <file>${LOG_HOME}/openstack_error_${bySecond}.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logback_example_error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>

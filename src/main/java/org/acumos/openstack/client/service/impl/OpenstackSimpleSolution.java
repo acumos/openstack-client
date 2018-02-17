@@ -23,6 +23,7 @@ package org.acumos.openstack.client.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.acumos.openstack.client.util.CommonUtil;
 import org.acumos.openstack.client.util.SSHShell;
@@ -45,6 +46,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.openstack4j.model.compute.FloatingIP;
@@ -72,10 +74,15 @@ public class OpenstackSimpleSolution implements Runnable{
 	private String vmUserName;
 	private String dockerUserName;
 	private String dockerPassword;
+	private String uidNumStr;
+	private String dataSource;
+	private String cmndatasvcuser;
+	private String cmndatasvcpwd;
 	
 	public OpenstackSimpleSolution(String flavourName,String  securityGropName,OpenstackDeployBean auth,String endpoint
 			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
-			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword){
+			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,
+			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd){
 		//this.os = os;
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
@@ -94,6 +101,10 @@ public class OpenstackSimpleSolution implements Runnable{
 		this.vmUserName = vmUserName;
 		this.dockerUserName = dockerUserName;
 		this.dockerPassword = dockerPassword;
+		this.uidNumStr = uidNumStr;
+		this.dataSource = dataSource;
+		this.cmndatasvcuser = cmndatasvcuser;
+		this.cmndatasvcpwd = cmndatasvcpwd;
 	}
 	
 	public void run() {
@@ -108,6 +119,8 @@ public class OpenstackSimpleSolution implements Runnable{
 		OSClientV3 os=null;
 		String repositaryName="";
 		String repositryImageName="";
+		OpanStackContainerBean containerBean=new OpanStackContainerBean();
+		CommonUtil commonUtil=new CommonUtil();
 		try{
 			 logger.debug("<-SimpleSolution----flavourName------->"+flavourName);
 			 logger.debug("<--SimpleSolution--securityGropName--->"+securityGropName);
@@ -125,6 +138,10 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("<--SimpleSolution--SoulutionId----------->"+auth.getSolutionId());
 			 logger.debug("<--SimpleSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
 			 logger.debug("<--SimpleSolution--getImagetag()----------->"+auth.getImagetag());
+			 logger.debug("<--SimpleSolution--uidNumStr---------->"+uidNumStr);
+			 logger.debug("<--SimpleSolution--dataSource---------->"+dataSource);
+			 logger.debug("<--SimpleSolution--cmndatasvcuser----------->"+cmndatasvcuser);
+			 logger.debug("<--SimpleSolution--cmndatasvcpwd---------->"+cmndatasvcpwd);
 			 
 			os = OSFactory.builderV3().endpoint(endpoint)
 					.credentials(userName, password, Identifier.byName(IdentifierName))
@@ -225,13 +242,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			  logger.debug("ip.getFloatingIpAddress()......."+fIp);
 			  ActionResponse r = os.compute().floatingIps().addFloatingIP(server3, fixedAdd, fIp);
 			  logger.debug("ActionResponser........"+r.isSuccess());
-			  /*logger.debug("Security Group code start==================");
-			  List<? extends SecurityGroup> securityList=server3.getSecurityGroups();
-				System.out.print("securityList====="+securityList.size());
-				for(SecurityGroup security: securityList){
-					System.out.println("security.getName()====="+security.getName());
-					//System.out.print("security.ID====="+security.);
-				}*/
+			  
 		}
 		
 	 Thread.sleep(60000); 
@@ -250,7 +261,7 @@ public class OpenstackSimpleSolution implements Runnable{
 	 }
 	 logger.debug("=====vmRegisterNumber========"+vmRegisterNumber+"======vmBind========"+vmBind);
 	 logger.debug("======SingletonMapClass.getInstance()========="+SingletonMapClass.getInstance());
-	 CommonUtil commonUtil=new CommonUtil();
+	 
 	 repositaryName=commonUtil.getRepositryName(auth.getImagetag());
 	 repositryImageName=commonUtil.getRepositryImageName(auth.getImagetag());
 	 byte[] bytesArray=readBytesFromFile(keyName);
@@ -258,8 +269,17 @@ public class OpenstackSimpleSolution implements Runnable{
 	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray);
 	 deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray);
+	 commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
+			 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "DP");
 	 
 	  }catch(Exception e){
+		  logger.error("Error in OpenStackSimpleSolution===========" + e.getMessage());
+		  try{
+			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
+						 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "FA");  
+		  }catch(Exception ex){
+				logger.error("Error in saving data===========" +ex.getMessage());
+			}
 		  e.printStackTrace();
 	  }
 	}
@@ -381,14 +401,14 @@ public class OpenstackSimpleSolution implements Runnable{
 			 //sshShell.
 			 logger.debug("SSH====================Cmplete==output="+output);
 		} catch (JSchException jSchException) {
-			System.out.println("JSchException========== "+jSchException.getMessage());
-			System.out.println(jSchException.getMessage());
+			logger.error("JSchException========== "+jSchException.getMessage());
+			logger.error(jSchException.getMessage());
 		} catch (IOException ioException) {
-			System.out.println("IOException=========="+ioException.getMessage());
-			System.out.println(ioException.getMessage());
+			logger.error("IOException=========="+ioException.getMessage());
+			logger.error(ioException.getMessage());
 		} catch (Exception exception) {
-			System.out.println("Exception ========="+exception.getMessage());
-			System.out.println(exception.getMessage());
+			logger.error("Exception ========="+exception.getMessage());
+			logger.error(exception.getMessage());
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
@@ -414,7 +434,7 @@ public class OpenstackSimpleSolution implements Runnable{
             fileInputStream.read(bytesArray);
             
             for (int i = 0; i < bytesArray.length; i++) {
-                System.out.print((char) bytesArray[i]);
+            	logger.debug("==========>"+(char) bytesArray[i]);
             }
 
         } catch (IOException e) {

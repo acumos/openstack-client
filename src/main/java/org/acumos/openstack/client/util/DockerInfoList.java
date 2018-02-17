@@ -17,41 +17,51 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-package org.acumos.openstack.client.transport;
 
-public class CompositeDeployBean {
-	
-	private String vmName;
-	private String solutionId;
-	private String solutionRevisionId;
-	private String userId;
-	
-	
-	public String getVmName() {
-		return vmName;
+package org.acumos.openstack.client.util;
+
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class DockerInfoList implements Serializable {
+
+	private static final long serialVersionUID = -8959582621635414829L;
+
+	@JsonProperty("docker_info_list")
+	private List<DockerInfo> dockerList = null;
+
+	public DockerInfoList(List<DockerInfo> dockerList) {
+		super();
+		this.dockerList = dockerList;
 	}
-	public void setVmName(String vmName) {
-		this.vmName = vmName;
+
+	public DockerInfoList() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	public String getSolutionId() {
-		return solutionId;
+
+	public List<DockerInfo> getDockerList() {
+		return dockerList;
 	}
-	public void setSolutionId(String solutionId) {
-		this.solutionId = solutionId;
+
+	public DockerInfo findDockerInfoByContainer(String container) {
+		for (DockerInfo d : dockerList) {
+			if (d.getContainer().equals(container))
+				return d;
+		}
+		return null;
+
 	}
-	public String getSolutionRevisionId() {
-		return solutionRevisionId;
+
+	public void setDockerList(List<DockerInfo> dockerList) {
+		this.dockerList = dockerList;
 	}
-	public void setSolutionRevisionId(String solutionRevisionId) {
-		this.solutionRevisionId = solutionRevisionId;
+
+	@Override
+	public String toString() {
+		return "DockerInfos [dockerList=" + dockerList + "]";
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	
 
 }
