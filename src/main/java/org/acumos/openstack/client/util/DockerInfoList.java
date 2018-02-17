@@ -17,49 +17,51 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-package org.acumos.openstack.client.transport;
 
-public class OpenstackDeployBean {
-	
-	private String vmName;
-	private String imagetag;
-	private String solutionId;
-	private String solutionRevisionId;
-	private String userId;
-	
-	
-	public String getVmName() {
-		return vmName;
+package org.acumos.openstack.client.util;
+
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class DockerInfoList implements Serializable {
+
+	private static final long serialVersionUID = -8959582621635414829L;
+
+	@JsonProperty("docker_info_list")
+	private List<DockerInfo> dockerList = null;
+
+	public DockerInfoList(List<DockerInfo> dockerList) {
+		super();
+		this.dockerList = dockerList;
 	}
-	public void setVmName(String vmName) {
-		this.vmName = vmName;
+
+	public DockerInfoList() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	public String getImagetag() {
-		return imagetag;
+
+	public List<DockerInfo> getDockerList() {
+		return dockerList;
 	}
-	public void setImagetag(String imagetag) {
-		this.imagetag = imagetag;
+
+	public DockerInfo findDockerInfoByContainer(String container) {
+		for (DockerInfo d : dockerList) {
+			if (d.getContainer().equals(container))
+				return d;
+		}
+		return null;
+
 	}
-	public String getSolutionId() {
-		return solutionId;
+
+	public void setDockerList(List<DockerInfo> dockerList) {
+		this.dockerList = dockerList;
 	}
-	public void setSolutionId(String solutionId) {
-		this.solutionId = solutionId;
+
+	@Override
+	public String toString() {
+		return "DockerInfos [dockerList=" + dockerList + "]";
 	}
-	public String getSolutionRevisionId() {
-		return solutionRevisionId;
-	}
-	public void setSolutionRevisionId(String solutionRevisionId) {
-		this.solutionRevisionId = solutionRevisionId;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	
-	
-	
+
 }

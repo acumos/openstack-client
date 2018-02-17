@@ -19,26 +19,17 @@
  */
 package org.acumos.openstack.client.transport;
 
-public class OpenstackDeployBean {
+public class OpenstackCompositeDeployBean {
 	
 	private String vmName;
-	private String imagetag;
 	private String solutionId;
 	private String solutionRevisionId;
 	private String userId;
-	
-	
 	public String getVmName() {
 		return vmName;
 	}
 	public void setVmName(String vmName) {
 		this.vmName = vmName;
-	}
-	public String getImagetag() {
-		return imagetag;
-	}
-	public void setImagetag(String imagetag) {
-		this.imagetag = imagetag;
 	}
 	public String getSolutionId() {
 		return solutionId;
@@ -60,6 +51,5 @@ public class OpenstackDeployBean {
 	}
 	
 	
-	
-	
+
 }

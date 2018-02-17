@@ -19,47 +19,31 @@
  */
 package org.acumos.openstack.client.transport;
 
-public class OpenstackDeployBean {
+public class OpanStackContainerBean {
 	
-	private String vmName;
-	private String imagetag;
-	private String solutionId;
-	private String solutionRevisionId;
-	private String userId;
+	private String containerName;
+	private String containerIp;	
+	private String containerPort;
 	
 	
-	public String getVmName() {
-		return vmName;
+	public String getContainerName() {
+		return containerName;
 	}
-	public void setVmName(String vmName) {
-		this.vmName = vmName;
+	public void setContainerName(String containerName) {
+		this.containerName = containerName;
 	}
-	public String getImagetag() {
-		return imagetag;
+	public String getContainerIp() {
+		return containerIp;
 	}
-	public void setImagetag(String imagetag) {
-		this.imagetag = imagetag;
+	public void setContainerIp(String containerIp) {
+		this.containerIp = containerIp;
 	}
-	public String getSolutionId() {
-		return solutionId;
+	public String getContainerPort() {
+		return containerPort;
 	}
-	public void setSolutionId(String solutionId) {
-		this.solutionId = solutionId;
+	public void setContainerPort(String containerPort) {
+		this.containerPort = containerPort;
 	}
-	public String getSolutionRevisionId() {
-		return solutionRevisionId;
-	}
-	public void setSolutionRevisionId(String solutionRevisionId) {
-		this.solutionRevisionId = solutionRevisionId;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	
 	
 	
 }

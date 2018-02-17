@@ -1,0 +1,148 @@
+18:57:34.914|AcumosONM|[main]| INFO | o.a.o.c.OpenstackClientApplication - Starting OpenstackClientApplication on INNOSDPC00004 with PID 17884 (D:\OpenStack_code\feb_17\openstack-client\target\classes started by SK00472486 in D:\OpenStack_code\feb_17\openstack-client)
+18:57:34.916|AcumosONM|[main]| DEBUG| o.a.o.c.OpenstackClientApplication - Running with Spring Boot v1.5.10.RELEASE, Spring v4.3.14.RELEASE
+18:57:34.916|AcumosONM|[main]| INFO | o.a.o.c.OpenstackClientApplication - No active profile set, falling back to default profiles: default
+18:57:35.346|AcumosONM|[background-preinit]| DEBUG| org.jboss.logging - Logging Provider: org.jboss.logging.Slf4jLoggerProvider found via system property
+18:57:35.349|AcumosONM|[background-preinit]| INFO | o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+18:57:35.369|AcumosONM|[background-preinit]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+18:57:35.370|AcumosONM|[background-preinit]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+18:57:36.966|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+18:57:36.966|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+18:57:36.974|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+18:57:36.974|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+18:57:36.977|AcumosONM|[main]| DEBUG| o.h.v.i.engine.ConfigurationImpl - Setting custom MessageInterpolator of type org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator
+18:57:36.977|AcumosONM|[main]| DEBUG| o.h.v.i.engine.ConfigurationImpl - Setting custom ConstraintValidatorFactory of type org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory
+18:57:36.978|AcumosONM|[main]| DEBUG| o.h.v.i.engine.ConfigurationImpl - Setting custom ParameterNameProvider of type com.sun.proxy.$Proxy58
+18:57:36.979|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ValidationXmlParser - Trying to load META-INF/validation.xml for XML based Validator configuration.
+18:57:36.980|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ResourceLoaderHelper - Trying to load META-INF/validation.xml via user class loader
+18:57:36.980|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ResourceLoaderHelper - Trying to load META-INF/validation.xml via TCCL
+18:57:36.980|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ResourceLoaderHelper - Trying to load META-INF/validation.xml via Hibernate Validator's class loader
+18:57:36.981|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ValidationXmlParser - No META-INF/validation.xml found. Using annotation based configuration only.
+18:57:38.081|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+18:57:38.082|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+18:57:38.087|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+18:57:38.087|AcumosONM|[main]| DEBUG| o.h.v.i.e.r.DefaultTraversableResolver - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+18:57:38.087|AcumosONM|[main]| DEBUG| o.h.v.i.engine.ConfigurationImpl - Setting custom MessageInterpolator of type org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator
+18:57:38.087|AcumosONM|[main]| DEBUG| o.h.v.i.engine.ConfigurationImpl - Setting custom ConstraintValidatorFactory of type org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory
+18:57:38.087|AcumosONM|[main]| DEBUG| o.h.v.i.engine.ConfigurationImpl - Setting custom ParameterNameProvider of type com.sun.proxy.$Proxy58
+18:57:38.087|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ValidationXmlParser - Trying to load META-INF/validation.xml for XML based Validator configuration.
+18:57:38.087|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ResourceLoaderHelper - Trying to load META-INF/validation.xml via user class loader
+18:57:38.088|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ResourceLoaderHelper - Trying to load META-INF/validation.xml via TCCL
+18:57:38.088|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ResourceLoaderHelper - Trying to load META-INF/validation.xml via Hibernate Validator's class loader
+18:57:38.088|AcumosONM|[main]| DEBUG| o.h.v.i.xml.ValidationXmlParser - No META-INF/validation.xml found. Using annotation based configuration only.
+18:57:38.453|AcumosONM|[main]| INFO | s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+18:57:38.468|AcumosONM|[main]| INFO | s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+18:57:38.481|AcumosONM|[main]| INFO | s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+18:57:38.495|AcumosONM|[main]| DEBUG| s.d.s.w.r.o.OperationModelsProvider - Adding return parameter of type Ljava/lang/String;
+18:57:38.496|AcumosONM|[main]| DEBUG| s.d.s.w.r.o.OperationModelsProvider - Reading parameters models for handlerMethod |singleImageOpenstackDeployment|
+18:57:38.498|AcumosONM|[main]| DEBUG| s.d.s.w.r.o.OperationModelsProvider - Adding input parameter of type Lorg/acumos/openstack/client/transport/OpenstackDeployBean;
+18:57:38.498|AcumosONM|[main]| DEBUG| s.d.s.w.r.o.OperationModelsProvider - Finished reading parameters models for handlerMethod |singleImageOpenstackDeployment|
+18:57:38.500|AcumosONM|[main]| DEBUG| s.d.s.r.o.SwaggerOperationModelsProvider - Reading parameters models for handlerMethod |singleImageOpenstackDeployment|
+18:57:38.518|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Reading property vmName
+18:57:38.525|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setVmName
+18:57:38.526|AcumosONM|[main]| DEBUG| s.d.s.p.ObjectMapperBeanPropertyNamingStrategy - Name 'vmName' renamed to 'vmName'
+18:57:38.526|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Adding property vmName to model
+18:57:38.527|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setVmName
+18:57:38.527|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setVmName
+18:57:38.527|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setVmName
+18:57:38.528|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setVmName
+18:57:38.530|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Reading property imagetag
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setImagetag
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.ObjectMapperBeanPropertyNamingStrategy - Name 'imagetag' renamed to 'imagetag'
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Adding property imagetag to model
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setImagetag
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setImagetag
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setImagetag
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setImagetag
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Reading property solutionId
+18:57:38.531|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionId
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.ObjectMapperBeanPropertyNamingStrategy - Name 'solutionId' renamed to 'solutionId'
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Adding property solutionId to model
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionId
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionId
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionId
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionId
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Reading property solutionRevisionId
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionRevisionId
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.ObjectMapperBeanPropertyNamingStrategy - Name 'solutionRevisionId' renamed to 'solutionRevisionId'
+18:57:38.532|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Adding property solutionRevisionId to model
+18:57:38.535|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionRevisionId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionRevisionId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionRevisionId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setSolutionRevisionId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Reading property userId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setUserId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.ObjectMapperBeanPropertyNamingStrategy - Name 'userId' renamed to 'userId'
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.OptimizedModelPropertiesProvider - Adding property userId to model
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setUserId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setUserId
+18:57:38.536|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setUserId
+18:57:38.537|AcumosONM|[main]| DEBUG| s.d.s.p.bean.BeanModelProperty - Evaluating unwrapped setter for member setUserId
+18:57:38.543|AcumosONM|[main]| DEBUG| s.d.schema.DefaultModelProvider - Inferred 5 properties. Properties found imagetag, solutionId, solutionRevisionId, userId, vmName
+18:57:38.545|AcumosONM|[main]| DEBUG| s.d.s.web.scanners.ApiModelReader - Generated parameter model id: OpenstackDeployBean, name: OpenstackDeployBean, schema: {} models
+18:57:38.545|AcumosONM|[main]| DEBUG| s.d.s.web.scanners.ApiModelReader - Adding a new model with key OpenstackDeployBean
+18:57:38.546|AcumosONM|[main]| DEBUG| s.d.schema.DefaultModelProvider - Skipping model of type Ljava/lang/String; as its either a container type, map, enum or base type, or its already been handled
+18:57:38.547|AcumosONM|[main]| DEBUG| s.d.s.web.scanners.ApiModelReader - Did not find any parameter models for java.lang.String
+18:57:38.547|AcumosONM|[main]| DEBUG| s.d.s.DefaultModelDependencyProvider - Marking base type Ljava/lang/String; as seen
+18:57:38.558|AcumosONM|[main]| DEBUG| s.d.s.w.r.o.OperationResponseClassReader - Setting spring response class to:string
+18:57:38.559|AcumosONM|[main]| DEBUG| s.d.s.r.o.OperationAuthReader - Authorization count 0 for method singleImageOpenstackDeployment
+18:57:38.560|AcumosONM|[main]| DEBUG| s.d.s.r.o.SwaggerOperationResponseClassReader - Setting response class to:string
+18:57:38.790|AcumosONM|[main]| INFO | o.a.o.c.OpenstackClientApplication - Started OpenstackClientApplication in 4.099 seconds (JVM running for 5.16)
+18:58:09.501|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - =======singleImageOpenstackDeployment===Start==============
+18:58:09.504|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <-----flavourName------->e6esmall
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----securityGropName--->E6E-Access
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----endpoint----------->http://10.1.0.100/identity/v3
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----userName----------->e6euser
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----password----------->password
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----scopeProject----------->7badda19df524dd58c2fe249fd02e7f6
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----key----------->e6e-key
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----keyName----------->e6e-key.pem
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----IdentifierName----------->Default
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----vnRegisterNumber----------->2241
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----hostOpenStack----------->10.1.0.100
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----hostUserName----------->cognitaopr
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----vmUserName----------->ubuntu
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----dockerUserName----------->cognita_model_rw
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----dockerPassword----------->not4you
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----dataSource----------->http://cognita-dev1-vm01-core:8002/ccds
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----cmndatasvcuser----------->ccds_client
+18:58:09.505|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - <----cmndatasvcpwd----------->ccds_client
+18:58:09.509|AcumosONM|[http-nio-8007-exec-5]| DEBUG| o.a.o.c.c.OpenstackServiceController - =======singleImageOpenstackDeployment=End first thread==jsonOutput.toString()===={"Status":"fcfd15d7-e021-4525-902f-91036f4459d7"}
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <-SimpleSolution----flavourName------->e6esmall
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--securityGropName--->E6E-Access
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--endpoint----------->http://10.1.0.100/identity/v3
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--userName----------->e6euser
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--password----------->password
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--scopeProject----------->7badda19df524dd58c2fe249fd02e7f6
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--key----------->e6e-key
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--keyName----------->e6e-key.pem
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--IdentifierName----------->Default
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--vmRegisterNumber----------->2241
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--vmUserName----------->ubuntu
+18:58:09.512|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--dockerUserName----------->cognita_model_rw
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--dockerPassword----------->not4you
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--SoulutionId----------->string
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--SolutionRevisionId----------->string
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--getImagetag()----------->string
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--uidNumStr---------->fcfd15d7-e021-4525-902f-91036f4459d7
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--dataSource---------->http://cognita-dev1-vm01-core:8002/ccds
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--cmndatasvcuser----------->ccds_client
+18:58:09.513|AcumosONM|[Thread-9]| DEBUG| o.a.o.c.s.i.OpenstackSimpleSolution - <--SimpleSolution--cmndatasvcpwd---------->ccds_client
+18:58:09.524|AcumosONM|[Thread-9]| DEBUG| o.o.c.t.internal.HttpExecutor - Executing Request: http://10.1.0.100/identity/v3 -> /auth/tokens
+18:58:09.969|AcumosONM|[Thread-9]| DEBUG| o.jboss.resteasy.resteasy_jaxrs.i18n - Interceptor Context: org.jboss.resteasy.core.interception.jaxrs.ClientWriterInterceptorContext,  Method : proceed
+18:58:09.970|AcumosONM|[Thread-9]| DEBUG| o.jboss.resteasy.resteasy_jaxrs.i18n - MessageBodyWriter: org.jboss.resteasy.spi.ResteasyProviderFactory$SortedKey
+18:58:09.970|AcumosONM|[Thread-9]| DEBUG| o.jboss.resteasy.resteasy_jaxrs.i18n - MessageBodyWriter: com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
+18:58:31.020|AcumosONM|[Thread-9]| ERROR| o.a.o.c.s.i.OpenstackSimpleSolution - Error in OpenStackSimpleSolution===========RESTEASY004655: Unable to invoke request
+18:58:31.021|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <---------Start createDeploymentData ------------------------->
+18:58:31.021|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <---------dataSource-------->http://cognita-dev1-vm01-core:8002/ccds
+18:58:31.022|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <-------dataUserName-------------->ccds_client
+18:58:31.022|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <--------dataPassword------------->ccds_client
+18:58:31.022|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <---------solutionId------------------->string
+18:58:31.022|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <--------solutionRevisionId-------------------->string
+18:58:31.022|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <------userId--------------->string
+18:58:31.022|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <------uidNumber--------------->fcfd15d7-e021-4525-902f-91036f4459d7
+18:58:31.023|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <------deploymentStatusCode--------------->FA
+18:58:31.023|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <------start----getClient------------>
+18:58:31.095|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <------End----getClient---------client--->org.acumos.cds.client.CommonDataServiceRestClientImpl@7edb3ed
+18:58:31.098|AcumosONM|[Thread-9]| DEBUG| o.a.openstack.client.util.CommonUtil - <---------openStackDetails------------------------->{"containerName":null,"containerIp":null,"containerPort":null}
+18:58:31.102|AcumosONM|[Thread-9]| DEBUG| o.a.c.c.CommonDataServiceRestClientImpl - createSolutionDeployment: uri http://cognita-dev1-vm01-core:8002/ccds/solution/string/revision/string/deploy
+18:58:31.971|AcumosONM|[Thread-9]| ERROR| o.a.o.c.s.i.OpenstackSimpleSolution - Error in saving data===========I/O error on POST request for "http://cognita-dev1-vm01-core:8002/ccds/solution/string/revision/string/deploy": cognita-dev1-vm01-core; nested exception is java.net.UnknownHostException: cognita-dev1-vm01-core

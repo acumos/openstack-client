@@ -17,49 +17,41 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-package org.acumos.openstack.client.transport;
 
-public class OpenstackDeployBean {
-	
-	private String vmName;
-	private String imagetag;
-	private String solutionId;
-	private String solutionRevisionId;
-	private String userId;
-	
-	
-	public String getVmName() {
-		return vmName;
+package org.acumos.openstack.client.util;
+
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class OperationSignature implements Serializable {
+
+	private static final long serialVersionUID = -8176878378145971860L;
+
+	public OperationSignature() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	public void setVmName(String vmName) {
-		this.vmName = vmName;
+
+	public OperationSignature(String operation) {
+		super();
+		this.operation = operation;
 	}
-	public String getImagetag() {
-		return imagetag;
+
+	@JsonProperty("operation")
+	private String operation = null;
+
+	public String getOperation() {
+		return operation;
 	}
-	public void setImagetag(String imagetag) {
-		this.imagetag = imagetag;
+
+	public void setOperation(String operation) {
+		this.operation = operation;
 	}
-	public String getSolutionId() {
-		return solutionId;
+
+	@Override
+	public String toString() {
+		return "OperationSignature [operation=" + operation + "]";
 	}
-	public void setSolutionId(String solutionId) {
-		this.solutionId = solutionId;
-	}
-	public String getSolutionRevisionId() {
-		return solutionRevisionId;
-	}
-	public void setSolutionRevisionId(String solutionRevisionId) {
-		this.solutionRevisionId = solutionRevisionId;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	
-	
-	
+
 }

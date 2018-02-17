@@ -17,49 +17,51 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-package org.acumos.openstack.client.transport;
+package org.acumos.openstack.client.util;
+import java.util.ArrayList;
+import java.util.List;
 
-public class OpenstackDeployBean {
-	
-	private String vmName;
-	private String imagetag;
-	private String solutionId;
-	private String solutionRevisionId;
-	private String userId;
-	
-	
-	public String getVmName() {
-		return vmName;
+public class NodeTree<T> {
+ 
+	private T data = null;
+ 
+	private List<NodeTree<T>> children = new ArrayList<>();
+ 
+	private NodeTree<T> parent = null;
+ 
+	public NodeTree(T data) {
+		this.data = data;
 	}
-	public void setVmName(String vmName) {
-		this.vmName = vmName;
+ 
+	public NodeTree<T> addChild(NodeTree<T> child) {
+		child.setParent(this);
+		this.children.add(child);
+		return child;
 	}
-	public String getImagetag() {
-		return imagetag;
+ 
+	public void addChildren(List<NodeTree<T>> children) {
+		children.forEach(each -> each.setParent(this));
+		this.children.addAll(children);
 	}
-	public void setImagetag(String imagetag) {
-		this.imagetag = imagetag;
+ 
+	public List<NodeTree<T>> getChildren() {
+		return children;
 	}
-	public String getSolutionId() {
-		return solutionId;
+ 
+	public T getData() {
+		return data;
 	}
-	public void setSolutionId(String solutionId) {
-		this.solutionId = solutionId;
+ 
+	public void setData(T data) {
+		this.data = data;
 	}
-	public String getSolutionRevisionId() {
-		return solutionRevisionId;
+ 
+	private void setParent(NodeTree<T> parent) {
+		this.parent = parent;
 	}
-	public void setSolutionRevisionId(String solutionRevisionId) {
-		this.solutionRevisionId = solutionRevisionId;
+ 
+	public NodeTree<T> getParent() {
+		return parent;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	
-	
-	
+ 
 }
