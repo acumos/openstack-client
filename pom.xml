@@ -5,7 +5,7 @@
 
 	<groupId>org.acumos.openstack</groupId>
 	<artifactId>openstack-client</artifactId>
-	<version>1.23.0-SNAPSHOT</version>
+	<version>1.24.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>openstack-client</name>
@@ -256,7 +256,7 @@
 											<file>
 												<source>e6e-key.pem</source>
 												<outputDirectory />
-												<destName>e6e-key.pem</destName>
+												<destName>/home/e6e-key.pem</destName>
 											</file>
 										</files>
 									</inline>
