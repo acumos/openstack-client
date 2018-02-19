@@ -5,7 +5,7 @@
 
 	<groupId>org.acumos.openstack</groupId>
 	<artifactId>openstack-client</artifactId>
-	<version>1.17.0-SNAPSHOT</version>
+	<version>1.20.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>openstack-client</name>
@@ -235,7 +235,7 @@
 							<build>
 							 <env>
 							   <http_proxy>http://10.1.0.6:3128</http_proxy>
-							 </env>
+							 </env> 
 								<from>frolvlad/alpine-oraclejdk8:slim</from>
 								<tags>
 									<!-- Add tag with build number -->
