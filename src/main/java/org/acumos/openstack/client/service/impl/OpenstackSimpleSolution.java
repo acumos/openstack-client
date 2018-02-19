@@ -302,13 +302,14 @@ public class OpenstackSimpleSolution implements Runnable{
                  public synchronized void run() {
                          SSHShell sshShell=null;
                       try{
-                               byte[] bytesArray=readBytesFromFile("e6e-key.pem");
+                               //byte[] bytesArray=readBytesFromFile("e6e-key.pem");
                                //host="10.1.0.100";
                                //userName="cognitaopr";
                                logger.debug("=======host====="+host);
                                logger.debug("=======userName====="+userName);
                                logger.debug("=======vmNumber====="+vmNumber);
                                logger.debug("=======floatingIp====="+floatingIp);
+                               logger.debug("=======bytesArray====="+bytesArray);
                                sshShell = SSHShell.open(host, 22, userName, bytesArray);
 
                                String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":22 10.1.0.100 -g -T -N & \n";
