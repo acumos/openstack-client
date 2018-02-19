@@ -151,7 +151,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			 os = OSFactory.builderV3().endpoint("http://10.1.0.100/identity/v3")
 						.credentials("e6euser", "password", Identifier.byName("Default"))
 						.scopeToProject(Identifier.byId("7badda19df524dd58c2fe249fd02e7f6"))
-						.withConfig(Config.newConfig().withProxy(ProxyHost.of("10.1.0.6", 3128)))
+						.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://10.1.0.6", 3128)))
 						.authenticate();
 			logger.debug("==============byId Authnetication success===========");
 			
