@@ -30,6 +30,7 @@ import org.acumos.openstack.client.util.SSHShell;
 import org.acumos.openstack.client.util.SingletonMapClass;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
+import org.openstack4j.core.transport.Config;
 import org.openstack4j.model.compute.Flavor;
 import org.openstack4j.model.compute.Image;
 import org.openstack4j.model.compute.SecGroupExtension;
@@ -53,6 +54,7 @@ import org.openstack4j.model.compute.FloatingIP;
 import org.openstack4j.model.compute.SecurityGroup;
 import org.openstack4j.model.common.ActionResponse;
 import org.openstack4j.model.common.Identifier;
+import org.openstack4j.core.transport.ProxyHost;
 
 public class OpenstackSimpleSolution implements Runnable{
 	Logger logger = LoggerFactory.getLogger(OpenstackSimpleSolution.class);
@@ -148,7 +150,9 @@ public class OpenstackSimpleSolution implements Runnable{
 					.scopeToProject(Identifier.byId(scopeProject)).authenticate();*/
 			 os = OSFactory.builderV3().endpoint("http://10.1.0.100/identity/v3")
 						.credentials("e6euser", "password", Identifier.byName("Default"))
-						.scopeToProject(Identifier.byId("7badda19df524dd58c2fe249fd02e7f6")).authenticate();
+						.scopeToProject(Identifier.byId("7badda19df524dd58c2fe249fd02e7f6"))
+						.withConfig(Config.newConfig().withProxy(ProxyHost.of("10.1.0.6", 3128)))
+						.authenticate();
 			logger.debug("==============byId Authnetication success===========");
 			
 			logger.debug("flavourName==============>"+flavourName);
