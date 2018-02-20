@@ -35,8 +35,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.acumos.openstack.client.api.APINames;
+import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
 import org.acumos.openstack.client.service.impl.OpenstackSimpleSolution;
+import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
+import org.acumos.openstack.client.util.Blueprint;
+import org.acumos.openstack.client.util.CommonUtil;
+import org.acumos.openstack.client.util.ParseJSON;
 import org.json.JSONObject;
 
 import org.openstack4j.api.Builders;
@@ -164,6 +169,134 @@ public class OpenstackServiceController extends AbstractController {
 		}
 		//logger.debug("<------start----singleImageOpenstackDeployment------------>");
 		logger.debug("=======singleImageOpenstackDeployment=End first thread==jsonOutput.toString()===="+jsonOutput.toString());
+		return jsonOutput.toString();
+	}
+	
+	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
+	@ResponseBody
+	public String compositeOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackCompositeDeployBean auth,HttpServletResponse response) throws Exception {
+		logger.debug("=======compositeOpenstackDeployment===Start==============");
+		
+		String uidNumStr="";
+		String flavourName="";
+		String securityGropName="";
+		String endpoint="";
+		String userName="";
+		String password="";
+		String scopeProject="";
+		String key="";
+		String keyName="";
+		String IdentifierName="";
+		String vmRegisterNumber="";
+		String hostOpenStack="";
+		String hostUserName="";
+		String vmUserName="";
+		String dockerUserName="";
+		String dockerPassword="";
+		String bluePrintImage="";
+		String bluePrintName="";
+		String bluePrintUserName="";
+		String bluePrintPassword="";
+		String dataSource="";
+		String cmndatasvcuser="";
+		String cmndatasvcpwd="";
+		String nexusUrl="";
+		String nexusUserName="";
+		String nexusPassword="";
+		String solutionPort="";
+		JSONObject  jsonOutput = new JSONObject();
+		try{
+			 ParseJSON parseJson=new ParseJSON();
+			 CommonUtil commonUtil=new CommonUtil();
+			 flavourName=env.getProperty("docker.openstack.flavourName");
+			 securityGropName=env.getProperty("docker.openstack.securityGroupName");
+			 endpoint=env.getProperty("docker.openstack.endpoint");
+			 userName=env.getProperty("docker.openstack.userName");
+			 password=env.getProperty("docker.openstack.password");
+			 scopeProject=env.getProperty("docker.openstack.scopeProject");
+			 key=env.getProperty("docker.openstack.key");
+			 keyName=env.getProperty("docker.openstack.keyName");
+			 IdentifierName=env.getProperty("docker.openstack.IdentifierName");
+			 vmRegisterNumber=env.getProperty("docker.openstack.vmRegisterNumber");
+			 hostOpenStack=env.getProperty("docker.openstack.hostOpenStack");
+			 hostUserName=env.getProperty("docker.openstack.hostUserName");
+			 vmUserName=env.getProperty("docker.openstack.vmUserName");
+			 dockerUserName=env.getProperty("docker.openstack.dockerUserName");
+			 dockerPassword=env.getProperty("docker.openstack.dockerPassword");
+			 bluePrintImage=env.getProperty("docker.openstack.bluePrintImageName");
+			 bluePrintName=env.getProperty("docker.openstack.bluePrintName");
+			 bluePrintUserName=env.getProperty("docker.openstack.bluePrintUserName");
+			 bluePrintPassword=env.getProperty("docker.openstack.bluePrintPassword");
+			 dataSource=env.getProperty("cmndatasvc.cmndatasvcendpoinurl");
+			 cmndatasvcuser=env.getProperty("cmndatasvc.cmndatasvcuser");
+			 cmndatasvcpwd=env.getProperty("cmndatasvc.cmndatasvcpwd");
+			 nexusUrl=env.getProperty("nexus.url");
+			 nexusUserName=env.getProperty("nexus.username");
+			 nexusPassword=env.getProperty("nexus.password");
+			 solutionPort=env.getProperty("docker.openstack.solutionPort");
+			 logger.debug("<-----flavourName------->"+flavourName);
+			 logger.debug("<----securityGropName--->"+securityGropName);
+			 logger.debug("<----endpoint----------->"+endpoint);
+			 logger.debug("<----userName----------->"+userName);
+			 logger.debug("<----password----------->"+password);
+			 logger.debug("<----scopeProject----------->"+scopeProject);
+			 logger.debug("<----key----------->"+key);
+			 logger.debug("<----keyName----------->"+keyName);
+			 logger.debug("<----IdentifierName----------->"+IdentifierName);
+			 logger.debug("<----vnRegisterNumber----------->"+vmRegisterNumber);
+			 logger.debug("<----hostOpenStack----------->"+hostOpenStack);
+			 logger.debug("<----hostUserName----------->"+hostUserName);
+			 logger.debug("<----vmUserName----------->"+vmUserName);
+			 logger.debug("<----dockerUserName----------->"+dockerUserName);
+			 logger.debug("<----dockerPassword----------->"+dockerPassword);
+			 logger.debug("<----bluePrintImage----------->"+bluePrintImage);
+			 logger.debug("<----bluePrintName----------->"+bluePrintName);
+			 logger.debug("<----bluePrintUserName----------->"+bluePrintUserName);
+			 logger.debug("<----bluePrintPassword----------->"+bluePrintPassword);
+			 logger.debug("<----dataSource----------->"+dataSource);
+			 logger.debug("<----cmndatasvcuser----------->"+cmndatasvcuser);
+			 logger.debug("<----cmndatasvcpwd----------->"+cmndatasvcpwd);
+			 logger.debug("<----nexusUrl----------->"+nexusUrl);
+			 logger.debug("<----nexusUserName----------->"+nexusUserName);
+			 logger.debug("<----nexusPassword----------->"+nexusPassword);
+			 logger.debug("<----solutionPort----------->"+solutionPort);
+			 logger.debug("<------SolutionId---------->"+auth.getSolutionId());
+			 logger.debug("<------authObject.getSolutionRevisionId()---------->"+auth.getSolutionRevisionId());
+			 
+			 
+			 String bluePrintStr=commonUtil.getBluePrintNexus(auth.getSolutionId(), auth.getSolutionRevisionId(),dataSource,
+					 cmndatasvcuser,cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword);
+			 logger.debug("<------bluePrintStr---------->"+bluePrintStr);
+			 
+			 
+			 Blueprint bluePrint=parseJson.jsonFileToObject();
+		 	 HashMap<String,String> imageMap=parseJson.parseJsonFile();
+			 ArrayList<String> list=commonUtil.iterateImageMap(imageMap);
+			 LinkedList<String> sequenceList=parseJson.getSequenceFromJSON();
+			
+			 if(bluePrintImage!=null && !"".equals(bluePrintImage)){
+				list.add(bluePrintImage);
+				imageMap.put(bluePrintImage, "BluePrintContainer");
+			 }
+			 logger.debug("<----list----------->"+list);
+			 logger.debug("<----imageMap----------->"+imageMap);
+			 UUID uidNumber = UUID.randomUUID();
+			 uidNumStr=uidNumber.toString();
+			 logger.debug("<----uidNumStr----------->"+uidNumStr);
+			 jsonOutput.put("Status", uidNumStr);
+			 OpenstackCompositeSolution compositeSolution=new OpenstackCompositeSolution(flavourName,securityGropName,auth,endpoint
+					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
+					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
+					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort);
+			 Thread t = new Thread(compositeSolution);
+	         t.start();
+		 
+		 
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		logger.debug("=======compositeOpenstackDeployment===End first thread==============");
 		return jsonOutput.toString();
 	}
 }
