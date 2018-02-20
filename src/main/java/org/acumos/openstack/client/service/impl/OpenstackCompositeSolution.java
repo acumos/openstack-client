@@ -93,13 +93,14 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private Blueprint bluePrint;
 	private String uidNumStr;
 	private String solutionPort;
+	private String Sleeptime;
 	
 	public OpenstackCompositeSolution(String flavourName,String  securityGropName,OpenstackCompositeDeployBean auth,String endpoint
 			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,String bluePrintImage,
 			 String bluePrintName,String bluePrintUserName,String bluePrintPassword,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,
 			 String nexusUrl,String nexusUserName,String nexusPassword,ArrayList<String> list,HashMap<String,String> imageMap,LinkedList<String> sequenceList,
-			 Blueprint bluePrint,String uidNumStr,String solutionPort){
+			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
@@ -133,6 +134,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.bluePrint=bluePrint;
 			this.uidNumStr=uidNumStr;
 			this.solutionPort=solutionPort;
+			this.Sleeptime=Sleeptime;
 	}
 	
 	
@@ -152,6 +154,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		String bluePrintPort="";
 		List<OpanStackContainerBean> openStackContainerBeanList=new ArrayList<OpanStackContainerBean>();
 		CommonUtil commonUtil=new CommonUtil();
+		int sleepTimeInt=0;
 		try{
 			 logger.debug("<--CompositeSolution----flavourName------->"+flavourName);
 			 logger.debug("<--CompositeSolution--securityGropName--->"+securityGropName);
@@ -178,7 +181,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 					.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://10.1.0.6", 3128)))
 					.authenticate();
 			logger.debug("byId Authnetication success");
-			
+			sleepTimeInt=Integer.parseInt(solutionPort);
+			logger.debug("<--CompositeSolution--sleepTimeInt----------->"+sleepTimeInt);
 			logger.debug("flavourName==============>"+flavourName);
 			List< ? extends Flavor> flavourList= os.compute().flavors().list();
 			logger.debug(" flavourList==========>"+flavourList.size());
@@ -344,7 +348,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            		logger.debug("<----imageNameVal--------->"+imageNameVal);
 	 		            		
 	 		            		deploymentImageVM(hostOpenStack,vmUserName,repositaryName,bluePrintUserName,bluePrintPassword,repositryImageName,vmBind,bytesArray,
-	 		            				finalContainerName,portNumberString,11);
+	 		            				finalContainerName,portNumberString,11,sleepTimeInt);
 	 		            	}else{
 	 		            		portNumber=portArr[count];
 	 		            		if(solutionPort!=null && !"".equals(solutionPort)){
@@ -354,7 +358,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			        			}
 	 		            		count++;
 	 		            		deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray,
-	 		            				finalContainerName,portNumberString,count);
+	 		            				finalContainerName,portNumberString,count,sleepTimeInt);
 	 		            	}
 	 		            	dockerinfo.setIpAddress(floatingIp);
 	    		            dockerinfo.setPort(portNumber);
@@ -583,7 +587,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
     }
 	
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName,String registryServerUrl, String username, String password, 
-			 String repositoryName,int vmNum,byte[] bytesArray,String finalContainerName,String portNumberString,int count) {
+			 String repositoryName,int vmNum,byte[] bytesArray,String finalContainerName,String portNumberString,int count,int sleepTime) {
 		logger.debug("====dockerHostIP======: " + dockerHostIP);
 		logger.debug("====vmUserName======: " + vmUserName);
 		logger.debug("====registryServerUrl======: " + registryServerUrl);
@@ -630,7 +634,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 
 			String output3 = sshShell.executeCommand("bash -c ~/.azuredocker/RUN_DOCKER_IMAGE_"+count+".sh", true, true);
 			logger.debug("====output==========Start============5==================output3====: " + output3);
-			Thread.sleep(30000);
+			Thread.sleep(2*sleepTime);
 			
 		} catch (JSchException jSchException) {
 

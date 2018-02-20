@@ -204,6 +204,7 @@ public class OpenstackServiceController extends AbstractController {
 		String nexusUserName="";
 		String nexusPassword="";
 		String solutionPort="";
+		String Sleeptime="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -234,6 +235,7 @@ public class OpenstackServiceController extends AbstractController {
 			 nexusUserName=env.getProperty("nexus.username");
 			 nexusPassword=env.getProperty("nexus.password");
 			 solutionPort=env.getProperty("docker.openstack.solutionPort");
+			 Sleeptime=env.getProperty("docker.openstack.Sleeptime");
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
 			 logger.debug("<----endpoint----------->"+endpoint);
@@ -260,6 +262,7 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----nexusUserName----------->"+nexusUserName);
 			 logger.debug("<----nexusPassword----------->"+nexusPassword);
 			 logger.debug("<----solutionPort----------->"+solutionPort);
+			 logger.debug("<----Sleeptime----------->"+Sleeptime);
 			 logger.debug("<------SolutionId---------->"+auth.getSolutionId());
 			 logger.debug("<------authObject.getSolutionRevisionId()---------->"+auth.getSolutionRevisionId());
 			 
@@ -287,7 +290,7 @@ public class OpenstackServiceController extends AbstractController {
 			 OpenstackCompositeSolution compositeSolution=new OpenstackCompositeSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
-					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort);
+					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort,Sleeptime);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 
