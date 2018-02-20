@@ -170,9 +170,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("<--CompositeSolution--dockerUserName----------->"+dockerUserName);
 			 logger.debug("<--CompositeSolution--dockerPassword----------->"+dockerPassword);
 			 logger.debug("<--CompositeSolution--solutionPort----------->"+solutionPort);
+			 logger.debug("<--CompositeSolution--Sleeptime----------->"+Sleeptime);
 			 logger.debug("<--CompositeSolution--SoulutionId----------->"+auth.getSolutionId());
 			 logger.debug("<--CompositeSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
-			 
+			 solutionPort="8336";
 			 //logger.debug("<--CompositeSolution--getImagetag()----------->"+auth.getImagetag());
 			 String portArr[]={"8556","8557","8558","8559","8560","8561","8562","8563","8564","8565"};
 			os = OSFactory.builderV3().endpoint(endpoint)
@@ -181,7 +182,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 					.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://10.1.0.6", 3128)))
 					.authenticate();
 			logger.debug("byId Authnetication success");
-			sleepTimeInt=Integer.parseInt(solutionPort);
+			sleepTimeInt=Integer.parseInt(Sleeptime);
 			logger.debug("<--CompositeSolution--sleepTimeInt----------->"+sleepTimeInt);
 			logger.debug("flavourName==============>"+flavourName);
 			List< ? extends Flavor> flavourList= os.compute().flavors().list();
