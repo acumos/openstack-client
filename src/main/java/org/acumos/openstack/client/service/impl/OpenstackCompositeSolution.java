@@ -302,6 +302,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 if(vmBindNumber!=null){
 		 vmBind=Integer.parseInt(vmBindNumber); 
 		 vmBind=vmBind+1;
+		 vmBindCount=vmBind;
 		 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBind));
 	 }
 	 logger.debug("=====vmRegisterNumber========"+vmRegisterNumber+"======vmBind========"+vmBind);
