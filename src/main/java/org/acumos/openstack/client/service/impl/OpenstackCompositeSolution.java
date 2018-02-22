@@ -418,7 +418,9 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	     String urlDockerInfo="http://"+stackIp+":"+bluePrintTunnel+"/putDockerInfo";  
 		 String urlBluePrint="http://"+stackIp+":"+bluePrintTunnel+"/putBlueprint";
 		 logger.debug("====urlDockerInfo======: " + urlDockerInfo);
+		 Thread.sleep(2*sleepTimeInt);
 		 logger.debug("====urlBluePrint======: " + urlBluePrint);
+		 
 		 if(dockerList!=null){
 			 DockerInfoList dockerInfoFinalList=dockerList;
 			 commonUtil.putContainerDetailsJSON(dockerInfoFinalList,urlDockerInfo);
@@ -665,7 +667,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 
 			String output3 = sshShell.executeCommand("bash -c ~/.azuredocker/RUN_DOCKER_IMAGE_"+count+".sh", true, true);
 			logger.debug("====output==========Start============5==================output3====: " + output3);
-			Thread.sleep(2*sleepTime);
+			Thread.sleep(30000);
 			
 		} catch (JSchException jSchException) {
 
