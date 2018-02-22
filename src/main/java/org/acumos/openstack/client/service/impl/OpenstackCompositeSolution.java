@@ -147,6 +147,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		String floatingIp="";
 		String vmBindNumber="";
 		int vmBind=0;
+		int vmBindCount=0;
 		OSClientV3 os=null;
 		String repositaryName="";
 		String repositryImageName="";
@@ -155,6 +156,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		List<OpanStackContainerBean> openStackContainerBeanList=new ArrayList<OpanStackContainerBean>();
 		CommonUtil commonUtil=new CommonUtil();
 		int sleepTimeInt=0;
+		String stackIp="";
+		HashMap<String,String> portMap=new HashMap<String,String>();
 		try{
 			 logger.debug("<--CompositeSolution----flavourName------->"+flavourName);
 			 logger.debug("<--CompositeSolution--securityGropName--->"+securityGropName);
@@ -174,6 +177,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("<--CompositeSolution--SoulutionId----------->"+auth.getSolutionId());
 			 logger.debug("<--CompositeSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
 			 solutionPort="8336";
+			  stackIp="10.1.0.100";
+			  int listSize=list.size();
 			 //logger.debug("<--CompositeSolution--getImagetag()----------->"+auth.getImagetag());
 			 String portArr[]={"8556","8557","8558","8559","8560","8561","8562","8563","8564","8565"};
 			os = OSFactory.builderV3().endpoint(endpoint)
@@ -295,7 +300,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 if(vmBindNumber!=null){
 		 vmBind=Integer.parseInt(vmBindNumber); 
 		 vmBind=vmBind+1;
-		 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBind));
+		 vmBindCount=vmBind;
+		// SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBind));
 	 }
 	 logger.debug("=====vmRegisterNumber========"+vmRegisterNumber+"======vmBind========"+vmBind);
 	 logger.debug("======SingletonMapClass.getInstance()========="+SingletonMapClass.getInstance());
@@ -303,9 +309,24 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 
 	 byte[] bytesArray=readBytesFromFile(keyName);
 	 
+	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray,22);
+	 for(int i=0;i<listSize;i++){
+		 String portTunnel=portArr[i];
+		 vmBindCount=vmBindCount+1;
+		 portMap.put(portTunnel, String.valueOf(vmBindCount));
+		 logger.debug("<---Start for ------portTunnel-->"+portTunnel+"-----vmBindCount--"+vmBindCount);
+		 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,vmBindCount);
+		 logger.debug("<---End for ------portTunnel-->"+portTunnel+"-----vmBindCount--"+vmBindCount);
+	 }
+	 vmBindCount=vmBindCount+1;
+	 logger.debug("======Start for Blueprint======vmBindCount="+vmBindCount);
+	 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,8555);
+	 portMap.put("8555", String.valueOf(vmBindCount));
+	 logger.debug("======portMap======="+portMap);
+	 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBindCount));
+	 logger.debug("======SingletonMapClass.getInstance()===After Setup====="+SingletonMapClass.getInstance());
 	 
-	 
-	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
+	 //sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray);
 	 String containerInstanceBluePrint="BluePrintContainer";
 	 String portNumber="";
@@ -386,8 +407,13 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	     if(dockerInfoList!=null && dockerInfoList.size() > 0){
 	       	dockerList.setDockerList(dockerInfoList);
 	      }
-	     String urlDockerInfo="http://"+floatingIp+":"+bluePrintPort+"/putDockerInfo";  
-		 String urlBluePrint="http://"+floatingIp+":"+bluePrintPort+"/putBlueprint";
+	     logger.debug("====bluePrintPort======: " + bluePrintPort);
+	     String bluePrintTunnel=portMap.get(bluePrintPort);
+	     logger.debug("====bluePrintTunnel======: " + bluePrintTunnel);
+	    
+	     String urlDockerInfo="http://"+stackIp+":"+bluePrintTunnel+"/putDockerInfo";  
+		 String urlBluePrint="http://"+stackIp+":"+bluePrintTunnel+"/putBlueprint";
+		 
 		 logger.debug("====urlDockerInfo======: " + urlDockerInfo);
 		 logger.debug("====urlBluePrint======: " + urlBluePrint);
 		 if(dockerList!=null){
@@ -417,7 +443,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	  }
 	}
 	
-	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray){
+	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray,int hostPort){
 		logger.debug("====Start===sshOpenStackCore=====");
 		 SSHShell sshShell = null;
 		 final String host=hostName; 
@@ -435,9 +461,11 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
                                logger.debug("=======userName====="+userName);
                                logger.debug("=======vmNumber====="+vmNumber);
                                logger.debug("=======floatingIp====="+floatingIp);
-                               sshShell = SSHShell.open(host, 22, userName, bytesArray);
+                               logger.debug("=======hostPort====="+hostPort);
+                               sshShell = SSHShell.open(host, hostPort, userName, bytesArray);
+                              
 
-                               String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":22 10.1.0.100 -g -T -N & \n";
+                               String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":"+hostPort+" 10.1.0.100 -g -T -N & \n";
                                logger.debug("====start regiterVM===========2===================regiterVM===: " + regiterVM);
 
                                       //sshShell = SSHShell.open(host, 2201, userName, bytesArray);
