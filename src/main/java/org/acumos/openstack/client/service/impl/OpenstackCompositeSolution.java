@@ -314,10 +314,11 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray,22);
 	 for(int i=0;i<listSize;i++){
 		 String portTunnel=portArr[i];
+		 int portTunnelInt=Integer.parseInt(portTunnel);
 		 vmBindCount=vmBindCount+1;
 		 portMap.put(portTunnel, String.valueOf(vmBindCount));
 		 logger.debug("<---Start for ------portTunnel-->"+portTunnel+"-----vmBindCount--"+vmBindCount);
-		 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,vmBindCount);
+		 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,portTunnelInt);
 		 logger.debug("<---End for ------portTunnel-->"+portTunnel+"-----vmBindCount--"+vmBindCount);
 	 }
 	 vmBindCount=vmBindCount+1;
