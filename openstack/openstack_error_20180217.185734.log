@@ -1,2 +1,0 @@
-2018-02-17 18:58:31,020 ERROR [o.a.o.c.s.i.OpenstackSimpleSolution] (Thread-9:) Error in OpenStackSimpleSolution===========RESTEASY004655: Unable to invoke request
-2018-02-17 18:58:31,971 ERROR [o.a.o.c.s.i.OpenstackSimpleSolution] (Thread-9:) Error in saving data===========I/O error on POST request for "http://cognita-dev1-vm01-core:8002/ccds/solution/string/revision/string/deploy": cognita-dev1-vm01-core; nested exception is java.net.UnknownHostException: cognita-dev1-vm01-core

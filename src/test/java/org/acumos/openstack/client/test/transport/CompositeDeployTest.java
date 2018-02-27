@@ -19,43 +19,38 @@
  */
 package org.acumos.openstack.client.test.transport;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.acumos.openstack.client.transport.OpenstackDeployBean;
+import org.acumos.openstack.client.transport.CompositeDeployBean;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OpenstackDeployBeanTest {
-	Logger logger = LoggerFactory.getLogger(OpenstackDeployBeanTest.class);
-
+public class CompositeDeployTest {
+	Logger logger = LoggerFactory.getLogger(CompositeDeployTest.class);
 	@Test	
-	public void openstackDeployBeanTestTestparameter(){
-		logger.debug("<-Start ----openstackDeployBeanTestTestparameter------->");
+	public void testCompositeDeployBeanTestparameter(){
+		logger.debug("<-Start ----testCompositeDeployBeanTestparameter------->");
 		try{
-			 OpenstackDeployBean obean=new OpenstackDeployBean();
 			 String vmName="Gold24";
 			 String solutionId="1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1";
 			 String solutionRevisionId="05cac760-cd53-49a3-85f3-df908f14211d";
 			 String userId="7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4";
-			 String imagetag="Adder1:1";
-			
-			 obean.setVmName("Gold24");
-			 obean.setSolutionId("1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1");
-			 obean.setSolutionRevisionId("05cac760-cd53-49a3-85f3-df908f14211d");
-			 obean.setImagetag("Adder1:1");
-			 obean.setUserId("7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4");
-			Assert.assertEquals(vmName, obean.getVmName());
-			Assert.assertEquals(solutionId, obean.getSolutionId());
-			Assert.assertEquals(solutionRevisionId, obean.getSolutionRevisionId());
-			Assert.assertEquals(userId, obean.getUserId());
-			Assert.assertEquals(imagetag, obean.getImagetag());
+			 
+			 CompositeDeployBean cmBean=new CompositeDeployBean();
+			 cmBean.setVmName("Gold24");
+			 cmBean.setSolutionId("1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1");
+			 cmBean.setSolutionRevisionId("05cac760-cd53-49a3-85f3-df908f14211d");
+			 cmBean.setUserId("7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4");
+			 Assert.assertEquals(vmName, cmBean.getVmName());
+			 Assert.assertEquals(solutionId, cmBean.getSolutionId());
+			 Assert.assertEquals(solutionRevisionId, cmBean.getSolutionRevisionId());
+			 Assert.assertEquals(userId, cmBean.getUserId());
 		}catch(Exception ex){
-			   logger.error("Error in openstackDeployBeanTestTestparameter---> "+ex.getMessage()); 
+			   logger.error("Error in testCompositeDeployBeanTestparameter---> "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----openstackDeployBeanTestTestparameter------->");
+		logger.debug("<-End ----testCompositeDeployBeanTestparameter------->");
 	}
+	
+	 
+
 }

@@ -49,9 +49,9 @@ public class SwaggerConfiguration {
 				.apiInfo(apiInfo());
 	}
 
-	private ApiInfo apiInfo() {
+	public ApiInfo apiInfo() {
 		final String version = OpenstackClientApplication.class.getPackage().getImplementationVersion();
-		ApiInfo apiInfo = new ApiInfo("Cognita Azure Client REST API", "Operations for Azure Deployment.", // description
+		ApiInfo apiInfo = new ApiInfo("Acumos Openstack Client REST API", "Operations for Openstack Deployment.", // description
 				version == null ? "version not available" : version, // version
 				"Terms of service", // TOS
 				new Contact("Acumos Team", // name

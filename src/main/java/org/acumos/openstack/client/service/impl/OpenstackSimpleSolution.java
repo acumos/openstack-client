@@ -80,11 +80,17 @@ public class OpenstackSimpleSolution implements Runnable{
 	private String dataSource;
 	private String cmndatasvcuser;
 	private String cmndatasvcpwd;
+	private String proxyIP;
+	private String proxyPort;
+	
+	public OpenstackSimpleSolution(){
+		
+	}
 	
 	public OpenstackSimpleSolution(String flavourName,String  securityGropName,OpenstackDeployBean auth,String endpoint
 			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,
-			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd){
+			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,String proxyIP,String proxyPort){
 		//this.os = os;
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
@@ -144,14 +150,16 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("<--SimpleSolution--dataSource---------->"+dataSource);
 			 logger.debug("<--SimpleSolution--cmndatasvcuser----------->"+cmndatasvcuser);
 			 logger.debug("<--SimpleSolution--cmndatasvcpwd---------->"+cmndatasvcpwd);
-			 
+			 logger.debug("<--SimpleSolution--proxyIP---------->"+proxyIP);
+			 logger.debug("<--SimpleSolution--proxyPort---------->"+proxyPort);
+			 int proxyPortInt=Integer.parseInt(proxyPort);
 			/*os = OSFactory.builderV3().endpoint(endpoint)
 					.credentials(userName, password, Identifier.byName(IdentifierName))
 					.scopeToProject(Identifier.byId(scopeProject)).authenticate();*/
-			 os = OSFactory.builderV3().endpoint("http://10.1.0.100/identity/v3")
-						.credentials("e6euser", "password", Identifier.byName("Default"))
-						.scopeToProject(Identifier.byId("7badda19df524dd58c2fe249fd02e7f6"))
-						.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://10.1.0.6", 3128)))
+			 os = OSFactory.builderV3().endpoint(endpoint)
+						.credentials(userName, password, Identifier.byName(IdentifierName))
+						.scopeToProject(Identifier.byId(scopeProject))
+						.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://"+proxyIP, proxyPortInt)))
 						.authenticate();
 			logger.debug("==============byId Authnetication success===========");
 			
@@ -280,19 +288,19 @@ public class OpenstackSimpleSolution implements Runnable{
 			 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "DP");
 	 logger.debug("====================End Simple Image deployment==================");
 	  }catch(Exception e){
-		  logger.error("Error in OpenStackSimpleSolution===========" + e.getMessage());
-		 /* try{
+		  logger.error("Exception in openstackSimpleSolution===RUN========" +e.getMessage());
+		  try{
 			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
 						 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "FA");  
 		  }catch(Exception ex){
-				logger.error("Error in saving data===========" +ex.getMessage());
-			}*/
-		  e.printStackTrace();
+			  logger.error("Exception in saving data===openstackSimpleSolution=========" +ex.getMessage());
+			}
+		  
 	  }
 	}
 	
 	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray){
-		logger.debug("====Start===sshOpenStackCore=====");
+		logger.debug("====================Start===sshOpenStackCore=============");
 		 SSHShell sshShell = null;
 		 final String host=hostName; 
 		 final String userName=user;
@@ -324,7 +332,7 @@ public class OpenstackSimpleSolution implements Runnable{
                                                       .executeCommand("bash -c ~/.openstackdocker/regiterVM_"+vmNumber+".sh", true, true);
 
                  }catch(Exception e){
-                        e.printStackTrace();
+                	 logger.error("Exception in sshOpenStackCore in Simple solution in new thread---->"+e.getMessage());
                  }finally {
                               if (sshShell != null) {
                                       sshShell.close();
@@ -338,19 +346,19 @@ public class OpenstackSimpleSolution implements Runnable{
                Thread.sleep(60000);
                th.stop();
 
-        logger.debug("====End===sshOpenStackCore=====");      
+             
 		} catch (Exception exception) {
-			logger.debug("Exception ========="+exception.getMessage());
-			logger.debug(exception.getMessage());
+			logger.error("Exception in sshOpenStackCore in Simple solution ---->"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
 				sshShell = null;
 			}
 		}
+	logger.debug("===============End===sshOpenStackCore=================="); 
 	}
-	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray){
-		logger.debug("installDockerOpenstack===Start==");
+	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray)throws Exception{
+		logger.debug("=================installDockerOpenstack==Simple Solution=Start================");
 		SSHShell sshShell = null;
 		try {
 			 //byte[] bytesArray=readBytesFromFile();
@@ -409,30 +417,28 @@ public class OpenstackSimpleSolution implements Runnable{
 			 //sshShell.
 			 logger.debug("SSH====================Cmplete==output="+output);
 		} catch (JSchException jSchException) {
-			logger.error("JSchException========== "+jSchException.getMessage());
-			logger.error(jSchException.getMessage());
+			logger.error("JSchException====in==installDockerOpenstack==== "+jSchException.getMessage());
+			throw new Exception("Exception in installDockerOpenstack"+jSchException.getMessage());
 		} catch (IOException ioException) {
-			logger.error("IOException=========="+ioException.getMessage());
-			logger.error(ioException.getMessage());
+			logger.error("JSchException====in==installDockerOpenstack==== "+ioException.getMessage());
+			throw new Exception("Exception in installDockerOpenstack"+ioException.getMessage());
 		} catch (Exception exception) {
-			logger.error("Exception ========="+exception.getMessage());
-			logger.error(exception.getMessage());
+			logger.error("JSchException====in==installDockerOpenstack==== "+exception.getMessage());
+			throw new Exception("Exception in installDockerOpenstack"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
 				sshShell = null;
 			}
 		}
-		logger.debug("===========installDockerOpenstack===End==");
+		logger.debug("=================installDockerOpenstack==Simple Solution=End================");
 	}
-	public  byte[] readBytesFromFile(String fileName) {
+	public  byte[] readBytesFromFile(String fileName)throws Exception  {
 		logger.debug("=======Start====readBytesFromFile=====");
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
 
         try {
-        	/*Path path = Paths.get("pkey.txt");
-        	byte[] data = Files.readAllBytes(path);*/
         	
             File file = new File(fileName);
             bytesArray = new byte[(int) file.length()];
@@ -446,13 +452,14 @@ public class OpenstackSimpleSolution implements Runnable{
             }*/
 
         } catch (IOException e) {
-            e.printStackTrace();
+        	logger.error("Exception in readBytesFromFile ==== SimpleSolution========="+e.getMessage());
+        	throw new Exception("Exception in ReadBytesFromFile in SimpleSolution"+e.getMessage());
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                	logger.error("Exception in readBytesFromFile Finally==== SimpleSolution========="+e.getMessage());
                 }
             }
 
@@ -463,14 +470,14 @@ public class OpenstackSimpleSolution implements Runnable{
     }
 	
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName, 
-			String registryServerUrl, String username, String password, String repositoryName,int vmNum,byte[] bytesArray) {
+			String registryServerUrl, String username, String password, String repositoryName,int vmNum,byte[] bytesArray)throws Exception {
 		logger.debug("====dockerHostIP======: " + dockerHostIP);
 		logger.debug("====vmUserName======: " + vmUserName);
 		logger.debug("====registryServerUrl======: " + registryServerUrl);
 		logger.debug("====username======: " + username);
 		logger.debug("====password======: " + password);
 		logger.debug("====repositoryName======: " + repositoryName);
-		logger.debug("====================start deploymentImageVM==================");
+		logger.debug("====================start deploymentImageVM======SimpleSolution============");
 		SSHShell sshShell = null;
 		try {
 			//byte[] bytesArray=readBytesFromFile();
@@ -506,21 +513,21 @@ public class OpenstackSimpleSolution implements Runnable{
 			logger.debug("====output==========Start============5==================output3====: " + output3);
 
 		} catch (JSchException jSchException) {
-
-			logger.error("JSchException======" + jSchException.getMessage());
+			logger.error("JSchException====in==deploymentImageVM==== "+jSchException.getMessage());
+			throw new Exception("Exception in deploymentImageVM"+jSchException.getMessage());
 		} catch (IOException ioException) {
-
-			logger.error("IOException======" + ioException.getMessage());
+			logger.error("JSchException====in==deploymentImageVM==== "+ioException.getMessage());
+			throw new Exception("Exception in deploymentImageVM"+ioException.getMessage());
 		} catch (Exception exception) {
-
-			logger.error("Exception======" + exception.getMessage());
+			logger.error("JSchException====in==deploymentImageVM==== "+exception.getMessage());
+			throw new Exception("Exception in deploymentImageVM"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
 				sshShell = null;
 			}
 		}
-		logger.debug("====================End deploymentImageVM==================");
+		logger.debug("====================End deploymentImageVM=======SimpleSolution===========");
 		return "sucess";
 	}
 

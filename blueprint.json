@@ -1,0 +1,1 @@
+{"name":"VSADDMULJAVA","version":"1","input_operation_signatures":[{"operation":"add"}],"nodes":[{"container_name":"NewAdder11","image":"cognita-nexus01:8001/newadder1:1","depends_on":[{"name":"Multiplier1","operation_signature":{"operation":"predict"}}]},{"container_name":"Multiplier1","image":"cognita-nexus01:8001/multiplier:3","depends_on":[]}]}

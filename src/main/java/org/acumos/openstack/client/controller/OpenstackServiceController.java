@@ -87,7 +87,7 @@ public class OpenstackServiceController extends AbstractController {
 		try{
 			jsonOutput.put("Status", "Succeess");
 		}catch(Exception e){
-			e.printStackTrace();
+			
 		}
         return "Hello bbbbbbb!";
     }*/
@@ -95,7 +95,7 @@ public class OpenstackServiceController extends AbstractController {
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_SINGLE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String singleImageOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
-		logger.debug("=======singleImageOpenstackDeployment===Start==============");
+		logger.debug("===Start====singleImageOpenstackDeployment=================");
 		String uidNumStr="";
 		String flavourName="";
 		String securityGropName="";
@@ -115,6 +115,8 @@ public class OpenstackServiceController extends AbstractController {
 		String dataSource="";
 		String cmndatasvcuser="";
 		String cmndatasvcpwd="";
+		String proxyIP="";
+		String proxyPort="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 flavourName=env.getProperty("docker.openstack.flavourName");
@@ -135,6 +137,8 @@ public class OpenstackServiceController extends AbstractController {
 			 dataSource=env.getProperty("cmndatasvc.cmndatasvcendpoinurl");
 			 cmndatasvcuser=env.getProperty("cmndatasvc.cmndatasvcuser");
 			 cmndatasvcpwd=env.getProperty("cmndatasvc.cmndatasvcpwd");
+			 proxyIP=env.getProperty("docker.openstack.proxyIP");
+			 proxyPort=env.getProperty("docker.openstack.proxyPort");
 			 
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
@@ -154,28 +158,29 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----dataSource----------->"+dataSource);
 			 logger.debug("<----cmndatasvcuser----------->"+cmndatasvcuser);
 			 logger.debug("<----cmndatasvcpwd----------->"+cmndatasvcpwd);
+			 logger.debug("<----proxyIP----------------->"+proxyIP);
+			 logger.debug("<----proxyPort--------------->"+proxyPort);
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
 			 jsonOutput.put("Status", uidNumStr);
 			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
-					 vmUserName,dockerUserName,dockerPassword,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpwd);
+					 vmUserName,dockerUserName,dockerPassword,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpwd,proxyIP,proxyPort);
 			 Thread t = new Thread(opSingleSolution);
 	         t.start();
 		 
 		 
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error("Exception in---singleImageOpenstackDeployment------>"+e.getMessage());
 		}
-		//logger.debug("<------start----singleImageOpenstackDeployment------------>");
-		logger.debug("=======singleImageOpenstackDeployment=End first thread==jsonOutput.toString()===="+jsonOutput.toString());
+		logger.debug("===End====singleImageOpenstackDeployment= first thread==jsonOutput.toString()===="+jsonOutput.toString());
 		return jsonOutput.toString();
 	}
 	
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String compositeOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackCompositeDeployBean auth,HttpServletResponse response) throws Exception {
-		logger.debug("=======compositeOpenstackDeployment===Start==============");
+		logger.debug("====Start====compositeOpenstackDeployment================");
 		
 		String uidNumStr="";
 		String flavourName="";
@@ -205,6 +210,10 @@ public class OpenstackServiceController extends AbstractController {
 		String nexusPassword="";
 		String solutionPort="";
 		String Sleeptime="";
+		String proxyIP="";
+		String proxyPort="";
+		String openStackIP="";
+		String bluePrintPortNumber="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -236,6 +245,12 @@ public class OpenstackServiceController extends AbstractController {
 			 nexusPassword=env.getProperty("nexus.password");
 			 solutionPort=env.getProperty("docker.openstack.solutionPort");
 			 Sleeptime=env.getProperty("docker.openstack.Sleeptime");
+			 proxyIP=env.getProperty("docker.openstack.proxyIP");
+			 proxyPort=env.getProperty("docker.openstack.proxyPort");
+			 openStackIP=env.getProperty("docker.openstack.openStackIP");
+			 bluePrintPortNumber=env.getProperty("docker.openstack.bluePrintPortNumber");
+			 
+			 
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
 			 logger.debug("<----endpoint----------->"+endpoint);
@@ -263,6 +278,10 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----nexusPassword----------->"+nexusPassword);
 			 logger.debug("<----solutionPort----------->"+solutionPort);
 			 logger.debug("<----Sleeptime----------->"+Sleeptime);
+			 logger.debug("<----proxyIP----------->"+proxyIP);
+			 logger.debug("<----proxyPort----------->"+proxyPort);
+			 logger.debug("<----openStackIP----------->"+openStackIP);
+			 logger.debug("<----bluePrintPortNumber----------->"+bluePrintPortNumber);
 			 logger.debug("<------SolutionId---------->"+auth.getSolutionId());
 			 logger.debug("<------authObject.getSolutionRevisionId()---------->"+auth.getSolutionRevisionId());
 			 
@@ -290,16 +309,17 @@ public class OpenstackServiceController extends AbstractController {
 			 OpenstackCompositeSolution compositeSolution=new OpenstackCompositeSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
-					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort,Sleeptime);
+					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort,Sleeptime,
+					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 
 		 
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error("Exception in---compositeOpenstackDeployment------>"+e.getMessage());
 		}
 		
-		logger.debug("=======compositeOpenstackDeployment===End first thread==============");
+		logger.debug("====End===compositeOpenstackDeployment=== first thread==============");
 		return jsonOutput.toString();
 	}
 }

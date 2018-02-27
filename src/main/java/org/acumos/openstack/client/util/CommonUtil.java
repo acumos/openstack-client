@@ -196,7 +196,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			logger.debug("------ End getBluePrintNexus-----------------");	
 		return bluePrintStr;	
 	  }
-	  private List<MLPSolutionRevision> getSolutionRevisionsList(String solutionId,String datasource,String userName,String password)throws  Exception{
+	  public List<MLPSolutionRevision> getSolutionRevisionsList(String solutionId,String datasource,String userName,String password)throws  Exception{
 			logger.debug("------- getSolutionRevisions() : Start ----------");
 			List<MLPSolutionRevision> solRevisionsList = null;
 			CommonDataServiceRestClientImpl cmnDataService=getClient(datasource,userName,password);
@@ -205,6 +205,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			return solRevisionsList;
 		}
 	  public LinkedList<String> getSequence(HashMap<String,String> hmap){
+		    logger.debug("------- getSequence() : Start ----------");
 			LinkedList<String> sequenceList=new LinkedList<String>();
 			Iterator itrContainer=hmap.entrySet().iterator();
 	        while(itrContainer.hasNext()){
@@ -213,7 +214,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	        	String containerName=(String)pair.getKey();
 	        	sequenceList.add((String)pair.getValue());
 	        }
-	        logger.debug("======sequenceList=============="+sequenceList);
+	        logger.debug("====== getSequence() : End ============="+sequenceList);
 	        return sequenceList;
 		}
 	  
@@ -234,8 +235,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			    restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
 			   
 			  } catch (Exception e) {
-	            e.printStackTrace();
-	            logger.error("<---------Exception----------->"+e.getMessage());
+				  logger.error("Exception in openstackCompositeSolution===putContainerDetailsJSON========" +e.getMessage());
 			 }
 			logger.debug("<--------End---putContainerDetailsJSON------->");
 		}
@@ -255,8 +255,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			    restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
 			   
 			  } catch (Exception e) {
-	            logger.error("<---------Exception----------->"+e.getMessage());
-	            e.printStackTrace();
+				 logger.error("Exception in openstackCompositeSolution===putBluePrintDetailsJSON========" +e.getMessage());
 			 }
 			logger.debug("<--------End---putBluePrintDetailsJSON------->");
 		}
