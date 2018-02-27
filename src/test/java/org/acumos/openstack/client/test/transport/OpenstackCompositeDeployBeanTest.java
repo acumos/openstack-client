@@ -19,24 +19,20 @@
  */
 package org.acumos.openstack.client.test.transport;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OpenstackDeployBeanTest {
-	Logger logger = LoggerFactory.getLogger(OpenstackDeployBeanTest.class);
-
+public class OpenstackCompositeDeployBeanTest {
+	Logger logger = LoggerFactory.getLogger(OpenstackCompositeDeployBeanTest.class);
 	@Test	
-	public void openstackDeployBeanTestTestparameter(){
-		logger.debug("<-Start ----openstackDeployBeanTestTestparameter------->");
+	public void openstackCompositeDeployBeanTestTestparameter(){
+		logger.debug("<-Start ----openstackCompositeDeployBeanTestTestparameter------->");
 		try{
-			 OpenstackDeployBean obean=new OpenstackDeployBean();
+			 OpenstackCompositeDeployBean obean=new OpenstackCompositeDeployBean();
 			 String vmName="Gold24";
 			 String solutionId="1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1";
 			 String solutionRevisionId="05cac760-cd53-49a3-85f3-df908f14211d";
@@ -46,16 +42,18 @@ public class OpenstackDeployBeanTest {
 			 obean.setVmName("Gold24");
 			 obean.setSolutionId("1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1");
 			 obean.setSolutionRevisionId("05cac760-cd53-49a3-85f3-df908f14211d");
-			 obean.setImagetag("Adder1:1");
+			 //obean.setImagetag("Adder1:1");
 			 obean.setUserId("7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4");
 			Assert.assertEquals(vmName, obean.getVmName());
 			Assert.assertEquals(solutionId, obean.getSolutionId());
 			Assert.assertEquals(solutionRevisionId, obean.getSolutionRevisionId());
 			Assert.assertEquals(userId, obean.getUserId());
-			Assert.assertEquals(imagetag, obean.getImagetag());
 		}catch(Exception ex){
-			   logger.error("Error in openstackDeployBeanTestTestparameter---> "+ex.getMessage()); 
+			   logger.error("Error in openstackCompositeDeployBeanTestTestparameter---> "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----openstackDeployBeanTestTestparameter------->");
+		logger.debug("<-End ----openstackCompositeDeployBeanTestTestparameter------->");
+		//Assert.assertEquals(imagetag, obean.getImagetag());
+		
 	}
+
 }

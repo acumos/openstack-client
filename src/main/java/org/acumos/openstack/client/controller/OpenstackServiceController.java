@@ -115,6 +115,9 @@ public class OpenstackServiceController extends AbstractController {
 		String dataSource="";
 		String cmndatasvcuser="";
 		String cmndatasvcpwd="";
+		String proxyIP="";
+		String proxyPort="";
+		String openStackIP="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 flavourName=env.getProperty("docker.openstack.flavourName");
@@ -135,6 +138,9 @@ public class OpenstackServiceController extends AbstractController {
 			 dataSource=env.getProperty("cmndatasvc.cmndatasvcendpoinurl");
 			 cmndatasvcuser=env.getProperty("cmndatasvc.cmndatasvcuser");
 			 cmndatasvcpwd=env.getProperty("cmndatasvc.cmndatasvcpwd");
+			 proxyIP=env.getProperty("docker.openstack.proxyIP");
+			 proxyPort=env.getProperty("docker.openstack.proxyPort");
+			 openStackIP=env.getProperty("docker.openstack.openStackIP");
 			 
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
@@ -154,12 +160,16 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----dataSource----------->"+dataSource);
 			 logger.debug("<----cmndatasvcuser----------->"+cmndatasvcuser);
 			 logger.debug("<----cmndatasvcpwd----------->"+cmndatasvcpwd);
+			 logger.debug("<----proxyIP----------------->"+proxyIP);
+			 logger.debug("<----proxyPort--------------->"+proxyPort);
+			 logger.debug("<----openStackIP--------------->"+openStackIP);
+			 
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
 			 jsonOutput.put("Status", uidNumStr);
 			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
-					 vmUserName,dockerUserName,dockerPassword,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpwd);
+					 vmUserName,dockerUserName,dockerPassword,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpwd,proxyIP,proxyPort,openStackIP);
 			 Thread t = new Thread(opSingleSolution);
 	         t.start();
 		 
@@ -205,6 +215,10 @@ public class OpenstackServiceController extends AbstractController {
 		String nexusPassword="";
 		String solutionPort="";
 		String Sleeptime="";
+		String proxyIP="";
+		String proxyPort="";
+		String openStackIP="";
+		String bluePrintPortNumber="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -236,6 +250,11 @@ public class OpenstackServiceController extends AbstractController {
 			 nexusPassword=env.getProperty("nexus.password");
 			 solutionPort=env.getProperty("docker.openstack.solutionPort");
 			 Sleeptime=env.getProperty("docker.openstack.Sleeptime");
+			 proxyIP=env.getProperty("docker.openstack.proxyIP");
+			 proxyPort=env.getProperty("docker.openstack.proxyPort");
+			 openStackIP=env.getProperty("docker.openstack.openStackIP");
+			 bluePrintPortNumber=env.getProperty("docker.openstack.bluePrintPortNumber");
+			 
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
 			 logger.debug("<----endpoint----------->"+endpoint);
@@ -264,6 +283,10 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----solutionPort----------->"+solutionPort);
 			 logger.debug("<----Sleeptime----------->"+Sleeptime);
 			 logger.debug("<------SolutionId---------->"+auth.getSolutionId());
+			 logger.debug("<----proxyIP--------------->"+proxyIP);
+			 logger.debug("<----proxyPort------------->"+proxyPort);
+			 logger.debug("<----openStackIP----------->"+openStackIP);
+			 logger.debug("<----bluePrintPortNumber----------->"+bluePrintPortNumber);
 			 logger.debug("<------authObject.getSolutionRevisionId()---------->"+auth.getSolutionRevisionId());
 			 
 			 
@@ -290,7 +313,8 @@ public class OpenstackServiceController extends AbstractController {
 			 OpenstackCompositeSolution compositeSolution=new OpenstackCompositeSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
-					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort,Sleeptime);
+					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort,Sleeptime,
+					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 

@@ -49,7 +49,7 @@ public class SwaggerConfiguration {
 				.apiInfo(apiInfo());
 	}
 
-	private ApiInfo apiInfo() {
+	public ApiInfo apiInfo() {
 		final String version = OpenstackClientApplication.class.getPackage().getImplementationVersion();
 		ApiInfo apiInfo = new ApiInfo("Cognita Azure Client REST API", "Operations for Azure Deployment.", // description
 				version == null ? "version not available" : version, // version

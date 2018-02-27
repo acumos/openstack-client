@@ -196,7 +196,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			logger.debug("------ End getBluePrintNexus-----------------");	
 		return bluePrintStr;	
 	  }
-	  private List<MLPSolutionRevision> getSolutionRevisionsList(String solutionId,String datasource,String userName,String password)throws  Exception{
+	  public List<MLPSolutionRevision> getSolutionRevisionsList(String solutionId,String datasource,String userName,String password)throws  Exception{
 			logger.debug("------- getSolutionRevisions() : Start ----------");
 			List<MLPSolutionRevision> solRevisionsList = null;
 			CommonDataServiceRestClientImpl cmnDataService=getClient(datasource,userName,password);

@@ -80,11 +80,18 @@ public class OpenstackSimpleSolution implements Runnable{
 	private String dataSource;
 	private String cmndatasvcuser;
 	private String cmndatasvcpwd;
+	private String proxyIP;
+	private String proxyPort;
+	private String openStackIP;
+	
+	public OpenstackSimpleSolution(){
+		
+	}
 	
 	public OpenstackSimpleSolution(String flavourName,String  securityGropName,OpenstackDeployBean auth,String endpoint
 			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,
-			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd){
+			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,String proxyIP,String proxyPort,String openStackIP){
 		//this.os = os;
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
@@ -107,6 +114,9 @@ public class OpenstackSimpleSolution implements Runnable{
 		this.dataSource = dataSource;
 		this.cmndatasvcuser = cmndatasvcuser;
 		this.cmndatasvcpwd = cmndatasvcpwd;
+		this.proxyIP=proxyIP;
+		this.proxyPort=proxyPort;
+		this.openStackIP=openStackIP;
 	}
 	
 	public void run() {
@@ -144,14 +154,20 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("<--SimpleSolution--dataSource---------->"+dataSource);
 			 logger.debug("<--SimpleSolution--cmndatasvcuser----------->"+cmndatasvcuser);
 			 logger.debug("<--SimpleSolution--cmndatasvcpwd---------->"+cmndatasvcpwd);
-			 
+			 logger.debug("<--SimpleSolution--proxyIP---------->"+proxyIP);
+			 logger.debug("<--SimpleSolution--proxyPort---------->"+proxyPort);
+			 logger.debug("<--SimpleSolution--openStackIP---------->"+openStackIP);
+			 if(proxyPort==null){
+				 proxyPort="3128"; 
+			 }
+			 int proxyPortInt=Integer.parseInt(proxyPort);
 			/*os = OSFactory.builderV3().endpoint(endpoint)
 					.credentials(userName, password, Identifier.byName(IdentifierName))
 					.scopeToProject(Identifier.byId(scopeProject)).authenticate();*/
-			 os = OSFactory.builderV3().endpoint("http://10.1.0.100/identity/v3")
-						.credentials("e6euser", "password", Identifier.byName("Default"))
-						.scopeToProject(Identifier.byId("7badda19df524dd58c2fe249fd02e7f6"))
-						.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://10.1.0.6", 3128)))
+			 os = OSFactory.builderV3().endpoint(endpoint)
+						.credentials(userName, password, Identifier.byName(IdentifierName))
+						.scopeToProject(Identifier.byId(scopeProject))
+						.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://"+proxyIP, proxyPortInt)))
 						.authenticate();
 			logger.debug("==============byId Authnetication success===========");
 			
@@ -310,9 +326,10 @@ public class OpenstackSimpleSolution implements Runnable{
                                logger.debug("=======vmNumber====="+vmNumber);
                                logger.debug("=======floatingIp====="+floatingIp);
                                logger.debug("=======bytesArray====="+bytesArray);
+                               logger.debug("=======openStackIP====="+openStackIP);
                                sshShell = SSHShell.open(host, 22, userName, bytesArray);
 
-                               String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":22 10.1.0.100 -g -T -N & \n";
+                               String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":22 "+openStackIP+" -g -T -N & \n";
                                logger.debug("====start regiterVM===========2===================regiterVM===: " + regiterVM);
 
                                       //sshShell = SSHShell.open(host, 2201, userName, bytesArray);

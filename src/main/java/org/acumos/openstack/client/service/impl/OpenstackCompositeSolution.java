@@ -94,14 +94,22 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String uidNumStr;
 	private String solutionPort;
 	private String Sleeptime;
+	private String proxyIP;
+	private String proxyPort;
+	private String openStackIP;
+	private String bluePrintPortNumber;
 	
+	public OpenstackCompositeSolution(){
+		
+	}
 	
 	public OpenstackCompositeSolution(String flavourName,String  securityGropName,OpenstackCompositeDeployBean auth,String endpoint
 			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,String bluePrintImage,
 			 String bluePrintName,String bluePrintUserName,String bluePrintPassword,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,
 			 String nexusUrl,String nexusUserName,String nexusPassword,ArrayList<String> list,HashMap<String,String> imageMap,LinkedList<String> sequenceList,
-			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime){
+			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime,
+			 String proxyIP,String proxyPort,String openStackIP,String bluePrintPortNumber){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
@@ -136,6 +144,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.uidNumStr=uidNumStr;
 			this.solutionPort=solutionPort;
 			this.Sleeptime=Sleeptime;
+			this.proxyIP=proxyIP;
+			this.proxyPort=proxyPort;
+			this.openStackIP=openStackIP;
+			this.bluePrintPortNumber=bluePrintPortNumber;
 	}
 	
 	
@@ -151,7 +163,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		OSClientV3 os=null;
 		String repositaryName="";
 		String repositryImageName="";
-		String solutionPort="";
+		//String solutionPort="";
 		String bluePrintPort="";
 		List<OpanStackContainerBean> openStackContainerBeanList=new ArrayList<OpanStackContainerBean>();
 		CommonUtil commonUtil=new CommonUtil();
@@ -176,17 +188,23 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("<--CompositeSolution--dockerPassword----------->"+dockerPassword);
 			 logger.debug("<--CompositeSolution--solutionPort----------->"+solutionPort);
 			 logger.debug("<--CompositeSolution--Sleeptime----------->"+Sleeptime);
+			 logger.debug("<--CompositeSolution--proxyIP----------->"+proxyIP);
+			 logger.debug("<--CompositeSolution--proxyPort----------->"+proxyPort);
+			 logger.debug("<--CompositeSolution--openStackIP----------->"+openStackIP);
+			 logger.debug("<--CompositeSolution--bluePrintPortNumber----------->"+bluePrintPortNumber);
 			 logger.debug("<--CompositeSolution--SoulutionId----------->"+auth.getSolutionId());
 			 logger.debug("<--CompositeSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
-			 solutionPort="8336";
-			 stackIp="10.1.0.100";
+			 //solutionPort="8336";
+			 //stackIp="10.1.0.100";
+			 int proxyPortInt=Integer.parseInt(proxyPort);
+			 int bluePrintPorInt=Integer.parseInt(bluePrintPortNumber);
 			 int listSize=list.size();
 			 //logger.debug("<--CompositeSolution--getImagetag()----------->"+auth.getImagetag());
 			 String portArr[]={"8556","8557","8558","8559","8560","8561","8562","8563","8564","8565"};
 			os = OSFactory.builderV3().endpoint(endpoint)
 					.credentials(userName, password, Identifier.byName(IdentifierName))
 					.scopeToProject(Identifier.byId(scopeProject))
-					.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://10.1.0.6", 3128)))
+					.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://"+proxyIP, proxyPortInt)))
 					.authenticate();
 			logger.debug("byId Authnetication success");
 			sleepTimeInt=Integer.parseInt(Sleeptime);
@@ -324,8 +342,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 }
 	 vmBindCount=vmBindCount+1;
 	 logger.debug("======Start for Blueprint======vmBindCount="+vmBindCount);
-	 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,8555);
-	 portMap.put("8555", String.valueOf(vmBindCount));
+	 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,bluePrintPorInt);
+	 portMap.put(bluePrintPortNumber, String.valueOf(vmBindCount));
 	 logger.debug("======portMap======="+portMap);
 	 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBindCount));
 	 logger.debug("======SingletonMapClass.getInstance()===After Setup====="+SingletonMapClass.getInstance());
@@ -368,7 +386,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		            		repositryImageName=commonUtil.getRepositryImageName(imageNameVal);
 		            		logger.debug("==repositaryName==="+repositaryName+"======repositryImageName========"+repositryImageName);
 	 		            	if(containerInstanceBluePrint!=null && containerInstanceBluePrint.equalsIgnoreCase(finalContainerName)){
-	 		            		portNumber="8555";
+	 		            		portNumber=bluePrintPortNumber;
 	 		            		bluePrintPort=portNumber;
 	 		            		portNumberString=portNumber+":"+portNumber;
 	 		            		logger.debug("<----imageNameVal--------->"+imageNameVal);
@@ -415,8 +433,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	     String bluePrintTunnel=portMap.get(bluePrintPort);
 	     logger.debug("====bluePrintTunnel======: " + bluePrintTunnel);
 	    
-	     String urlDockerInfo="http://"+stackIp+":"+bluePrintTunnel+"/putDockerInfo";  
-		 String urlBluePrint="http://"+stackIp+":"+bluePrintTunnel+"/putBlueprint";
+	     String urlDockerInfo="http://"+openStackIP+":"+bluePrintTunnel+"/putDockerInfo";  
+		 String urlBluePrint="http://"+openStackIP+":"+bluePrintTunnel+"/putBlueprint";
 		 logger.debug("====urlDockerInfo======: " + urlDockerInfo);
 		 Thread.sleep(2*sleepTimeInt);
 		 logger.debug("====urlBluePrint======: " + urlBluePrint);
@@ -467,9 +485,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
                                logger.debug("=======vmNumber====="+vmNumber);
                                logger.debug("=======floatingIp====="+floatingIp);
                                logger.debug("=======hostPort====="+hostPort);
+                               logger.debug("=======openStackIP====="+openStackIP);
                                sshShell = SSHShell.open(host, 22, userName, bytesArray);
 
-                               String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":"+hostPort+" 10.1.0.100 -g -T -N & \n";
+                               String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":"+hostPort+" "+openStackIP+" -g -T -N & \n";
                                logger.debug("====start regiterVM===========2===================regiterVM===: " + regiterVM);
 
                                       //sshShell = SSHShell.open(host, 2201, userName, bytesArray);
