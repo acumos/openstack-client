@@ -175,7 +175,7 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		 
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error("Exception in---singleImageOpenstackDeployment------>"+e.getMessage());
 		}
 		//logger.debug("<------start----singleImageOpenstackDeployment------------>");
 		logger.debug("=======singleImageOpenstackDeployment=End first thread==jsonOutput.toString()===="+jsonOutput.toString());
@@ -320,7 +320,7 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		 
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error("Exception in---compositeOpenstackDeployment------>"+e.getMessage());
 		}
 		
 		logger.debug("=======compositeOpenstackDeployment===End first thread==============");

@@ -152,6 +152,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	
 	
 	public void run() {
+		logger.debug("<==================Start=RUN==CompositeSolution========================>");
 		String serverId="";
 		String flavourId="";
 		String securityGropId="";
@@ -454,20 +455,21 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
       		  
         }
 	  }catch(Exception e){
-		  logger.error("Error in openstackSolution===========" +e.getMessage());
+		  logger.error("Exception in openstackCompositeSolution===RUN========" +e.getMessage());
 		  try{
 			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpwd,openStackContainerBeanList,auth.getSolutionId(),
 	  					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"FA");
 				
 			}catch(Exception ex){
-				logger.error("Error in saving data===========" +ex.getMessage());
+				logger.error("Exception in saving data===openstackCompositeSolution=========" +ex.getMessage());
 			}
-		  e.printStackTrace();
+		  
 	  }
+	 logger.debug("<==================End=RUN==CompositeSolution========================>");	
 	}
 	
 	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray,int hostPort){
-		logger.debug("====Start===sshOpenStackCore=====");
+		logger.debug("<=================Start===sshOpenStackCore=====================>");
 		 SSHShell sshShell = null;
 		 final String host=hostName; 
 		 final String userName=user;
@@ -500,7 +502,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
                                                       .executeCommand("bash -c ~/.openstackdocker/regiterVM_"+vmNumber+".sh", true, true);
 
                  }catch(Exception e){
-                        e.printStackTrace();
+                	 logger.error("Exception in sshOpenStackCore in composite solution in new thread---->"+e.getMessage());
                  }finally {
                       if (sshShell != null) {
                               sshShell.close();
@@ -514,19 +516,20 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
                Thread.sleep(60000);
                th.stop();
 
-        logger.debug("====End===sshOpenStackCore=====");      
-		} catch (Exception exception) {
-			logger.debug("Exception ========="+exception.getMessage());
-			logger.debug(exception.getMessage());
+              
+		} catch (Exception ex) {
+			logger.error("Exception in sshOpenStackCore in composite solution ---->"+ex.getMessage());
+			
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
 				sshShell = null;
 			}
 		}
+		logger.debug("====================End===sshOpenStackCore===============================");
 	}
-	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray){
-		logger.debug("installDockerOpenstack===Start==");
+	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray)throws Exception{
+		logger.debug("=============installDockerOpenstack===Start=============");
 		SSHShell sshShell = null;
 		try {
 			 //byte[] bytesArray=readBytesFromFile();
@@ -585,30 +588,28 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 //sshShell.
 			 logger.debug("SSH====================Cmplete==output="+output);
 		} catch (JSchException jSchException) {
-			logger.debug("JSchException========== "+jSchException.getMessage());
-			logger.debug(jSchException.getMessage());
+			logger.error("JSchException====in==installDockerOpenstack==== "+jSchException.getMessage());
+			throw new Exception("Exception in installDockerOpenstack"+jSchException.getMessage());
 		} catch (IOException ioException) {
-			logger.debug("IOException=========="+ioException.getMessage());
-			logger.debug(ioException.getMessage());
+			logger.error("IOException====in==installDockerOpenstack======"+ioException.getMessage());
+			throw new Exception("Exception in installDockerOpenstack"+ioException.getMessage());
 		} catch (Exception exception) {
-			logger.debug("Exception ========="+exception.getMessage());
-			logger.debug(exception.getMessage());
+			logger.error("Exception ====in==installDockerOpenstack====="+exception.getMessage());
+			throw new Exception("Exception in installDockerOpenstack"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
 				sshShell = null;
 			}
 		}
-		logger.debug("===========installDockerOpenstack===End==");
+		logger.debug("===========installDockerOpenstack===End=======================");
 	}
-	public  byte[] readBytesFromFile(String fileName) {
+	public  byte[] readBytesFromFile(String fileName)throws Exception {
 		logger.debug("=======Start====readBytesFromFile=====");
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
 
         try {
-        	/*Path path = Paths.get("pkey.txt");
-        	byte[] data = Files.readAllBytes(path);*/
         	
             File file = new File(fileName);
             bytesArray = new byte[(int) file.length()];
@@ -622,13 +623,14 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
             }*/
 
         } catch (IOException e) {
-            e.printStackTrace();
+        	logger.error("Exception in readBytesFromFile ==== CompositeSolution========="+e.getMessage());
+        	throw new Exception("Exception in ReadBytesFromFile CompositeSolution"+e.getMessage());
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                	logger.error("Exception in readBytesFromFile Finally==== CompositeSolution========="+e.getMessage());
                 }
             }
 
@@ -639,7 +641,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
     }
 	
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName,String registryServerUrl, String username, String password, 
-			 String repositoryName,int vmNum,byte[] bytesArray,String finalContainerName,String portNumberString,int count,int sleepTime) {
+			 String repositoryName,int vmNum,byte[] bytesArray,String finalContainerName,String portNumberString,int count,int sleepTime)throws Exception {
 		logger.debug("====dockerHostIP======: " + dockerHostIP);
 		logger.debug("====vmUserName======: " + vmUserName);
 		logger.debug("====registryServerUrl======: " + registryServerUrl);
@@ -650,7 +652,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		logger.debug("====portNumberString======: " + portNumberString);
 		logger.debug("====vmNum======: " + vmNum);
 		logger.debug("====count======: " + count);
-		logger.debug("====================start deploymentImageVM==================");
+		logger.debug("====================start deploymentImageVM=======CompositeSolution===========");
 		SSHShell sshShell = null;
 		try {
 			//byte[] bytesArray=readBytesFromFile();
@@ -689,21 +691,21 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			Thread.sleep(30000);
 			
 		} catch (JSchException jSchException) {
-
-			logger.error("JSchException======" + jSchException.getMessage());
+			logger.error("JSchException====in==deploymentImageVM==== "+jSchException.getMessage());
+			throw new Exception("Exception in deploymentImageVM"+jSchException.getMessage());
 		} catch (IOException ioException) {
-
-			logger.error("IOException======" + ioException.getMessage());
+			logger.error("JSchException====in==deploymentImageVM==== "+ioException.getMessage());
+			throw new Exception("Exception in deploymentImageVM"+ioException.getMessage());
 		} catch (Exception exception) {
-
-			logger.error("Exception======" + exception.getMessage());
+			logger.error("JSchException====in==deploymentImageVM==== "+exception.getMessage());
+			throw new Exception("Exception in deploymentImageVM"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
 				sshShell = null;
 			}
 		}
-		logger.debug("====================End deploymentImageVM==================");
+		logger.debug("====================End deploymentImageVM=======CompositeSolution===========");
 		return "sucess";
 	}
 

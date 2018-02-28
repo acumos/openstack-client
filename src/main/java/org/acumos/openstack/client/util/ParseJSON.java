@@ -87,8 +87,8 @@ public class ParseJSON {
 	        }
          }
         }catch(Exception e){
-        	log.error("<-In Exception-contentString--parseJsonFile-->"+e.getMessage());
-    	    throw new Exception(e.getMessage());
+        	log.error("Exception-contentString--parseJsonFile-->"+e.getMessage());
+    	    throw new Exception("Exception in parseJsonFile"+e.getMessage());
        }
 		log.debug("<----------End parseJsonFile in ParseJSON---------------------imageMap---->"+imageMap);
 		return imageMap;	
@@ -108,7 +108,7 @@ public class ParseJSON {
 	}
 	
 	public  Blueprint jsonFileToObject()throws  Exception{
-		//log.debug("<----------Start jsonFileToObject in --------------------------->");
+		log.debug("<----------Start jsonFileToObject -----ParseJSON---------------------->");
 		ArrayList<String> list=new ArrayList<String>();	
 		Blueprint blueprint=new Blueprint();
 		ObjectMapper mapper = new ObjectMapper();
@@ -204,18 +204,17 @@ public class ParseJSON {
 	         
         }
         blueprint.setNodes(nodeList);
-        log.debug("blueprint==="+ mapper.writeValueAsString(blueprint)+"===="+blueprint.toString());
+        log.debug("blueprint---->"+ mapper.writeValueAsString(blueprint)+"----"+blueprint.toString());
         //testDumpWriter(data);
 		}catch(Exception e){
-			log.error("<-In Exception-contentString--jsonFileToObject-->"+e.getMessage());
-			throw new Exception(e.getMessage());
-    	   //e.printStackTrace();
+			log.error("Exception-contentString--jsonFileToObject-->"+e.getMessage());
+			throw new Exception("Exception in jsonFileToObject "+e.getMessage());
        }
-		//log.debug("<----------End jsonFileToObject in ParseJSON---------------------list---->"+list);
+		log.debug("<----------End jsonFileToObject in ParseJSON---------------------list---->"+list);
 		return blueprint;	
 	}
 	public  ArrayList<Component> jsonArrayParseObject(Object obj){
-		
+		log.debug("<----------Start jsonArrayParseObject-----ParseJSON--------------------->");
 		JSONArray jsonArr = (JSONArray) obj;
 		Iterator itr = jsonArr.iterator();
 		ArrayList<Component> listComponent=new ArrayList<Component>();
@@ -245,11 +244,12 @@ public class ParseJSON {
 	            }
 	            listComponent.add(component); 
          }
+	  log.debug("<----------End jsonArrayParseObject-----ParseJSON--------------------->");	 
 	  return listComponent;	 
 	}
 	
 public LinkedList<String> getSequenceFromJSON()throws  Exception{
-		
+	log.debug("<----------Start getSequenceFromJSON-----ParseJSON--------------------->");
 		String contentString="";
 		HashMap<String,String> imageMap=new HashMap<String,String>();
 		ArrayList<String> list=new ArrayList<String>();	
@@ -284,7 +284,7 @@ public LinkedList<String> getSequenceFromJSON()throws  Exception{
 	                	containerName=val;
 	                	contName=val;
 	                }else{
-	                	log.debug("-bbbbbkey->"+pair.getKey() );
+	                	log.debug("-Key-------------->"+pair.getKey() );
 	                }
 	                if(key!=null && key.equalsIgnoreCase("image")){
 	                	imageName=val;
@@ -319,15 +319,15 @@ public LinkedList<String> getSequenceFromJSON()throws  Exception{
         log.debug("=======Print=======================linkedList==========="+linkedList);
         
         }catch(Exception e){
-        	//log.error("<-In Exception-contentString--parseJsonFile-->"+e.getMessage());
-        	e.printStackTrace();
-    	    throw new Exception(e.getMessage());
+        	log.error("Exception-getSequenceFromJSON--parseJsonFile-->"+e.getMessage());
+    	    throw new Exception("Exception in getSequenceFromJSON"+e.getMessage());
        }
-		//log.debug("<----------End parseJsonFile in ParseJSON---------------------imageMap---->"+imageMap);
+		log.debug("<----------Start getSequenceFromJSON-----ParseJSON-----------------linkedList---->"+linkedList);
 		return linkedList;	
 	}
 
 public  void sequenceJsonParse(Object obj,NodeTree<String> newNode,NodeTree<String> rootNode){
+	log.debug("<----------Start sequenceJsonParse-----ParseJSON--------------------->");
 	JSONArray jsonArr = (JSONArray) obj;
 	Iterator itr = jsonArr.iterator();
 	Iterator<Map.Entry> itr1=null;
@@ -335,7 +335,7 @@ public  void sequenceJsonParse(Object obj,NodeTree<String> newNode,NodeTree<Stri
 		 itr1 = ((Map) itr.next()).entrySet().iterator();
             while (itr1.hasNext()) {
                 Map.Entry pair = itr1.next();
-                log.debug("--iiii>"+pair.getKey() + " : " + pair.getValue());
+                log.debug("--key------- >"+pair.getKey() + " : " + pair.getValue());
                 if(pair.getKey() !=null && pair.getKey().equals("name") && pair.getValue()!=null){
                 	String data=String.valueOf(pair.getValue());
                 	NodeTree<String> subNode=new NodeTree<String>(data);
@@ -358,12 +358,14 @@ public  void sequenceJsonParse(Object obj,NodeTree<String> newNode,NodeTree<Stri
      	            }
                 	//newNode.addChild(new NodeTree<String>(data));
                 }
-                log.debug("ccccc-->"+pair.getKey() + " : " + pair.getValue());
+                log.debug("Key value------>"+pair.getKey() + " : " + pair.getValue());
             }
      }
+	 log.debug("<----------End sequenceJsonParse-----ParseJSON--------------------->");
 }
 
 public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
+	log.debug("<----------Start findDataInTree-----ParseJSON--------------------->");
 	NodeTree<String> ss=null;
 	 if(node.getData().equals(searchQuery)) {
 		 log.debug("========node.getData()========="+node.getData());
@@ -381,6 +383,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 		 
 	    
 	 }
+	 log.debug("<----------End findDataInTree-----ParseJSON--------------------->"); 
 	return ss; 
 }
  public  <T> void printTree(NodeTree<T> node, String appender,LinkedList<String> linkedList) {
@@ -456,7 +459,7 @@ public static void main(String args[]){
 		ParseJSON p=new ParseJSON();
 		
 		}catch(Exception e){
-			e.printStackTrace();
+			
 		}
 	}*/
 	
