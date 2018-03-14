@@ -33,7 +33,11 @@ import expect4j.Expect4j;
 import expect4j.ExpectState;
 import expect4j.matches.Match;
 import expect4j.matches.RegExpMatch;
+
+import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
 import org.apache.oro.text.regex.MalformedPatternException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,6 +51,7 @@ import java.util.List;
  * Utility class to run commands on Linux VM via SSH.
  */
 public final class SSHShell {
+	Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private final Session session;
 	private final ChannelShell channel;
 	private final Expect4j expect;
@@ -104,6 +109,7 @@ public final class SSHShell {
 	 * @throws IOException
 	 */
 	private SSHShell(String host, int port, String userName, byte[] sshPrivateKey) throws JSchException, IOException {
+		logger.debug("<-start ssh--------->");
 		Closure expectClosure = getExpectClosure();
 		for (String linuxPromptPattern : new String[] { "\\>", "#", "~#", "~\\$" }) {
 			try {
@@ -114,14 +120,21 @@ public final class SSHShell {
 			}
 		}
 		JSch jsch = new JSch();
+		logger.debug("<-user.home-------->"+System.getProperty("user.home"));
 		jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
+		logger.debug("<- SSHShell-1------->");
 		jsch.addIdentity(host, sshPrivateKey, (byte[]) null, (byte[]) null);
+		logger.debug("<- SSHShell-2------->");
 		this.session = jsch.getSession(userName, host, port);
+		logger.debug("<- SSHShell-3------->");
 		this.session.setConfig("StrictHostKeyChecking", "no");
 		this.session.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
+		logger.debug("<- SSHShell-4------>");
 		session.connect(60000);
 		this.channel = (ChannelShell) session.openChannel("shell");
+		logger.debug("<- SSHShell-5------->");
 		this.expect = new Expect4j(channel.getInputStream(), channel.getOutputStream());
+		logger.debug("<- SSHShell-6------->");
 		channel.connect();
 	}
 
