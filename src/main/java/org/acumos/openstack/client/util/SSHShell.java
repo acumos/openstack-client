@@ -123,7 +123,7 @@ public final class SSHShell {
 		logger.debug("<-user.home-------->"+System.getProperty("user.home"));
 		jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
 		logger.debug("<- SSHShell-1------->");
-		jsch.addIdentity(host, sshPrivateKey, (byte[]) null, (byte[]) null);
+		jsch.addIdentity(host, (byte[]) null, (byte[]) null, (byte[]) null);
 		logger.debug("<- SSHShell-2------->");
 		this.session = jsch.getSession(userName, host, port);
 		logger.debug("<- SSHShell-3------->");
