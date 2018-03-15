@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.acumos.openstack.client.api.APINames;
 import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
 import org.acumos.openstack.client.service.impl.OpenstackSimpleSolution;
+import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.acumos.openstack.client.util.Blueprint;
@@ -219,6 +220,11 @@ public class OpenstackServiceController extends AbstractController {
 		String proxyPort="";
 		String openStackIP="";
 		String bluePrintPortNumber="";
+		String probePrintImage="";
+		String probePrintName="";
+		String probUser="";
+		String probePass="";
+		String jsonFileName="blueprint.json";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -254,6 +260,17 @@ public class OpenstackServiceController extends AbstractController {
 			 proxyPort=env.getProperty("docker.openstack.proxyPort");
 			 openStackIP=env.getProperty("docker.openstack.openStackIP");
 			 bluePrintPortNumber=env.getProperty("docker.openstack.bluePrintPortNumber");
+			 
+			//probe
+			probePrintImage=env.getProperty("probe.ImageName");
+			probePrintName=env.getProperty("probe.name");
+			probUser=env.getProperty("probe.username");
+			probePass=env.getProperty("probe.password");
+			
+			logger.debug("<------probePrintImage---------->"+probePrintImage);
+			logger.debug("<------probePrintName---------->"+probePrintName);
+			logger.debug("<------probUser---------->"+probUser);
+			logger.debug("<------probePass---------->"+probePass);
 			 
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
@@ -294,12 +311,44 @@ public class OpenstackServiceController extends AbstractController {
 					 cmndatasvcuser,cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword);
 			 logger.debug("<------bluePrintStr---------->"+bluePrintStr);
 			 
-			 
-			 Blueprint bluePrint=parseJson.jsonFileToObject();
+			    boolean probeIndicator=parseJson.checkProbeIndicator(jsonFileName);
+				Blueprint bluePrintProbe=null;
+				HashMap<String,String> imageMap=null;
+				HashMap<String,DeploymentBean> nodeTypeContainerMap=null;
+				ArrayList<String> list=null;
+				LinkedList<String> sequenceList=null;
+				logger.debug("<------probeIndicator---------->"+probeIndicator);
+				if(probeIndicator){
+					//-------------- New Probe Start ------------------- ***
+					//For new blueprint.json
+					 bluePrintProbe =parseJson.jsonFileToObjectProbe(jsonFileName);
+					//how many images
+					imageMap=parseJson.parseJsonFileProbe(jsonFileName);
+					//Node Type and container Name in nodes
+					nodeTypeContainerMap=parseJson.getNodeTypeContainerMap(jsonFileName);
+					// images list
+					list=commonUtil.iterateImageMap(imageMap);
+					
+					//sequence
+					sequenceList=parseJson.getSequenceFromJSONProbe(jsonFileName);
+				}else{
+					//old code 
+					bluePrintProbe=parseJson.jsonFileToObject(jsonFileName);
+					imageMap=parseJson.parseJsonFile(jsonFileName);
+					list=commonUtil.iterateImageMap(imageMap);
+					sequenceList=parseJson.getSequenceFromJSON(jsonFileName);
+				}
+			 /*Blueprint bluePrint=parseJson.jsonFileToObject();
 		 	 HashMap<String,String> imageMap=parseJson.parseJsonFile();
 			 ArrayList<String> list=commonUtil.iterateImageMap(imageMap);
-			 LinkedList<String> sequenceList=parseJson.getSequenceFromJSON();
-			
+			 LinkedList<String> sequenceList=parseJson.getSequenceFromJSON();*/
+			if (bluePrintProbe.getProbeIndocator() != null && bluePrintProbe.getProbeIndocator().equalsIgnoreCase("True") ) {
+                 if (probePrintImage != null && !"".equals(probePrintImage)) {
+					list.add(probePrintImage);
+					imageMap.put(probePrintImage, "probeContainer");
+					sequenceList=commonUtil.addProbeSequence(sequenceList,"probeContainer");
+				}
+			  }	
 			 if(bluePrintImage!=null && !"".equals(bluePrintImage)){
 				list.add(bluePrintImage);
 				imageMap.put(bluePrintImage, "BluePrintContainer");
@@ -313,8 +362,8 @@ public class OpenstackServiceController extends AbstractController {
 			 OpenstackCompositeSolution compositeSolution=new OpenstackCompositeSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
-					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrint,uidNumStr,solutionPort,Sleeptime,
-					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber);
+					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrintProbe,uidNumStr,solutionPort,Sleeptime,
+					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,nodeTypeContainerMap);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 

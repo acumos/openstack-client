@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.ParseJSON;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class ParseJsonTest {
 		try{
 			HashMap<String,String> imageMap=null;
 			ParseJSON parse=new ParseJSON();
-			imageMap=parse.parseJsonFile();
+			imageMap=parse.parseJsonFile("blueprint2.json");
 			assertNotNull(imageMap);
 		}catch(Exception e){
 			logger.error("Exception in parseJsonFileTest-->"+e.getMessage());
@@ -54,7 +55,7 @@ public class ParseJsonTest {
 			HashMap<String,String> imageMap=null;
 			ParseJSON parse=new ParseJSON();
 			Blueprint blueprint=null;
-			blueprint=parse.jsonFileToObject();
+			blueprint=parse.jsonFileToObject("blueprint2.json");
 			assertNotNull(blueprint);
 		}catch(Exception e){
 			logger.error("Exception in jsonFileToObjectTest--->"+e.getMessage());
@@ -69,7 +70,7 @@ public class ParseJsonTest {
 			HashMap<String,String> imageMap=null;
 			ParseJSON parse=new ParseJSON();
 			LinkedList<String> linkedList=null;
-			linkedList=parse.getSequenceFromJSON();
+			linkedList=parse.getSequenceFromJSON("blueprint2.json");
 			assertNotNull(linkedList);
 		}catch(Exception e){
 			logger.debug("Exception in jsonFileToObjectTest"+e.getMessage());
@@ -77,5 +78,62 @@ public class ParseJsonTest {
 		logger.info("<---------End-------getSequenceFromJSONTest-------------->");
 	}
 	
+	@Test	
+	public void jsonFileToObjectProbeTest(){
+		logger.info("<---------Start-------jsonFileToObjectProbeTest-------------->");
+		try{
+		HashMap<String,String> imageMap=null;
+		ParseJSON parse=new ParseJSON();
+		Blueprint blueprint=null;
+		blueprint=parse.jsonFileToObjectProbe("blueprint.json");
+		assertNotNull(blueprint);
+		}catch(Exception e){
+			logger.debug("Exception in jsonFileToObjectProbeTest"+e.getMessage());
+		}
+		logger.info("<---------End-------jsonFileToObjectProbeTest-------------->");
+	}
 	
+	@Test
+	public void parseJsonFileProbeTest(){
+		logger.info("<---------Start-------parseJsonFileProbeTest-------------->");
+		try{
+		HashMap<String,String> imageMap=null;
+		ParseJSON parse=new ParseJSON();
+		imageMap=parse.parseJsonFileProbe("blueprint.json");
+		assertNotNull(imageMap);
+		}catch(Exception e){
+			logger.debug("Exception in parseJsonFileProbeTest"+e.getMessage());
+		}
+		logger.info("<---------End-------parseJsonFileProbeTest-------------->");
+	}
+	
+	@Test	
+	public void getSequenceFromJSONProbeTest(){
+		logger.info("<---------Start-------getSequenceFromJSONProbeTest-------------->");
+		try{
+		HashMap<String,String> imageMap=null;
+		ParseJSON parse=new ParseJSON();
+		
+		LinkedList<String> linkedList=null;
+		linkedList=parse.getSequenceFromJSONProbe("blueprint.json");
+		assertNotNull(linkedList);
+		}catch(Exception e){
+			logger.debug("Exception in getSequenceFromJSONProbeTest"+e.getMessage());
+		}
+		logger.info("<---------End-------getSequenceFromJSONProbeTest-------------->");
+	}
+	
+	@Test
+	public void nodeTypeContainerMapTest(){
+		logger.info("<---------Start-------nodeTypeContainerMapTest-------------->");
+		try{
+		HashMap<String,DeploymentBean> nodeTypeContainerMap=null;
+		ParseJSON parse=new ParseJSON();
+		nodeTypeContainerMap=parse.getNodeTypeContainerMap("blueprint.json");
+		assertNotNull(nodeTypeContainerMap);
+		}catch(Exception e){
+			logger.debug("Exception in nodeTypeContainerMapTest"+e.getMessage());
+		}
+		logger.info("<---------End-------nodeTypeContainerMapTest-------------->");
+	}
 }

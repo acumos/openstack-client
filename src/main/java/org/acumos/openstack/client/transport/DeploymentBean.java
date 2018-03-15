@@ -19,58 +19,59 @@
  */
 package org.acumos.openstack.client.transport;
 
-public class OpenstackCompositeDeployBean {
+public class DeploymentBean {
 	
 	private String vmName;
-	private String solutionId;
-	private String solutionRevisionId;
-	private String userId;
-	private String urlAttribute;
-	private String jsonPosition;
-	private String jsonMapping;
+	private String vmIP;
+	private String containerPort;
+	private String containerName;
+	private String nodeType;
+	private String script;
+	private String tunnelNumber;
 	
 	
-	public String getUrlAttribute() {
-		return urlAttribute;
+	public String getTunnelNumber() {
+		return tunnelNumber;
 	}
-	public void setUrlAttribute(String urlAttribute) {
-		this.urlAttribute = urlAttribute;
+	public void setTunnelNumber(String tunnelNumber) {
+		this.tunnelNumber = tunnelNumber;
 	}
-	public String getJsonPosition() {
-		return jsonPosition;
+	public String getScript() {
+		return script;
 	}
-	public void setJsonPosition(String jsonPosition) {
-		this.jsonPosition = jsonPosition;
+	public void setScript(String script) {
+		this.script = script;
 	}
-	public String getJsonMapping() {
-		return jsonMapping;
-	}
-	public void setJsonMapping(String jsonMapping) {
-		this.jsonMapping = jsonMapping;
-	}
+	
 	public String getVmName() {
 		return vmName;
 	}
 	public void setVmName(String vmName) {
 		this.vmName = vmName;
 	}
-	public String getSolutionId() {
-		return solutionId;
+	public String getVmIP() {
+		return vmIP;
 	}
-	public void setSolutionId(String solutionId) {
-		this.solutionId = solutionId;
+	public void setVmIP(String vmIP) {
+		this.vmIP = vmIP;
 	}
-	public String getSolutionRevisionId() {
-		return solutionRevisionId;
+	public String getContainerPort() {
+		return containerPort;
 	}
-	public void setSolutionRevisionId(String solutionRevisionId) {
-		this.solutionRevisionId = solutionRevisionId;
+	public void setContainerPort(String containerPort) {
+		this.containerPort = containerPort;
 	}
-	public String getUserId() {
-		return userId;
+	public String getContainerName() {
+		return containerName;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setContainerName(String containerName) {
+		this.containerName = containerName;
+	}
+	public String getNodeType() {
+		return nodeType;
+	}
+	public void setNodeType(String nodeType) {
+		this.nodeType = nodeType;
 	}
 	
 	

@@ -30,6 +30,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.acumos.openstack.client.transport.ContainerInfo;
+import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.acumos.openstack.client.util.Blueprint;
@@ -98,6 +100,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String proxyPort;
 	private String openStackIP;
 	private String bluePrintPortNumber;
+	private String probePrintName;
+	private String probUser;
+	private String probePass;
+	private HashMap<String,DeploymentBean> nodeTypeContainerMap;
 	
 	public OpenstackCompositeSolution(){
 		
@@ -108,8 +114,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,String bluePrintImage,
 			 String bluePrintName,String bluePrintUserName,String bluePrintPassword,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,
 			 String nexusUrl,String nexusUserName,String nexusPassword,ArrayList<String> list,HashMap<String,String> imageMap,LinkedList<String> sequenceList,
-			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime,
-			 String proxyIP,String proxyPort,String openStackIP,String bluePrintPortNumber){
+			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime,String proxyIP,String proxyPort,
+			 String openStackIP,String bluePrintPortNumber,String probePrintName,String probUser,String probePass,HashMap<String,DeploymentBean> nodeTypeContainerMap){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
@@ -148,6 +154,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.proxyPort=proxyPort;
 			this.openStackIP=openStackIP;
 			this.bluePrintPortNumber=bluePrintPortNumber;
+			this.probePrintName=probePrintName;
+			this.probUser=probUser;
+			this.probePass=probePass;
+			this.nodeTypeContainerMap=nodeTypeContainerMap;
 	}
 	
 	
@@ -171,7 +181,13 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		int sleepTimeInt=0;
 		String stackIp="";
 		int vmBindCount=0;
+		String probeIP="";
+		String probePort="";
 		HashMap<String,String> portMap=new HashMap<String,String>();
+		String containerInstanceBluePrint="BluePrintContainer";
+		String containerInstanceProbe="probeContainer";
+		List<ContainerInfo> probeContainerBeanList=new ArrayList<ContainerInfo>();
+		List<DeploymentBean> deploymentList=new ArrayList<DeploymentBean>();
 		try{
 			
 			 logger.debug("<--CompositeSolution----flavourName------->"+flavourName);
@@ -193,6 +209,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("<--CompositeSolution--proxyPort----------->"+proxyPort);
 			 logger.debug("<--CompositeSolution--openStackIP----------->"+openStackIP);
 			 logger.debug("<--CompositeSolution--bluePrintPortNumber----------->"+bluePrintPortNumber);
+			 logger.debug("<--CompositeSolution--probePrintName----------->"+probePrintName);
+			 logger.debug("<--CompositeSolution--probUser----------->"+probUser);
+			 logger.debug("<--CompositeSolution--probePass----------->"+probePass);
+			 logger.debug("<--CompositeSolution--nodeTypeContainerMap----------->"+nodeTypeContainerMap);
 			 logger.debug("<--CompositeSolution--SoulutionId----------->"+auth.getSolutionId());
 			 logger.debug("<--CompositeSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
 			 //solutionPort="8336";
@@ -351,7 +371,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 
 	 //bluePrintPort.sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray);
-	 String containerInstanceBluePrint="BluePrintContainer";
+	 
 	 String portNumber="";
 	 int count=0;
 	 DockerInfoList  dockerList=new DockerInfoList();
@@ -379,6 +399,16 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			            		 logger.debug("Continue.............................................");
 			            		continue;
 			            	}
+	 		            	String nodeTypeContainer="";
+    		            	if(nodeTypeContainerMap!=null && nodeTypeContainerMap.size() > 0 && nodeTypeContainerMap.get(finalContainerName)!=null){
+    		            		DeploymentBean dBean=nodeTypeContainerMap.get(finalContainerName);
+    		            		if(dBean!=null && dBean.getScript()!=null){
+    		            			nodeTypeContainer=dBean.getNodeType();
+    		            		}
+    		            		
+    		            	}
+    		            	logger.debug("<----nodeTypeContainer--------->"+nodeTypeContainer);
+	 		            	logger.debug("<----finalContainerName--------->"+finalContainerName);
 	 		            	logger.debug("<----containerInstanceBluePrint--------->"+containerInstanceBluePrint);
 	 		            	DockerInfo dockerinfo=new DockerInfo();
 	 		            	OpanStackContainerBean containerBean=new OpanStackContainerBean();
@@ -402,8 +432,17 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			        				portNumberString=portNumber+":"+portNumber;
 			        			}
 	 		            		count++;
-	 		            		deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray,
+	 		            		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
+	 		            			logger.debug("<----Deploying Probe container-----finalContainerName--->"+finalContainerName);
+	 		            			deploymentImageVM(hostOpenStack,vmUserName,repositaryName,probUser,probePass,repositryImageName,vmBind,bytesArray,
+		 		            				finalContainerName,portNumberString,count,sleepTimeInt);
+	 		            		}else{
+	 		            			logger.debug("<----Deploying Container---finalContainerName-->"+finalContainerName);
+	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray,
 	 		            				finalContainerName,portNumberString,count,sleepTimeInt);
+	 		            		}
+	 		            		/*deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray,
+	 		            				finalContainerName,portNumberString,count,sleepTimeInt);*/
 	 		            	}
 	 		            	dockerinfo.setIpAddress(floatingIp);
 	    		            dockerinfo.setPort(portNumber);
@@ -414,6 +453,32 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
     		        		containerBean.setContainerIp(floatingIp);
     		        		containerBean.setContainerPort(portNumber);
     		        		openStackContainerBeanList.add(containerBean);
+    		        		
+    		        		DeploymentBean deploymentBean=new DeploymentBean();
+    		        		deploymentBean.setVmIP(floatingIp);
+    		        		deploymentBean.setVmName("");
+    		        		deploymentBean.setContainerName(finalContainerName);
+    		        		deploymentBean.setContainerPort(portNumber);
+    		        		if(portMap!=null && portMap.get(portNumber)!=null){
+    		        			logger.debug("==portNumber===:" + portNumber+"=TunnelNum="+portMap.get(portNumber));
+    		        			deploymentBean.setTunnelNumber(portMap.get(portNumber));
+    		        		}
+    		        		deploymentBean.setNodeType(nodeTypeContainer);
+    		        		deploymentList.add(deploymentBean);
+    		        		
+    		        		ContainerInfo containerInfo = new ContainerInfo();
+    		        		containerInfo.setContainerName(finalContainerName);
+    		        		containerInfo.setContainerIp(floatingIp);
+    		        		containerInfo.setContainerPort(portNumber);
+    		        		//containerInfo.setNodeType(nodeTypeContainer);
+    		        		logger.debug("<--Before-Probe-containerInstanceProbe--------->"+containerInstanceProbe+"===finalContainerName==="+finalContainerName);
+    		        		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
+    		        			logger.debug("<--After-Probe-containerInstanceprobe--------->"+containerInstanceProbe+"===finalContainerName==="+finalContainerName);
+	    		        	   containerInfo.setNodeType("Probe");
+	    		        	   probeIP = floatingIp;
+	    		        	   probePort = portNumber;
+    		        		}
+                           probeContainerBeanList.add(containerInfo);
 	 		            	
 	 		            }	
 	                	 
@@ -439,6 +504,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 logger.debug("====urlDockerInfo======: " + urlDockerInfo);
 		 Thread.sleep(2*sleepTimeInt);
 		 logger.debug("====urlBluePrint======: " + urlBluePrint);
+		 String dataBrokerTunnelNum=commonUtil.getDataBrokerTunnelNumber(deploymentList,"DataBroker");
+		 String urlDataBroker="http://"+openStackIP+":"+dataBrokerTunnelNum+"/configDB";
+		 logger.debug("<-----urlDataBroker---------->"+urlDataBroker);
+		 logger.debug("<-----dataBrokerTunnelNum---------->"+dataBrokerTunnelNum);
 		 
 		 if(dockerList!=null){
 			 DockerInfoList dockerInfoFinalList=dockerList;
@@ -447,6 +516,16 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 if(bluePrint!=null){
 			 commonUtil.putBluePrintDetailsJSON(bluePrint,urlBluePrint);
 		  }
+		 if(dataBrokerTunnelNum!=null &&  !"".equals(dataBrokerTunnelNum)){
+			 logger.debug("Inside putDataBrokerDetails ===========> ");
+			 commonUtil.putDataBrokerDetails(auth,urlDataBroker);
+			}
+		// Added notification for probe code
+		 if (bluePrint.getProbeIndocator() != null && bluePrint.getProbeIndocator().equalsIgnoreCase("True"))  {
+			 logger.debug("Probe indicator true. Starting generatenotircation======auth.getUserId())=====>"+auth.getUserId());
+			 logger.debug("====probeIP===>"+probeIP+"===probePort=="+probePort);
+			 commonUtil.generateNotification(probeIP+":"+probePort,auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpwd);
+		 }
 		 if(openStackContainerBeanList!=null){
 	       	  
   			  logger.debug("Start saving data in database=========openStackContainerBeanList====="+openStackContainerBeanList); 

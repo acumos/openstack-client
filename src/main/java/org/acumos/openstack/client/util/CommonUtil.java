@@ -37,12 +37,17 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.acumos.cds.MessageSeverityCode;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
+import org.acumos.cds.domain.MLPNotification;
 import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
+import org.acumos.openstack.client.transport.DeploymentBean;
+import org.acumos.openstack.client.transport.MLNotification;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
+import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -51,6 +56,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.acumos.cds.domain.MLPSolutionDeployment;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 public class CommonUtil {
 	
@@ -320,6 +327,119 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			}
 			logger.debug("<---------End createDeploymentData ------------------------->");
 			return mlpDeployment;
+		}
+		public LinkedList<String> addProbeSequence(LinkedList<String> sequenceList,String probeContainerName){
+			  logger.debug("Start===addProbeSequence============");
+			  logger.debug("====probeContainerName==="+probeContainerName+"====sequenceList====="+sequenceList);
+			  if(sequenceList!=null && sequenceList.size() > 0 && probeContainerName!=null && !"".equals(probeContainerName)){
+				  int length=sequenceList.size();
+				  logger.debug("length============"+length);
+				  sequenceList.add((length-1), probeContainerName); 
+				}
+			  logger.debug("End====addProbeSequence==============="+sequenceList);
+			  return sequenceList;
+		  }	
+	  public void generateNotification(String msg, String userId,String dataSource,String dataUserName,String dataPassword) {
+			 logger.debug("Start===generateNotification============");
+			 logger.debug("=====userId====="+userId+"==msg==="+msg);
+	         MLPNotification notification = new MLPNotification();
+	         try {
+	                 if (msg != null) {
+	                     notification.setTitle(msg);
+	                     // Provide the IP address and port of the probe Instance
+	                     notification.setMessage(msg);
+	                     Date startDate = new Date();
+	                     Date endDate = new Date(startDate.getTime() + (1000 * 60 * 60 * 24));
+	                     notification.setStart(startDate);
+	                     notification.setEnd(endDate);
+	                     CommonDataServiceRestClientImpl client=getClient(dataSource, dataUserName, dataPassword);
+	                     notification.setMsgSeverityCode(MessageSeverityCode.ME.toString());
+	                     MLNotification mLNotification = createNotification(notification,dataSource,dataUserName,dataPassword);
+	                     logger.debug("=====mLNotification.getNotificationId()====="+mLNotification.getNotificationId());
+	                     client.addUserToNotification(mLNotification.getNotificationId(),userId);
+	             }
+	         } catch (Exception e) {
+	              logger.error("Exception Occurred while getNotifications", e);
+	         }
+	         logger.debug("End===generateNotification============"); 
+		 }
+		
+		public org.acumos.openstack.client.transport.MLNotification createNotification(MLPNotification mlpNotification,
+				String dataSource,String dataUserName,String dataPassword) {
+			 logger.debug("Start===createNotification============");
+	         CommonDataServiceRestClientImpl client=getClient(dataSource,dataUserName,dataPassword);
+	         MLNotification mlNotification = convertToMLNotification(client.createNotification(mlpNotification));
+	         logger.debug("End===createNotification============");
+	         return mlNotification;
+		 }	
+		public  MLNotification convertToMLNotification(MLPNotification mlpNotification) {
+			MLNotification mlNotification = new MLNotification();
+			if (!isEmptyOrNullString(mlpNotification.getNotificationId())) {
+				mlNotification.setNotificationId(mlpNotification.getNotificationId());
+			}
+			if (!isEmptyOrNullString(mlpNotification.getTitle())) {
+				mlNotification.setTitle(mlpNotification.getTitle());
+			}
+			if (!isEmptyOrNullString(mlpNotification.getMessage())) {
+				mlNotification.setMessage(mlpNotification.getMessage());
+			}
+			if (!isEmptyOrNullString(mlpNotification.getUrl())) {
+				mlNotification.setUrl(mlpNotification.getUrl());
+			}
+			if (mlpNotification.getStart() != null) {
+				mlNotification.setStart(mlpNotification.getStart());
+			}
+			if (mlpNotification.getEnd() != null) {
+				mlNotification.setEnd(mlpNotification.getEnd());
+			}
+			return mlNotification;
+		}
+		public static boolean isEmptyOrNullString(String input) {
+			boolean isEmpty = false;
+			if (null == input || 0 == input.trim().length()) {
+				isEmpty = true;
+			}
+			return isEmpty;
+		}
+		public String getDataBrokerTunnelNumber(List<DeploymentBean> deploymentList, String dataBrokerName){
+			logger.debug("<---------Start getDataBrokerIP ------------------------->");
+			String dataBrokerTunnelNum="";
+			logger.debug("<---deploymentList---->"+deploymentList);
+			logger.debug("<---dataBrokerName---->"+dataBrokerName);
+			if(deploymentList!=null && deploymentList.size() > 0  && dataBrokerName!=null && !"".equals(dataBrokerName)){
+				for(DeploymentBean bean:deploymentList){
+					if(bean!=null && bean.getNodeType()!=null && bean.getNodeType().equalsIgnoreCase(dataBrokerName)){
+						dataBrokerTunnelNum=bean.getTunnelNumber();
+					}
+				}
+			}
+			logger.debug("<---------End getDataBrokerIP -----------------dataBrokerTunnelNum-------->"+dataBrokerTunnelNum);
+			return dataBrokerTunnelNum;
+		}
+		public void putDataBrokerDetails(OpenstackCompositeDeployBean deployDataObject,String apiUrl){
+			logger.debug("<--------Start---putDataBrokerDetails------->");
+			try {
+				logger.debug("======apiUrl==="+apiUrl);
+				logger.debug("====UrlAttribute==="+deployDataObject.getUrlAttribute());
+				logger.debug("=====JsonMapping==="+deployDataObject.getJsonMapping());
+				logger.debug("=====JsonPosition==="+deployDataObject.getJsonPosition());
+				//logger.debug("=====dataBrokerScript==="+dataBrokerScript);
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+				RestTemplate restTemplate = new RestTemplate();
+				MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+				map.add("jsonUrl", deployDataObject.getUrlAttribute());
+				//map.add("jsonScript", dataBrokerScript);
+				map.add("jsonMapping", deployDataObject.getJsonMapping());
+				map.add("jsonPosition", deployDataObject.getJsonPosition());
+				HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+				restTemplate.exchange(apiUrl, HttpMethod.PUT, request, String.class);
+			    
+			  } catch (Exception e) {
+	            e.printStackTrace();
+	            logger.error("<---------Exception----------->"+e.getMessage());
+			 }
+			logger.debug("<--------End---putDataBrokerDetails------->");
 		}
 
 }

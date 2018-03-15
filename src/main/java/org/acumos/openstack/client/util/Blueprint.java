@@ -59,6 +59,17 @@ public class Blueprint implements Serializable {
 
 	@JsonProperty("orchestrator")
 	private Orchestrator orchestrator = null;
+	
+	@JsonProperty("probeIndocator")
+	private String probeIndocator = null;
+
+	public String getProbeIndocator() {
+		return probeIndocator;
+	}
+
+	public void setProbeIndocator(String probeIndocator) {
+		this.probeIndocator = probeIndocator;
+	}
 
 	public List<OperationSignature> getInputs() {
 		return inputs;
