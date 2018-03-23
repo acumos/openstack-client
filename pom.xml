@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>openstack-client</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Acumos OpenStack deployment feature</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -18,11 +18,6 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<!-- <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	</properties> -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -268,7 +263,7 @@
 								</assembly>
 								<cmd>
 									<!-- CDATA prevents Eclipse from breaking/reformatting the line -->
-									<shell><![CDATA[java -Djava.security.egd=file:/dev/./urandom -jar /maven/${project.artifactId}-${project.version}.${project.packaging}]]></shell>
+									<shell><![CDATA[cd /maven; java -Xms128m -Xmx512m -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}]]></shell>
 								</cmd>
 							</build>
 						</image>
@@ -300,6 +295,4 @@
 			<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url>
 		</repository>
 	</distributionManagement>
-
-
 </project>
