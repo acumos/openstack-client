@@ -17,28 +17,49 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-package org.acumos.openstack.client.test.util;
 
-import org.acumos.openstack.client.util.OperationSignature;
-import org.junit.Assert;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.acumos.openstack.client.util;
 
-public class OperationSignatureTest {
+import java.io.Serializable;
 
-	private static Logger logger = LoggerFactory.getLogger(OperationSignatureTest.class);
-	@Test	
-	public void OperationSignatureTestparameter(){
-		logger.info("<---------Start-------OperationSignatureTestparameter-------------->");
-		try{
-			String operation="Add";
-			OperationSignature opr=new OperationSignature();
-			//opr.setOperation(operation);
-			//Assert.assertEquals(operation, opr.getOperation());
-		}catch(Exception ex){
-			   logger.error("Error in OperationSignatureTestparameter---> "+ex.getMessage()); 
-		   }
-		logger.info("<---------End-------OperationSignatureTestparameter-------------->");
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ProbeIndicator implements Serializable {
+
+	private final static long serialVersionUID = 6463163730071836107L;
+	@JsonProperty("value")
+	private String value;
+
+	/**
+	 * Standard POJO no-arg constructor
+	 */
+	public ProbeIndicator() {
+		super();
 	}
+
+	/**
+	 * 
+	 * @param value
+	 *            Indicates whether Probe is present in the solution.
+	 */
+	public ProbeIndicator(String value) {
+		super();
+		this.value = value;
+	}
+
+	@JsonProperty("value")
+	public String getValue() {
+		return value;
+	}
+
+	@JsonProperty("value")
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	@Override
+	public String toString() {
+		return "ProbeIndicator [value=" + value + "]";
+	}
+
 }

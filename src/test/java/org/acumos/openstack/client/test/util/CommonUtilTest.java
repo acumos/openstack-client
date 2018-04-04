@@ -30,6 +30,7 @@ import java.util.UUID;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.nexus.client.NexusArtifactClient;
+
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.CommonUtil;
@@ -37,13 +38,23 @@ import org.acumos.openstack.client.util.DockerInfoList;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+
 
 public class CommonUtilTest {
 	Logger logger = LoggerFactory.getLogger(CommonUtilTest.class);
-	@Test
+	
+	/*@Test
 	public void getRepositryNameTest(){
 		logger.debug("<-Start ----getRepositryNameTest------->");
 		try{
+			String repositoryNames=gl.getFlavourName();
+			logger.debug("repositoryNames------>"+repositoryNames);
 			CommonUtil cmUtil=new CommonUtil();
 			String imageName="cognita-nexus01:8000/Adder1:1";
 			String imageName2="cognita-nexus01:8001/Adder2:1";
@@ -58,8 +69,8 @@ public class CommonUtilTest {
 			   logger.error("Error in getRepositryNameTest---> "+ex.getMessage()); 
 		}
 		logger.debug("<-End ----getRepositryNameTest------->");
-	}
-	@Test
+	}*/
+	/*@Test
 	public void getRepositryImageNameTest(){
 		logger.debug("<-Start ----getRepositryImageNameTest------->");
 		try{
@@ -153,7 +164,7 @@ public class CommonUtilTest {
 			   logger.error("Error in getSequenceTest---> "+ex.getMessage()); 
 		}
 		logger.debug("<-End ----getSequenceTest------->");
-	}
+	}*/
 	/*@Test
 	public void putContainerDetailsJSONTest(){
 		CommonUtil cmUtil=new CommonUtil();

@@ -63,38 +63,64 @@ public class CommonUtil {
 	
 Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 
-  public String getRepositryName(String imageName){
+  public String getRepositryName(String imageName,String repositoryNames){
 	logger.debug("<----Start-getRepositryName------->"+imageName);
 	String repositaryName="";
 	if(imageName!=null){
 		String imageArr[]=imageName.split("/");
-		if(imageArr!=null && imageArr[0]!=null){
-			if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8000")){
-				repositaryName="cognita-nexus01.eastus.cloudapp.azure.com:8000";
-			}else if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8001")){
-				repositaryName="cognita-nexus01.eastus.cloudapp.azure.com:8001";
-			}else if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8002")){
-				repositaryName="cognita-nexus01.eastus.cloudapp.azure.com:8002";
-			}else{
-				repositaryName=imageArr[0];
+		if(repositoryNames!=null){
+			String repositoryNamesArr[]=repositoryNames.split(",");
+			if(repositoryNamesArr!=null && repositoryNamesArr.length >0){
+				for(String repository: repositoryNamesArr){
+					if(repository!=null){
+						String repositoryArr[]=repository.split("#");
+						if(repositoryArr!=null && repositoryArr.length > 1){
+							if(imageArr[0].equalsIgnoreCase(repositoryArr[0])){
+								repositaryName=	repositoryArr[1];
+								break;
+							}
+							
+						}else{
+							logger.debug("<==Array size is not 2====> "+repositoryNamesArr.length);
+						}
+					}
+				}
 			}
-			
 		}
-		
 	}
-	logger.debug("<----End-repositaryName------->"+repositaryName);
 	
+	logger.debug("<----End-repositaryName------->"+repositaryName);
 	return repositaryName;
   }
   
-  public String getRepositryImageName(String imageName){
+  public String getRepositryImageName(String imageName,String repositoryNames){
 		logger.debug("<----Start-getRepositryName------->"+imageName);
 		String repositaryName="";
 		String repositaryImageName="";
 		String ImageName="";
 		if(imageName!=null){
 			String imageArr[]=imageName.split("/");
-			if(imageArr!=null && imageArr[0]!=null){
+			//String imageArr[]=imageName.split("/");
+			if(repositoryNames!=null){
+				String repositoryNamesArr[]=repositoryNames.split(",");
+				if(repositoryNamesArr!=null && repositoryNamesArr.length >0){
+					for(String repository: repositoryNamesArr){
+						if(repository!=null){
+							String repositoryArr[]=repository.split("#");
+							if(repositoryArr!=null && repositoryArr.length > 1){
+								if(imageArr[0].equalsIgnoreCase(repositoryArr[0])){
+									repositaryName=	repositoryArr[1];
+									break;
+								}
+								
+							}else{
+								logger.debug("<==Array size is not 2====> "+repositoryNamesArr.length);
+							}
+						}
+					}
+				}
+			}
+			/*if(imageArr!=null && imageArr[0]!=null){
 				if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8000")){
 					repositaryName="cognita-nexus01.eastus.cloudapp.azure.com:8000";
 				}else if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8001")){
@@ -105,7 +131,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 					repositaryName=imageArr[0];
 				}
 				
-			}
+			}*/
 			if(imageArr[1]!=null){
 				ImageName=imageArr[1];
 			}

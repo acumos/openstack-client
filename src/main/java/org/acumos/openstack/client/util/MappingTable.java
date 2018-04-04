@@ -17,28 +17,16 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-package org.acumos.openstack.client.test.util;
 
-import org.acumos.openstack.client.util.OperationSignature;
-import org.junit.Assert;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.acumos.openstack.client.util;
 
-public class OperationSignatureTest {
+import java.io.Serializable;
+import java.util.ArrayList;
 
-	private static Logger logger = LoggerFactory.getLogger(OperationSignatureTest.class);
-	@Test	
-	public void OperationSignatureTestparameter(){
-		logger.info("<---------Start-------OperationSignatureTestparameter-------------->");
-		try{
-			String operation="Add";
-			OperationSignature opr=new OperationSignature();
-			//opr.setOperation(operation);
-			//Assert.assertEquals(operation, opr.getOperation());
-		}catch(Exception ex){
-			   logger.error("Error in OperationSignatureTestparameter---> "+ex.getMessage()); 
-		   }
-		logger.info("<---------End-------OperationSignatureTestparameter-------------->");
-	}
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class MappingTable implements Serializable {
+
+	private final static long serialVersionUID = 7972774088897598369L;
+
 }

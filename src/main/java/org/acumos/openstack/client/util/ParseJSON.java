@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -146,7 +147,7 @@ public class ParseJSON {
 	             }
 	           }
         }
-        blueprint.setOrchestrator(orchestratorBean);
+        //blueprint.setOrchestrator(orchestratorBean);
         
         JSONArray inputOperation = (JSONArray) jo.get("input_operation_signatures");
         ArrayList<OperationSignature> operationList=new ArrayList<OperationSignature>();
@@ -163,14 +164,14 @@ public class ParseJSON {
 	                String value=(String)pair.getValue();
 	                log.debug("-->"+pair.getKey() + " : " + pair.getValue());
 	                if(key!=null && key.equalsIgnoreCase("operation")){
-	                	operationSignature.setOperation(value);
+	                	//operationSignature.setOperation(value);
 	                }
 	               
 	            }
 	            operationList.add(operationSignature);
 	        }
         }
-        blueprint.setInputs(operationList);
+        //blueprint.setInputs(operationList);
         JSONArray nodes = (JSONArray) jo.get("nodes");
         ArrayList<Node> nodeList=new ArrayList<Node>();
         if(nodes!=null ){
@@ -187,7 +188,7 @@ public class ParseJSON {
 	                if(key!=null && key.equalsIgnoreCase("depends_on")){
 	                	if(pair.getValue()!=null){
 	                		ArrayList<Component> listComponent=jsonArrayParseObject(pair.getValue());
-		                	node.setDependsOn(listComponent);
+		                	//node.setDependsOn(listComponent);
 	                	}
 	                }else{
 	                	log.debug("-->"+pair.getKey() + " : " + pair.getValue());
@@ -232,7 +233,7 @@ public class ParseJSON {
 	                	if(objVar!=null){
 	                		String operation=(String)objVar.get("operation");
 	                		OperationSignature opr=new OperationSignature();
-	                		opr.setOperation(operation);
+	                		//opr.setOperation(operation);
 	                		log.debug("=======operation==========="+operation);
 	                		component.setOperationSignature(opr);
 	                	}
@@ -392,76 +393,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 	  node.getChildren().forEach(each ->  printTree(each, (appender + appender),linkedList));
 	  
  }	
- /*public static CommonDataServiceRestClientImpl getClient(String datasource,String userName,String password) {
-		CommonDataServiceRestClientImpl client = new CommonDataServiceRestClientImpl(datasource, userName, password);
-		ICommonDataServiceRestClient client1 = CommonDataServiceRestClientImpl.getInstance(datasource, userName, password);
-		return client;
-	}
-public static void main(String args[]){
-		try{
-			CommonDataServiceRestClientImpl client = getClient("http://cognita-dev1-vm01-core.eastus.cloudapp.azure.com:8000/ccds","ccds_client","ccds_client");
-			UUID uidNumber = UUID.randomUUID();
-			List<AzureContainerBean> AzureContainerBeanList=new ArrayList<AzureContainerBean>();
-			AzureContainerBean containerBean=new AzureContainerBean();
-			
-			AzureContainerBean containerBean2=new AzureContainerBean();
-			
-			containerBean.setContainerIp("11.11.10.80");
-			containerBean.setContainerPort("8080");
-			containerBean.setContainerName("A");
-			
-			containerBean2.setContainerIp("11.11.10.81");
-			containerBean2.setContainerPort("8081");
-			containerBean2.setContainerName("B");
-			AzureContainerBeanList.add(containerBean);
-			AzureContainerBeanList.add(containerBean2);
-			
-			ObjectMapper mapper = new ObjectMapper();
-			String azureDetails=mapper.writeValueAsString(AzureContainerBeanList);
-			
-			//ObjectMapper mapper = new ObjectMapper();
-			//uidNumStr=uidNumber.toString();
-			String deploymentStatusCode=uidNumber.toString();
-			
-			//List<MLPSolutionRevision> testList=client.getSolutionRevisions("02eab846-2bd0-4cfe-8470-9fc69fa0d877");
-			
-			//getSolutionRevisions(String solutionId)
-			MLPSolutionDeployment mlp=new MLPSolutionDeployment("1bb7424a-69d8-493d-8e5a-dbb87561f08c", "fa7038b2-1c3d-4f17-b439-cd59a7c0a38b", "7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4",
-					"DP");
-			mlp.setDeploymentId(deploymentStatusCode);
-			mlp.setDetail(azureDetails);
-			String oldstring = "2018-01-10T16:50:39.402Z";
-			mlp.setTarget("pp");
-			//sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-			//Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(oldstring);
-			mlp.setCreated(date);
-			mlp.setModified(date);pn
-			mlp.setTarget("test");
-			mlp.setDetail("test2");
-			
-			
-			 {
-			 -- "created": "2018-01-10T16:50:39.402Z",
-			  "deploymentId": "3956dec8-1028-4116-9669-ca5f43628f86",
-			  "deploymentStatusCode": "DP",
-			--  "detail": "1",
-			 -- "modified": "2018-01-10T16:50:39.402Z",
-			  "revisionId": "a9e68bc6-f4b4-41c6-ae8e-4e97ec3916a6",
-			  "solutionId": "02eab846-2bd0-4cfe-8470-9fc69fa0d877",
-			 -- "target": "111",
-			  "userId": "0505e537-ce79-4b1f-bf43-68d88933c369"
-			}
-			
-			//mlp.setDeploymentStatusCode("DP");
-			//client.createSolutionDeployment(arg0)
-			
-			client.createSolutionDeployment(mlp);
-		ParseJSON p=new ParseJSON();
-		
-		}catch(Exception e){
-			
-		}
-	}*/
+ 
  
  public boolean checkProbeIndicator(String jsonFileName)  throws  Exception {
 	   log.debug("<----------Start checkProbeIndicator --------------------------->");
@@ -489,6 +421,9 @@ public static void main(String args[]){
  public String getProbeIndicator(JSONObject jo) {
 		log.debug("<----------Start getProbeIndicator in ParseJSON------------------->");
 		JSONArray probeIndicator = (JSONArray) jo.get("probeIndicator");
+		if(probeIndicator == null){
+			probeIndicator = (JSONArray) jo.get("probeIndocator");
+		}
 		Iterator itr = probeIndicator.iterator();
 		Iterator<Map.Entry> itr1=null;
 		String value = null;
@@ -526,12 +461,21 @@ public static void main(String args[]){
 		JSONArray trainingClients = (JSONArray) jo.get("training_clients");
 		
 		
-		blueprint.setProbeIndocator(probeIndicator);
+		ArrayList<ProbeIndicator> list_of_pb_indicators = new ArrayList<ProbeIndicator>();
+		ProbeIndicator prbIndicator = new ProbeIndicator();
+		if(probeIndicator!=null){
+			prbIndicator.setValue(probeIndicator);
+		}else{
+			prbIndicator.setValue("");
+		}
+		list_of_pb_indicators.add(prbIndicator);
+		
+		blueprint.setProbeIndicator(list_of_pb_indicators);
 		blueprint.setName(name);
 		blueprint.setVersion(version);
 		Iterator<Map.Entry> itr1 = null;
 		
-		Orchestrator orchestratorBean = new Orchestrator();
+		/*Orchestrator orchestratorBean = new Orchestrator();
 		Map orchestrator = ((Map) jo.get("orchestrator"));
 		if (orchestrator != null) {
 			itr1 = orchestrator.entrySet().iterator();
@@ -551,7 +495,7 @@ public static void main(String args[]){
 				}
 			}
 		}
-		blueprint.setOrchestrator(orchestratorBean);
+		blueprint.setOrchestrator(orchestratorBean);*/
 	
 
 		/*JSONArray inputOperation = (JSONArray) jo.get("input_operation_signatures");
@@ -606,13 +550,16 @@ public static void main(String args[]){
   			],
 		 */
 		
-		JSONArray inputPorts = (JSONArray) jo.get(""
-				+ "");
+		JSONArray inputPorts = (JSONArray) jo.get("input_ports");
 		ArrayList<OperationSignature> operationList = new ArrayList<OperationSignature>();
+		List<InputPort> inputPortList=null;
 		if (inputPorts != null) {
+			inputPortList=new ArrayList<InputPort>();
 			log.debug("input ports-->");
+			
 			Iterator itr2 = inputPorts.iterator();
 			while (itr2.hasNext()) {
+				InputPort inputPortObj=new InputPort();
 				OperationSignature operationSignature = new OperationSignature();
 				itr1 = ((Map) itr2.next()).entrySet().iterator();
 				while (itr1.hasNext()) {
@@ -623,8 +570,12 @@ public static void main(String args[]){
 					if (key != null && key.equalsIgnoreCase("operation_signature")) {
 						JSONObject jsonObject = (JSONObject) pair.getValue();
 						String operationName =(String) jsonObject.get("operation_name");
-						operationSignature.setOperation(operationName);
-						operationList.add(operationSignature);
+						operationSignature.setOperationName(operationName);
+						//operationList.add(operationSignature);
+						inputPortObj.setOperationSignature(operationSignature);
+					}
+					if (key != null && key.equalsIgnoreCase("container_name")) {
+						inputPortObj.setContainerName((String) pair.getValue());
 					}
 					/*// Add container name
 					if (key != null && key.equalsIgnoreCase("container_name")) {
@@ -633,9 +584,13 @@ public static void main(String args[]){
 					}*/
 					
 				}
+				inputPortList.add(inputPortObj);
 			}
+			
 		}
-		blueprint.setInputs(operationList);
+		if(inputPorts!=null && inputPorts.size() > 0){
+			blueprint.setInputPorts(inputPortList);
+		}
 		
 		
 		/**
@@ -694,6 +649,9 @@ public static void main(String args[]){
 			int nodeCount = 0;
 			while (itr3.hasNext()) {
 				Node node = new Node();
+				ArrayList<OperationSignatureList> operSigList = new ArrayList<OperationSignatureList>();
+				OperationSignatureList obpListObject=new OperationSignatureList();
+				operSigList.add(obpListObject);
 				itr1 = ((Map) itr3.next()).entrySet().iterator();
 				log.debug("Nodes-->" + ++nodeCount);
 				while (itr1.hasNext()) {
@@ -708,9 +666,11 @@ public static void main(String args[]){
 							}
 						} else*/ if(key != null && key.equalsIgnoreCase("operation_signature_list")) {
 							
+
 							if (pair.getValue() != null) {
-								ArrayList<Component> listComponent = jsonArrayParseObjectProb(pair.getValue());
-								node.setDependsOn(listComponent);
+								operSigList = jsonArrayParseObjectProb(pair.getValue(),operSigList);
+								
+								log.debug("operSigList-->" + operSigList);
 							}
 							
 						
@@ -724,11 +684,17 @@ public static void main(String args[]){
 							}
 							
 							if(key != null && key.equalsIgnoreCase("node_type")) {
-								node.setNode_type((String)pair.getValue());
+								node.setNodeType((String)pair.getValue());
+							}
+							if(key != null && key.equalsIgnoreCase("proto_uri")) {
+								//node.setNode_type((String)pair.getValue());
+								node.setProtoUri((String)pair.getValue());
+								//node.setNodeType((String)pair.getValue());
 							}
 						}
 				 }	
 				}
+				node.setOperationSignatureList(operSigList);
 				nodeList.add(node);
 			}
 
@@ -747,35 +713,43 @@ public static void main(String args[]){
 	return blueprint;
 }
  
- public ArrayList<Component> jsonArrayParseObjectProb(Object obj) {
+ public ArrayList<OperationSignatureList>  jsonArrayParseObjectProb(Object obj, ArrayList<OperationSignatureList> listComponent) {
 		log.debug("<----------Start jsonArrayParseObjectProb in ParseJSON------------------->");
 		JSONArray jsonArr = (JSONArray) obj;
 		Iterator itr = jsonArr.iterator();
-		ArrayList<Component> listComponent = new ArrayList<Component>();
+		log.debug("obj========================" + obj);
+		//ArrayList<Component> listComponent = new ArrayList<Component>();
+		//ArrayList<OperationSignatureList> listComponent = new ArrayList<OperationSignatureList>();
+		OperationSignatureList oprListObj=listComponent.get(0);
+		ArrayList<ConnectedTo> connectedList=new ArrayList<ConnectedTo>();
 		Iterator<Map.Entry> itr1 = null;
+		Iterator<Map.Entry> itr3 = null;
+		
 		while (itr.hasNext()) {
 			itr1 = ((Map) itr.next()).entrySet().iterator();
-
+			
 			while (itr1.hasNext()) {
 				Map.Entry pair = itr1.next();
 				String key = (String) pair.getKey();
-				System.out.println("Key=" + key);
-
+				log.debug("Key========================" + key);
+				ConnectedTo connectedTo=null;
 				if (key != null && key.equalsIgnoreCase("connected_to")) {
 					JSONArray connArr = (JSONArray) pair.getValue();
 					Iterator conItr = connArr.iterator();
+					connectedTo=new ConnectedTo();
 					while (conItr.hasNext()) {
 
 						// JSONObject obj = conItr.next();
-						itr1 = ((Map) conItr.next()).entrySet().iterator();
-						Component component = new Component();
-						while (itr1.hasNext()) {
-							Map.Entry pair1 = itr1.next();
+						itr3 = ((Map) conItr.next()).entrySet().iterator();
+						//Component component = new Component();
+						while (itr3.hasNext()) {
+							Map.Entry pair1 = itr3.next();
 							String connectedKey = (String) pair1.getKey();
 							if (connectedKey != null && connectedKey.equalsIgnoreCase("container_name")) {
 								String containerKey = (String) pair1.getKey();
 								String containerName = (String) pair1.getValue();
-								component.setName(containerName);
+								connectedTo.setContainerName(containerName);
+								//component.setName(containerName);
 							}
 
 							if (connectedKey != null && connectedKey.equalsIgnoreCase("operation_signature")) {
@@ -783,32 +757,76 @@ public static void main(String args[]){
 								OperationSignature opr = new OperationSignature();
 								if (objVar != null) {
 									String operation = (String) objVar.get("operation_name");
-									opr.setOperation(operation);
+									opr.setOperationName(operation);
+									//opr.setOperation(operation);
 									log.debug("=======operation===========" + operation);
-									component.setOperationSignature(opr);
+									//component.setOperationSignature(opr);
+									connectedTo.setOperationSignature(opr);
 								}
 							}
 						}
-						listComponent.add(component);
+						
 					}
+					if(connectedTo!=null){
+						connectedList.add(connectedTo);
+					}
+					
 				}
-
-				// parent operation .. needs to check with mukesh
-				if (key != null && key.equalsIgnoreCase("operation_signature")) {
-					JSONObject objVar = (JSONObject) pair.getValue();
-					OperationSignature opr = new OperationSignature();
+             if(connectedList!=null && connectedList.size() > 0){
+             	oprListObj.setConnectedTo(connectedList);
+             }
+             if (key != null && key.equalsIgnoreCase("operation_signature")) {
+             	JSONObject objVar = (JSONObject) pair.getValue();
+					OperationSignature oprSignature = new OperationSignature();
 					if (objVar != null) {
-						String operation = (String) objVar.get("operation_name");
-						opr.setOperation(operation);
-						log.debug("=======operation===========" + operation);
-						// component.setOperationSignature(opr);
+						String oprName = (String) objVar.get("operation_name");
+						if(oprName!=null && !"".equals(oprName)){
+							oprSignature.setOperationName(oprName);	
+						}
+						
+						String inputMessage = (String) objVar.get("input_message_name");
+						if(inputMessage!=null && !"".equals(inputMessage)){
+							oprSignature.setInputMessageName(inputMessage);
+						}
+						
+						String outputMessage = (String) objVar.get("output_message_name");
+						if(outputMessage!=null && !"".equals(outputMessage)){
+							oprSignature.setOutputMessageName(outputMessage);
+						}
 					}
-				}
+					oprListObj.setOperationSignature(oprSignature);
+             }
+				// parent operation .. needs to check with mukesh
+				
 
 			}
-
+			
+			
+			
 		}
-		log.debug("<----------End jsonArrayParseObjectProb in ParseJSON------------------->");
+		
+		
+		/*JSONObject objVar1 = (JSONObject) obj;
+		JSONObject objVar =(JSONObject)objVar1.get("operation_signature");
+		OperationSignature oprSignature = new OperationSignature();
+		if(objVar!=null ){
+			String oprName = (String) objVar.get("operation_name");
+			if(oprName!=null && !"".equals(oprName)){
+				oprSignature.setOperationName(oprName);	
+			}
+			
+			String inputMessage = (String) objVar.get("input_message_name");
+			if(inputMessage!=null && !"".equals(inputMessage)){
+				oprSignature.setInputMessageName(inputMessage);
+			}
+			
+			String outputMessage = (String) objVar.get("output_message_name");
+			if(outputMessage!=null && !"".equals(outputMessage)){
+				oprSignature.setOutputMessageName(outputMessage);
+			}
+		}*/
+		//istComponent.add(oprListObj);
+		log.debug("<----------End jsonArrayParseObjectProb in ParseJSON-----------listComponent-------->"+listComponent);
 		return listComponent;
 	}
  
@@ -1093,4 +1111,18 @@ public static void main(String args[]){
 			
 		log.debug("<----------End sequenceJsonParseProbe in ParseJSON------------------->");					
 	}
+ 
+ public static void main(String args[]){
+	ParseJSON parseJson=new ParseJSON();
+	try{
+		ObjectMapper mapper = new ObjectMapper();
+		Blueprint bluePrintProbe=parseJson.jsonFileToObjectProbe("blueprint.json");
+		System.out.println("======="+bluePrintProbe);
+		String blueprintJson=mapper.writeValueAsString(bluePrintProbe); 
+		System.out.println("<----blueprintJson---------->"+blueprintJson);
+	;
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+}
 }

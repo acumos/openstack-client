@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Blueprint implements Serializable {
@@ -35,15 +37,18 @@ public class Blueprint implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Blueprint(String name, String version, List<Node> nodes, List<OperationSignature> inputs,
-			Orchestrator orchestrator) {
+	public Blueprint(String name, String version, List<InputPort> inputPorts, List<Node> nodes,
+			ArrayList<ProbeIndicator> probeIndicator, List<TrainingClient> trainingClients) {
 		super();
 		this.name = name;
 		this.version = version;
+		this.inputPorts = inputPorts;
 		this.nodes = nodes;
-		this.inputs = inputs;
-		this.orchestrator = orchestrator;
+		this.probeIndicator = probeIndicator;
+		this.trainingClients = trainingClients;
 	}
+	
+	
 
 	@JsonProperty("name")
 	private String name = null;
@@ -54,38 +59,66 @@ public class Blueprint implements Serializable {
 	@JsonProperty("nodes")
 	private List<Node> nodes = null;
 
-	@JsonProperty("input_operation_signatures")
+	/*@JsonProperty("input_operation_signatures")
 	private List<OperationSignature> inputs = null;
 
 	@JsonProperty("orchestrator")
-	private Orchestrator orchestrator = null;
+	private Orchestrator orchestrator = null;*/
 	
-	@JsonProperty("probeIndocator")
-	private String probeIndocator = null;
+	
+	/*@JsonProperty("probeIndocator")
+	private String probeIndocator = null; */
+	
+	@JsonProperty("probeIndicator")
+	private ArrayList<ProbeIndicator> probeIndicator = null;
+	
+	@JsonProperty("input_ports")
+	private List<InputPort> inputPorts = null;
+	
+	
+	@JsonProperty("training_clients")
+	private List<TrainingClient> trainingClients = null;
+	
 
-	public String getProbeIndocator() {
-		return probeIndocator;
+	/*public ArrayList<ProbeIndicator> getProbeIndocator() {
+		return probeIndicator;
 	}
 
-	public void setProbeIndocator(String probeIndocator) {
-		this.probeIndocator = probeIndocator;
+	public void setProbeIndocator(ArrayList<ProbeIndicator> probeIndicatorLst) {
+		this.probeIndicator = probeIndicatorLst;
+	}*/
+
+	public List<InputPort> getInputPorts() {
+		return inputPorts;
 	}
 
-	public List<OperationSignature> getInputs() {
+	public void setInputPorts(List<InputPort> inputPorts) {
+		this.inputPorts = inputPorts;
+	}
+
+	public ArrayList<ProbeIndicator> getProbeIndicator() {
+		return probeIndicator;
+	}
+
+	public void setProbeIndicator(ArrayList<ProbeIndicator> probeIndicator) {
+		this.probeIndicator = probeIndicator;
+	}
+
+	/*public List<OperationSignature> getInputs() {
 		return inputs;
 	}
 
 	public void setInputs(List<OperationSignature> inputs) {
 		this.inputs = inputs;
-	}
+	}*/
 
-	public Blueprint addInput(OperationSignature os) {
+	/*public Blueprint addInput(OperationSignature os) {
 		if (this.inputs == null) {
 			this.inputs = new ArrayList<OperationSignature>();
 		}
 		this.inputs.add(os);
 		return this;
-	}
+	}*/
 
 	public String getName() {
 		return name;
@@ -103,13 +136,13 @@ public class Blueprint implements Serializable {
 		this.version = version;
 	}
 
-	public Orchestrator getOrchestrator() {
+	/*public Orchestrator getOrchestrator() {
 		return orchestrator;
 	}
 
 	public void setOrchestrator(Orchestrator orchestrator) {
 		this.orchestrator = orchestrator;
-	}
+	}*/
 
 	public List<Node> getNodes() {
 		return nodes;
@@ -138,8 +171,7 @@ public class Blueprint implements Serializable {
 	@Override
 	public String toString() {
 
-		return "Blueprint [name=" + name + ", version=" + version + ", nodes=" + nodes + ", orchestrator="
-				+ orchestrator + "]";
+		return "Blueprint [name=" + name + ", version=" + version + ", nodes=" + nodes + "]";
 	}
 
 }

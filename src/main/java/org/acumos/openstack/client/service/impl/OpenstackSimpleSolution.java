@@ -83,6 +83,8 @@ public class OpenstackSimpleSolution implements Runnable{
 	private String proxyIP;
 	private String proxyPort;
 	private String openStackIP;
+	private String repositoryNames;
+	private String repositoryDetails;
 	
 	public OpenstackSimpleSolution(){
 		
@@ -91,7 +93,8 @@ public class OpenstackSimpleSolution implements Runnable{
 	public OpenstackSimpleSolution(String flavourName,String  securityGropName,OpenstackDeployBean auth,String endpoint
 			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,
-			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,String proxyIP,String proxyPort,String openStackIP){
+			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,String proxyIP,String proxyPort,
+			 String openStackIP,String repositoryNames,String repositoryDetails){
 		//this.os = os;
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
@@ -117,6 +120,8 @@ public class OpenstackSimpleSolution implements Runnable{
 		this.proxyIP=proxyIP;
 		this.proxyPort=proxyPort;
 		this.openStackIP=openStackIP;
+		this.repositoryNames=repositoryNames;
+		this.repositoryDetails=repositoryDetails;
 	}
 	
 	public void run() {
@@ -157,6 +162,8 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("<--SimpleSolution--proxyIP---------->"+proxyIP);
 			 logger.debug("<--SimpleSolution--proxyPort---------->"+proxyPort);
 			 logger.debug("<--SimpleSolution--openStackIP---------->"+openStackIP);
+			 logger.debug("<--SimpleSolution--repositoryNames---------->"+repositoryNames);
+			 logger.debug("<--SimpleSolution--repositoryDetails---------->"+repositoryDetails);
 			 if(proxyPort==null){
 				 proxyPort="3128"; 
 			 }
@@ -285,12 +292,12 @@ public class OpenstackSimpleSolution implements Runnable{
 	 logger.debug("=====vmRegisterNumber========"+vmRegisterNumber+"======vmBind========"+vmBind);
 	 logger.debug("======SingletonMapClass.getInstance()========="+SingletonMapClass.getInstance());
 	 
-	 repositaryName=commonUtil.getRepositryName(auth.getImagetag());
-	 repositryImageName=commonUtil.getRepositryImageName(auth.getImagetag());
+	 repositaryName=commonUtil.getRepositryName(auth.getImagetag(),repositoryNames);
+	 repositryImageName=commonUtil.getRepositryImageName(auth.getImagetag(),repositoryNames);
 	 byte[] bytesArray=readBytesFromFile(keyName);
 	 logger.debug("==repositaryName==="+repositaryName+"======repositryImageName========"+repositryImageName);
 	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
-	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray);
+	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
 	 deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray);
 	 commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
 			 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "DP");
@@ -366,7 +373,7 @@ public class OpenstackSimpleSolution implements Runnable{
 		}
 	logger.debug("===============End===sshOpenStackCore=================="); 
 	}
-	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray)throws Exception{
+	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray,String repositoryDetails)throws Exception{
 		logger.debug("=================installDockerOpenstack==Simple Solution=Start================");
 		SSHShell sshShell = null;
 		try {
@@ -404,7 +411,8 @@ public class OpenstackSimpleSolution implements Runnable{
 			 String daemon_file=""
 					    +	"{ \n"
 						+	 " \"insecure-registries\": [ \n"
-						+	  "\"cognita-nexus01.eastus.cloudapp.azure.com:8081\", \"cognita-nexus01.eastus.cloudapp.azure.com:8000\", \"cognita-nexus01.eastus.cloudapp.azure.com:8001\", \"cognita-nexus01.eastus.cloudapp.azure.com:8002\" \n"
+						//+	  "\"cognita-nexus01.eastus.cloudapp.azure.com:8081\", \"cognita-nexus01.eastus.cloudapp.azure.com:8000\", \"cognita-nexus01.eastus.cloudapp.azure.com:8001\", \"cognita-nexus01.eastus.cloudapp.azure.com:8002\" \n"
+						+ " "+repositoryDetails+" \n"
 						+	  "], \n"
 						+	 " \"disable-legacy-registry\": true \n"
 						+	"} \n";

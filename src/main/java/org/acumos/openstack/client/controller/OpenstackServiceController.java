@@ -34,6 +34,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import org.acumos.openstack.client.api.APINames;
 import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
 import org.acumos.openstack.client.service.impl.OpenstackSimpleSolution;
@@ -43,6 +44,7 @@ import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.CommonUtil;
 import org.acumos.openstack.client.util.ParseJSON;
+import org.acumos.openstack.client.util.ProbeIndicator;
 import org.json.JSONObject;
 
 import org.openstack4j.api.Builders;
@@ -119,6 +121,8 @@ public class OpenstackServiceController extends AbstractController {
 		String proxyIP="";
 		String proxyPort="";
 		String openStackIP="";
+		String repositoryNames="";
+		String repositoryDetails="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 flavourName=env.getProperty("docker.openstack.flavourName");
@@ -142,6 +146,8 @@ public class OpenstackServiceController extends AbstractController {
 			 proxyIP=env.getProperty("docker.openstack.proxyIP");
 			 proxyPort=env.getProperty("docker.openstack.proxyPort");
 			 openStackIP=env.getProperty("docker.openstack.openStackIP");
+			 repositoryNames=env.getProperty("docker.openstack.reposityNames");
+			 repositoryDetails=env.getProperty("docker.openstack.reposityDetails");
 			 
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
@@ -164,13 +170,15 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----proxyIP----------------->"+proxyIP);
 			 logger.debug("<----proxyPort--------------->"+proxyPort);
 			 logger.debug("<----openStackIP--------------->"+openStackIP);
+			 logger.debug("<----repositoryNames----------->"+repositoryNames);
+			 logger.debug("<----repositoryDetails----------->"+repositoryDetails);
 			 
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
 			 jsonOutput.put("Status", uidNumStr);
 			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
-					 vmUserName,dockerUserName,dockerPassword,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpwd,proxyIP,proxyPort,openStackIP);
+					 vmUserName,dockerUserName,dockerPassword,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpwd,proxyIP,proxyPort,openStackIP,repositoryNames,repositoryDetails);
 			 Thread t = new Thread(opSingleSolution);
 	         t.start();
 		 
@@ -225,6 +233,9 @@ public class OpenstackServiceController extends AbstractController {
 		String probUser="";
 		String probePass="";
 		String jsonFileName="blueprint.json";
+		String probeNexusEndPoint="";
+		String probeInternalPort="";
+		String repositoryNames="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -266,12 +277,16 @@ public class OpenstackServiceController extends AbstractController {
 			probePrintName=env.getProperty("probe.name");
 			probUser=env.getProperty("probe.username");
 			probePass=env.getProperty("probe.password");
+			probeNexusEndPoint=env.getProperty("probe.probeNexusEndPoint");
+			probeInternalPort=env.getProperty("probe.internalPort");
+			repositoryNames=env.getProperty("docker.openstack.reposityNames");
 			
-			logger.debug("<------probePrintImage---------->"+probePrintImage);
-			logger.debug("<------probePrintName---------->"+probePrintName);
-			logger.debug("<------probUser---------->"+probUser);
-			logger.debug("<------probePass---------->"+probePass);
-			 
+			 logger.debug("<------probePrintImage---------->"+probePrintImage);
+			 logger.debug("<------probePrintName---------->"+probePrintName);
+			 logger.debug("<------probUser---------->"+probUser);
+			 logger.debug("<------probePass---------->"+probePass);
+			 logger.debug("<------probeNexusEndPoint---------->"+probeNexusEndPoint);
+			 logger.debug("<------probeInternalPort---------->"+probeInternalPort);
 			 logger.debug("<-----flavourName------->"+flavourName);
 			 logger.debug("<----securityGropName--->"+securityGropName);
 			 logger.debug("<----endpoint----------->"+endpoint);
@@ -305,6 +320,7 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----openStackIP----------->"+openStackIP);
 			 logger.debug("<----bluePrintPortNumber----------->"+bluePrintPortNumber);
 			 logger.debug("<------authObject.getSolutionRevisionId()---------->"+auth.getSolutionRevisionId());
+			 logger.debug("<----repositoryNames----------->"+repositoryNames);
 			 
 			 
 			 String bluePrintStr=commonUtil.getBluePrintNexus(auth.getSolutionId(), auth.getSolutionRevisionId(),dataSource,
@@ -342,13 +358,28 @@ public class OpenstackServiceController extends AbstractController {
 		 	 HashMap<String,String> imageMap=parseJson.parseJsonFile();
 			 ArrayList<String> list=commonUtil.iterateImageMap(imageMap);
 			 LinkedList<String> sequenceList=parseJson.getSequenceFromJSON();*/
-			if (bluePrintProbe.getProbeIndocator() != null && bluePrintProbe.getProbeIndocator().equalsIgnoreCase("True") ) {
+				logger.debug("<------bluePrintProbe.getProbeIndocator()---------->"+bluePrintProbe.getProbeIndicator());
+				
+				ArrayList<ProbeIndicator> probeIndicatorList = bluePrintProbe.getProbeIndicator();
+				ProbeIndicator prbIndicator = null;
+				if(probeIndicatorList != null && probeIndicatorList.size() >0) {
+					prbIndicator = probeIndicatorList.get(0);
+				}			
+			    if (bluePrintProbe.getProbeIndicator() != null && prbIndicator != null && prbIndicator.getValue().equalsIgnoreCase("True") ) {
+
+					if (probePrintImage != null && !"".equals(probePrintImage)) {
+						list.add(probePrintImage);
+						imageMap.put(probePrintImage, "Probe");
+						sequenceList=commonUtil.addProbeSequence(sequenceList,"Probe");
+					}
+				}	
+			/*if (bluePrintProbe.getProbeIndocator() != null && bluePrintProbe.getProbeIndocator().equalsIgnoreCase("True") ) {
                  if (probePrintImage != null && !"".equals(probePrintImage)) {
 					list.add(probePrintImage);
 					imageMap.put(probePrintImage, "probeContainer");
 					sequenceList=commonUtil.addProbeSequence(sequenceList,"probeContainer");
 				}
-			  }	
+			  }	*/
 			 if(bluePrintImage!=null && !"".equals(bluePrintImage)){
 				list.add(bluePrintImage);
 				imageMap.put(bluePrintImage, "BluePrintContainer");
@@ -363,7 +394,8 @@ public class OpenstackServiceController extends AbstractController {
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
 					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrintProbe,uidNumStr,solutionPort,Sleeptime,
-					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,nodeTypeContainerMap);
+					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,nodeTypeContainerMap,probeNexusEndPoint
+					 ,probeInternalPort,repositoryNames);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 

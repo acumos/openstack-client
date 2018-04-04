@@ -48,11 +48,11 @@ public class NodeTest {
 		    dependsOn.add(component);
 		    Node node =new Node();
 		    node.setContainerName(containerName);
-		    node.setDependsOn(dependsOn);
+		    //node.setDependsOn(dependsOn);
 		    node.setImage(image);
 		    Assert.assertEquals(containerName, node.getContainerName());
 		    Assert.assertEquals(image, node.getImage());
-		    Assert.assertEquals(dependsOn, node.getDependsOn());
+		   // Assert.assertEquals(dependsOn, node.getDependsOn());
 		}catch(Exception ex){
 			   logger.error("Error in nodeTestObjectparameter---> "+ex.getMessage()); 
 		   }
