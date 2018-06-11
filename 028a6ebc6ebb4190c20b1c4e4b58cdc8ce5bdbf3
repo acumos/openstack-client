@@ -16,6 +16,23 @@
       "revId": "028a6ebc6ebb4190c20b1c4e4b58cdc8ce5bdbf3",
       "serverId": "655300a2-7a56-4504-9153-881edd907bea",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9b2b05d_9ed3ff4c",
+        "filename": "src/main/java/org/acumos/openstack/client/service/impl/OpenstackCompositeSolution.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-06-11T13:19:49Z",
+      "side": 1,
+      "message": "Why are these port numbers hardcoded?  At the least they should be in configuration.",
+      "revId": "028a6ebc6ebb4190c20b1c4e4b58cdc8ce5bdbf3",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
     }
   ]
 }
