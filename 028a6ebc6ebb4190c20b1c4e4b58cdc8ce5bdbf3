@@ -33,6 +33,23 @@
       "revId": "028a6ebc6ebb4190c20b1c4e4b58cdc8ce5bdbf3",
       "serverId": "655300a2-7a56-4504-9153-881edd907bea",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eca9b404_226dfcb9",
+        "filename": "src/main/java/org/acumos/openstack/client/service/impl/OpenstackSimpleSolution.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-06-11T13:20:25Z",
+      "side": 1,
+      "message": "Why are these port numbers hardcoded?",
+      "revId": "028a6ebc6ebb4190c20b1c4e4b58cdc8ce5bdbf3",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
     }
   ]
 }
