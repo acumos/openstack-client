@@ -21,119 +21,132 @@ package org.acumos.openstack.client.test.util;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.util.Blueprint;
+import org.acumos.openstack.client.util.DataBrokerBean;
 import org.acumos.openstack.client.util.ParseJSON;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ParseJsonTest {
 	
 	private static Logger logger = LoggerFactory.getLogger(ParseJsonTest.class);
 	@Test	
-	public void parseJsonFileTest(){
-		logger.info("<---------Start-------parseJsonFileTest-------------->");
-		try{
-			HashMap<String,String> imageMap=null;
-			ParseJSON parse=new ParseJSON();
-			imageMap=parse.parseJsonFile("blueprint2.json");
-			assertNotNull(imageMap);
-		}catch(Exception e){
-			logger.error("Exception in parseJsonFileTest-->"+e.getMessage());
-		}
-		logger.info("<---------End-------parseJsonFileTest-------------->");
+	public void parseJsonFileTest()throws Exception{
+		logger.info("parseJsonFileTest Start");
+		HashMap<String,String> imageMap=null;
+		ParseJSON parse=new ParseJSON();
+		imageMap=parse.parseJsonFile(OpenStackTestConstants.TEST_BLUEPRINT_OLD_FILE);
+		assertNotNull(imageMap);
+		logger.info("parseJsonFileTest End");
 	}
    
 	@Test	
-	public void jsonFileToObjectTest(){
-		logger.info("<---------Start-------jsonFileToObjectTest-------------->");
-		try{
-			HashMap<String,String> imageMap=null;
-			ParseJSON parse=new ParseJSON();
-			Blueprint blueprint=null;
-			blueprint=parse.jsonFileToObject("blueprint2.json");
-			assertNotNull(blueprint);
-		}catch(Exception e){
-			logger.error("Exception in jsonFileToObjectTest--->"+e.getMessage());
-		}
-		logger.info("<---------End-------jsonFileToObjectTest-------------->");
-	}
-	
-	@Test	
-	public void getSequenceFromJSONTest(){
-		logger.info("<---------Start-------getSequenceFromJSONTest-------------->");
-		try{
-			HashMap<String,String> imageMap=null;
-			ParseJSON parse=new ParseJSON();
-			LinkedList<String> linkedList=null;
-			linkedList=parse.getSequenceFromJSON("blueprint2.json");
-			assertNotNull(linkedList);
-		}catch(Exception e){
-			logger.debug("Exception in jsonFileToObjectTest"+e.getMessage());
-		}
-		logger.info("<---------End-------getSequenceFromJSONTest-------------->");
-	}
-	
-	@Test	
-	public void jsonFileToObjectProbeTest(){
-		logger.info("<---------Start-------jsonFileToObjectProbeTest-------------->");
-		try{
+	public void jsonFileToObjectTest()throws Exception{
+		logger.info("jsonFileToObjectTest Start");
 		HashMap<String,String> imageMap=null;
 		ParseJSON parse=new ParseJSON();
 		Blueprint blueprint=null;
-		blueprint=parse.jsonFileToObjectProbe("blueprint.json");
+		ObjectMapper mapper = new ObjectMapper();
+		DataBrokerBean dataBrokerbean=parse.getDataBrokerContainer(OpenStackTestConstants.TEST_BLUEPRINT_FILE);
+		blueprint=parse.jsonFileToObject(OpenStackTestConstants.TEST_BLUEPRINT_FILE,dataBrokerbean);
+		String blueprintJson=mapper.writeValueAsString(blueprint); 
+		logger.debug("blueprintJson "+blueprintJson);
 		assertNotNull(blueprint);
-		}catch(Exception e){
-			logger.debug("Exception in jsonFileToObjectProbeTest"+e.getMessage());
-		}
-		logger.info("<---------End-------jsonFileToObjectProbeTest-------------->");
+		logger.info("jsonFileToObjectTest End");
 	}
-	
-	@Test
-	public void parseJsonFileProbeTest(){
-		logger.info("<---------Start-------parseJsonFileProbeTest-------------->");
-		try{
-		HashMap<String,String> imageMap=null;
+	@Test	
+	public void getSequenceFromJSONTest()throws Exception{
+		logger.info("getSequenceFromJSONTest Start");
 		ParseJSON parse=new ParseJSON();
-		imageMap=parse.parseJsonFileProbe("blueprint.json");
-		assertNotNull(imageMap);
-		}catch(Exception e){
-			logger.debug("Exception in parseJsonFileProbeTest"+e.getMessage());
-		}
-		logger.info("<---------End-------parseJsonFileProbeTest-------------->");
+		LinkedList<String> linkedList=null;
+		linkedList=parse.getSequenceFromJSON(OpenStackTestConstants.TEST_BLUEPRINT_OLD_FILE);
+		logger.info("getSequenceFromJSONTest linkedList "+linkedList);
+		assertNotNull(linkedList);
+		logger.info("getSequenceFromJSONTest End");
 	}
 	
 	@Test	
-	public void getSequenceFromJSONProbeTest(){
-		logger.info("<---------Start-------getSequenceFromJSONProbeTest-------------->");
-		try{
+	public void jsonFileToObjectProbeTest()throws Exception{
+		logger.info("jsonFileToObjectProbeTest Start");
 		HashMap<String,String> imageMap=null;
 		ParseJSON parse=new ParseJSON();
-		
-		LinkedList<String> linkedList=null;
-		linkedList=parse.getSequenceFromJSONProbe("blueprint.json");
-		assertNotNull(linkedList);
-		}catch(Exception e){
-			logger.debug("Exception in getSequenceFromJSONProbeTest"+e.getMessage());
-		}
-		logger.info("<---------End-------getSequenceFromJSONProbeTest-------------->");
+		ObjectMapper mapper = new ObjectMapper();
+		Blueprint blueprint=null;
+		DataBrokerBean dataBrokerbean=parse.getDataBrokerContainer(OpenStackTestConstants.TEST_BLUEPRINT_FILE);
+		blueprint=parse.jsonFileToObjectProbe(OpenStackTestConstants.TEST_BLUEPRINT_FILE,dataBrokerbean);
+		String blueprintJson=mapper.writeValueAsString(blueprint); 
+		logger.debug("blueprintJson "+blueprintJson);
+		assertNotNull(blueprint);
+		logger.info("jsonFileToObjectProbeTest End");
 	}
 	
 	@Test
-	public void nodeTypeContainerMapTest(){
-		logger.info("<---------Start-------nodeTypeContainerMapTest-------------->");
-		try{
+	public void parseJsonFileImageMapTest()throws Exception{
+		logger.info("parseJsonFileImageMapTest Start");
+		HashMap<String,String> imageMap=null;
+		ParseJSON parse=new ParseJSON();
+		imageMap=parse.parseJsonFileImageMap(OpenStackTestConstants.TEST_BLUEPRINT_FILE);
+		assertNotNull(imageMap);
+		logger.info("parseJsonFileImageMapTest End");
+	}
+	@Test	
+	public void getSequenceListFromJSONTest()throws Exception{
+		logger.info("getSequenceListFromJSONTest Start");
+		HashMap<String,String> imageMap=null;
+		ParseJSON parse=new ParseJSON();
+		LinkedList<String> linkedList=null;
+		linkedList=parse.getSequenceListFromJSON(OpenStackTestConstants.TEST_BLUEPRINT_FILE);
+		logger.info("getSequenceListFromJSONTest linkedList "+linkedList);
+		assertNotNull(linkedList);
+		logger.info("getSequenceListFromJSONTest End");
+	}
+	
+	@Test
+	public void nodeTypeContainerMapTest()throws Exception{
+		logger.info("nodeTypeContainerMapTest Start");
 		HashMap<String,DeploymentBean> nodeTypeContainerMap=null;
 		ParseJSON parse=new ParseJSON();
-		nodeTypeContainerMap=parse.getNodeTypeContainerMap("blueprint.json");
+		nodeTypeContainerMap=parse.getNodeTypeContainerMap(OpenStackTestConstants.TEST_BLUEPRINT_FILE);
 		assertNotNull(nodeTypeContainerMap);
-		}catch(Exception e){
-			logger.debug("Exception in nodeTypeContainerMapTest"+e.getMessage());
-		}
-		logger.info("<---------End-------nodeTypeContainerMapTest-------------->");
+		logger.info("nodeTypeContainerMapTest End");
+	}
+	
+	@Test
+	public void getDataBrokerContainerTest()throws Exception{
+		logger.info("nodeTypeContainerMapTest Start");
+		DataBrokerBean	dataBrokerbean=null;	
+		ParseJSON parse=new ParseJSON();
+		ObjectMapper mapper = new ObjectMapper();
+		dataBrokerbean=parse.getDataBrokerContainer(OpenStackTestConstants.TEST_BLUEPRINT_FILE);
+		String dataBrokerbeanjson=mapper.writeValueAsString(dataBrokerbean); 
+		logger.info("dataBrokerbeanjson "+dataBrokerbeanjson);
+		assertNotNull(dataBrokerbean);
+		logger.info("nodeTypeContainerMapTest End");
+	}
+	@Test
+	public void checkProbeIndicatorTest()throws Exception{
+		logger.info("nodeTypeContainerMapTest Start");
+		boolean probeIdicator=false;
+		ParseJSON parse=new ParseJSON();
+		 probeIdicator=parse.checkProbeIndicator(OpenStackTestConstants.TEST_BLUEPRINT_FILE);
+		assertNotNull(probeIdicator);
+		logger.info("nodeTypeContainerMapTest End");
 	}
 }

@@ -272,19 +272,17 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			 }
 			logger.debug("<--------End---putContainerDetailsJSON------->");
 		}
-		public void putBluePrintDetailsJSON(Blueprint  bluePrint,String apiUrl){
+		public void putBluePrintDetailsJSON(String  bluePrintStr,String apiUrl){
 			logger.debug("<--------Start---putBluePrintDetailsJSON------->");
 			try {
-				logger.debug("<----bluePrint---------->"+bluePrint.toString()+"======apiUrl==="+apiUrl);
+				logger.debug("<---bluePrintStr----->"+bluePrintStr);
+				logger.debug("<---apiUrl----->"+apiUrl);
 				final String url = apiUrl;
-				ObjectMapper mapper = new ObjectMapper();
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
-				String blueprintJson=mapper.writeValueAsString(bluePrint); 
-				logger.debug("<----blueprintJson---------->"+blueprintJson);
 				RestTemplate restTemplate = new RestTemplate();
 			    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-			    HttpEntity<String> entity = new HttpEntity<String>(blueprintJson,headers);
+			    HttpEntity<String> entity = new HttpEntity<String>(bluePrintStr,headers);
 			    restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
 			   
 			  } catch (Exception e) {
@@ -427,6 +425,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			}
 			return isEmpty;
 		}
+		
 		public String getDataBrokerTunnelNumber(List<DeploymentBean> deploymentList, String dataBrokerName){
 			logger.debug("<---------Start getDataBrokerIP ------------------------->");
 			String dataBrokerTunnelNum="";
@@ -434,13 +433,33 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			logger.debug("<---dataBrokerName---->"+dataBrokerName);
 			if(deploymentList!=null && deploymentList.size() > 0  && dataBrokerName!=null && !"".equals(dataBrokerName)){
 				for(DeploymentBean bean:deploymentList){
-					if(bean!=null && bean.getNodeType()!=null && bean.getNodeType().equalsIgnoreCase(dataBrokerName)){
+					if(bean!=null && bean.getNodeType()!=null && bean.getNodeType().equalsIgnoreCase(dataBrokerName)
+							&& bean.getDataBrokerType()!=null && !bean.getDataBrokerType().equalsIgnoreCase(OpenStackConstants.DATA_BROKER_CSV_FILE)){
 						dataBrokerTunnelNum=bean.getTunnelNumber();
 					}
 				}
 			}
 			logger.debug("<---------End getDataBrokerIP -----------------dataBrokerTunnelNum-------->"+dataBrokerTunnelNum);
 			return dataBrokerTunnelNum;
+		}
+		public String getDataBrokerTunnelCSV(List<DeploymentBean> deploymentList, String dataBrokerName){
+			logger.debug("getDataBrokerTunnelCSV Start");
+			String dataBrokerTunnel="";
+			logger.debug("deploymentList "+deploymentList);
+			logger.debug("dataBrokerName"+dataBrokerName);
+			if(deploymentList!=null && deploymentList.size() > 0  && dataBrokerName!=null && !"".equals(dataBrokerName)){
+				for(DeploymentBean bean:deploymentList){
+					logger.debug("bean.NodeType() "+bean.getNodeType());
+					logger.debug("bean.DataBrokerType() "+bean.getDataBrokerType());
+					if(bean!=null && bean.getNodeType()!=null && bean.getNodeType().equalsIgnoreCase(dataBrokerName)
+							&& bean.getDataBrokerType()!=null && bean.getDataBrokerType().equalsIgnoreCase(OpenStackConstants.DATA_BROKER_CSV_FILE)){
+						dataBrokerTunnel=bean.getTunnelNumber();
+					}
+				}
+			}
+			logger.debug("dataBrokerTunnel "+dataBrokerTunnel);
+			logger.debug("getDataBrokerTunnelCSV End");
+			return dataBrokerTunnel;
 		}
 		public void putDataBrokerDetails(OpenstackCompositeDeployBean deployDataObject,String apiUrl){
 			logger.debug("<--------Start---putDataBrokerDetails------->");
@@ -467,5 +486,62 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			 }
 			logger.debug("<--------End---putDataBrokerDetails------->");
 		}
+		
+		public NexusArtifactClient nexusArtifactClientDetails(String nexusUrl, String nexusUserName,String nexusPassword) {
+			logger.debug("nexusArtifactClientDetails start");
+			RepositoryLocation repositoryLocation = new RepositoryLocation();
+			repositoryLocation.setId("1");
+			repositoryLocation.setUrl(nexusUrl);
+			repositoryLocation.setUsername(nexusUserName);
+			repositoryLocation.setPassword(nexusPassword);
+			NexusArtifactClient nexusArtifactClient = new NexusArtifactClient(repositoryLocation);
+			logger.debug("nexusArtifactClientDetails End");
+			return nexusArtifactClient;
+	}
+	 
+	public ByteArrayOutputStream getNexusUrlFile(String nexusUrl, String nexusUserName,String nexusPassword,String nexusURI)throws Exception {
+		logger.debug("getNexusUrlFile start");
+		ByteArrayOutputStream byteArrayOutputStream=null;
+		try
+		{
+			NexusArtifactClient nexusArtifactClient=nexusArtifactClientDetails(nexusUrl, 
+					nexusUserName, nexusPassword);
+			 byteArrayOutputStream = nexusArtifactClient.getArtifact(nexusURI);
+			 logger.debug("byteArrayOutputStream "+byteArrayOutputStream);
+		}catch (Exception e) {
+			 logger.error("getNexusUrlFile failed", e);
+			 throw e;
+         }
+		logger.debug("getNexusUrlFile ");
+		return byteArrayOutputStream;
+   }
+	public void callCsvConfigDB(OpenstackCompositeDeployBean deployDataObject,String apiUrl,DataBrokerBean dataBrokerBean)throws Exception{
+		logger.debug("callCsvConfigDB Start");
+		try {
+			logger.debug("apiUrl "+apiUrl);
+			final String url = apiUrl;
+			if(deployDataObject!=null){
+				dataBrokerBean.setUserName(deployDataObject.getUsername());
+				dataBrokerBean.setPassword(deployDataObject.getPassword());
+				dataBrokerBean.setHost(deployDataObject.getHost());
+				dataBrokerBean.setPort(deployDataObject.getPort());
+			}
+			RestTemplate restTemplate = new RestTemplate();
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			ObjectMapper mapper = new ObjectMapper();
+			String dataBrokerBeanJson=mapper.writeValueAsString(dataBrokerBean);
+			logger.debug("dataBrokerBeanJson "+dataBrokerBeanJson);
+		    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		    	
+		    HttpEntity<String> entity = new HttpEntity<String>(dataBrokerBeanJson,headers);
+		    restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
+		   
+		  } catch (Exception e) {
+			  logger.error("callCsvConfigDB failed", e);
+			  throw e;
+		 }
+		logger.debug("callCsvConfigDB End");
+	}
 
 }

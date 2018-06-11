@@ -30,15 +30,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
 import org.acumos.openstack.client.transport.ContainerInfo;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.CommonUtil;
+import org.acumos.openstack.client.util.DataBrokerBean;
 import org.acumos.openstack.client.util.DockerInfo;
 import org.acumos.openstack.client.util.DockerInfoList;
+import org.acumos.openstack.client.util.OpenStackConstants;
 import org.acumos.openstack.client.util.ProbeIndicator;
 import org.acumos.openstack.client.util.SSHShell;
 import org.acumos.openstack.client.util.SingletonMapClass;
@@ -109,6 +110,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String probeNexusEndPoint;
 	private String probeInternalPort;
 	private String repositoryNames;
+	private DataBrokerBean dataBrokerBean;
+	private String exposeDataBrokerPort;
+	private String internalDataBrokerPort;
+	private String bluePrintStr;
 	
 	public OpenstackCompositeSolution(){
 		
@@ -121,7 +126,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 String nexusUrl,String nexusUserName,String nexusPassword,ArrayList<String> list,HashMap<String,String> imageMap,LinkedList<String> sequenceList,
 			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime,String proxyIP,String proxyPort,
 			 String openStackIP,String bluePrintPortNumber,String probePrintName,String probUser,String probePass,
-			 HashMap<String,DeploymentBean> nodeTypeContainerMap,String probeNexusEndPoint,String probeInternalPort,String repositoryNames){
+			 HashMap<String,DeploymentBean> nodeTypeContainerMap,String probeNexusEndPoint,String probeInternalPort,String repositoryNames,
+			 DataBrokerBean dataBrokerBean,String exposeDataBrokerPort,String internalDataBrokerPort,String bluePrintStr){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
@@ -167,6 +173,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.probeNexusEndPoint=probeNexusEndPoint;
 			this.probeInternalPort=probeInternalPort;
 			this.repositoryNames=repositoryNames;
+			this.dataBrokerBean=dataBrokerBean;
+			this.exposeDataBrokerPort = exposeDataBrokerPort;
+			this.internalDataBrokerPort = internalDataBrokerPort;
+			this.bluePrintStr = bluePrintStr;
 	}
 	
 	
@@ -226,6 +236,9 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("<--CompositeSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
 			 logger.debug("<--CompositeSolution---probeNexusEndPoint-------->"+probeNexusEndPoint);
 			 logger.debug("<--CompositeSolution---probeInternalPort-------->"+probeInternalPort);
+			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
+			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
+			 logger.debug(" JSON FROM DS bluePrintStr "+bluePrintStr);
 			 //solutionPort="8336";
 			 //stackIp="10.1.0.100";
 			 int proxyPortInt=Integer.parseInt(proxyPort);
@@ -411,13 +424,16 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			            		continue;
 			            	}
 	 		            	String nodeTypeContainer="";
+    		            	String nodeTypeName="";
     		            	if(nodeTypeContainerMap!=null && nodeTypeContainerMap.size() > 0 && nodeTypeContainerMap.get(finalContainerName)!=null){
     		            		DeploymentBean dBean=nodeTypeContainerMap.get(finalContainerName);
-    		            		if(dBean!=null && dBean.getScript()!=null){
+    		            		if(dBean!=null){
     		            			nodeTypeContainer=dBean.getNodeType();
+    		            			nodeTypeName=dBean.getDataBrokerType();
     		            		}
     		            		
     		            	}
+    		            	logger.debug("<----nodeTypeName--------->"+nodeTypeName);
     		            	logger.debug("<----nodeTypeContainer--------->"+nodeTypeContainer);
 	 		            	logger.debug("<----finalContainerName--------->"+finalContainerName);
 	 		            	logger.debug("<----containerInstanceBluePrint--------->"+containerInstanceBluePrint);
@@ -440,6 +456,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
 	 		            			portNumber=probeInternalPort;
 	 		            			portNumberString=probeInternalPort+":"+probeInternalPort;
+	 		            		}else if(nodeTypeContainer!=null && !"".equals(nodeTypeContainer) && nodeTypeContainer.equalsIgnoreCase(OpenStackConstants.DATABROKER_NAME)
+	    		        					&& nodeTypeName!=null && !"".equals(nodeTypeName) && nodeTypeName.equalsIgnoreCase(OpenStackConstants.DATA_BROKER_CSV_FILE)){
+	    		        				portNumberString=exposeDataBrokerPort+":"+internalDataBrokerPort;
+	    		        				portNumber=exposeDataBrokerPort;
 	 		            		}else{
 	 		            			portNumber=portArr[count];
 	 		            			if(solutionPort!=null && !"".equals(solutionPort)){
@@ -484,13 +504,11 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
     		        			logger.debug("==portNumber===:" + portNumber+"=TunnelNum="+portMap.get(portNumber));
     		        			deploymentBean.setTunnelNumber(portMap.get(portNumber));
     		        		}
-    		        		deploymentBean.setNodeType(nodeTypeContainer);
-    		        		deploymentList.add(deploymentBean);
-    		        		
     		        		ContainerInfo containerInfo = new ContainerInfo();
     		        		containerInfo.setContainerName(finalContainerName);
     		        		containerInfo.setContainerIp(floatingIp);
     		        		containerInfo.setContainerPort(portNumber);
+    		        		
     		        		//containerInfo.setNodeType(nodeTypeContainer);
     		        		logger.debug("<--Before-Probe-containerInstanceProbe--------->"+containerInstanceProbe+"===finalContainerName==="+finalContainerName);
     		        		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
@@ -498,8 +516,20 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	    		        	   containerInfo.setNodeType("Probe");
 	    		        	   probeIP = floatingIp;
 	    		        	   probePort = portNumber;
-    		        		}
+	    		        	   containerInfo.setNodeType(OpenStackConstants.PROBE_NODE_TYPE);
+	    		        	   deploymentBean.setNodeType(OpenStackConstants.PROBE_NODE_TYPE);
+	    		        	   deploymentBean.setDataBrokerType("");
+    		        		}else if(nodeTypeContainer!=null && !"".equals(nodeTypeContainer)){
+	    		        			containerInfo.setNodeType(nodeTypeContainer);
+	    		        			deploymentBean.setNodeType(nodeTypeContainer);
+	    		        			deploymentBean.setDataBrokerType(nodeTypeName);
+    		        		}else{
+    		        			containerInfo.setNodeType(OpenStackConstants.DEFAULT_NODE_TYPE);
+    		        			deploymentBean.setNodeType(OpenStackConstants.DEFAULT_NODE_TYPE);
+    		        			deploymentBean.setDataBrokerType("");
+    		        	    }
                            probeContainerBeanList.add(containerInfo);
+                           deploymentList.add(deploymentBean);
 	 		            	
 	 		            }	
 	                	 
@@ -530,17 +560,37 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 logger.debug("<-----urlDataBroker---------->"+urlDataBroker);
 		 logger.debug("<-----dataBrokerTunnelNum---------->"+dataBrokerTunnelNum);
 		 
+		 String csvDataBrokerTunnel="";
+		  String csvDataBrokerUrl="";
+		  if(dataBrokerBean!=null){
+			  csvDataBrokerTunnel=commonUtil.getDataBrokerTunnelCSV(deploymentList,OpenStackConstants.DATABROKER_NAME);
+		  }
+		  if(csvDataBrokerTunnel!=null && !"".equalsIgnoreCase(csvDataBrokerTunnel)){
+			  csvDataBrokerUrl="http://"+openStackIP+":"+csvDataBrokerTunnel+"/"+OpenStackConstants.CONFIG_DB_URL;
+		  }
+		  logger.debug("csvDataBrokerUrl "+csvDataBrokerUrl);
+		  logger.debug("csvDataBrokerTunnel "+csvDataBrokerTunnel);
+		  logger.debug("urlDataBroker "+urlDataBroker);
+		  logger.debug("dataBrokerTunnelNum "+dataBrokerTunnelNum);
+		  // Added for probe
+		  
+		  if(csvDataBrokerTunnel!=null && !"".equalsIgnoreCase(csvDataBrokerTunnel)){
+			  logger.debug("Inside csv Data Broker ConfigDB  "); 
+			  commonUtil.callCsvConfigDB(auth,csvDataBrokerUrl,dataBrokerBean);
+			 }
+		  if(dataBrokerTunnelNum!=null &&  !"".equals(dataBrokerTunnelNum)){
+				 logger.debug("Inside putDataBrokerDetails ===========> ");
+				 commonUtil.putDataBrokerDetails(auth,urlDataBroker);
+			  }
+		  if(bluePrint!=null){
+				 commonUtil.putBluePrintDetailsJSON(bluePrintStr,urlBluePrint);
+			 }
 		 if(dockerList!=null){
 			 DockerInfoList dockerInfoFinalList=dockerList;
 			 commonUtil.putContainerDetailsJSON(dockerInfoFinalList,urlDockerInfo);
 			}
-		 if(bluePrint!=null){
-			 commonUtil.putBluePrintDetailsJSON(bluePrint,urlBluePrint);
-		  }
-		 if(dataBrokerTunnelNum!=null &&  !"".equals(dataBrokerTunnelNum)){
-			 logger.debug("Inside putDataBrokerDetails ===========> ");
-			 commonUtil.putDataBrokerDetails(auth,urlDataBroker);
-			}
+		
+		 
 		// Added notification for probe code
 		 ArrayList<ProbeIndicator> probeIndicatorList = bluePrint.getProbeIndicator();
 		 ProbeIndicator prbIndicator = null;

@@ -43,6 +43,8 @@ import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.CommonUtil;
+import org.acumos.openstack.client.util.DataBrokerBean;
+import org.acumos.openstack.client.util.OpenStackConstants;
 import org.acumos.openstack.client.util.ParseJSON;
 import org.acumos.openstack.client.util.ProbeIndicator;
 import org.json.JSONObject;
@@ -74,6 +76,7 @@ import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.io.ByteArrayOutputStream;
 
 @RestController
 public class OpenstackServiceController extends AbstractController {
@@ -236,6 +239,8 @@ public class OpenstackServiceController extends AbstractController {
 		String probeNexusEndPoint="";
 		String probeInternalPort="";
 		String repositoryNames="";
+		String exposeDataBrokerPort="";
+		String internalDataBrokerPort="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -280,6 +285,10 @@ public class OpenstackServiceController extends AbstractController {
 			probeNexusEndPoint=env.getProperty("probe.probeNexusEndPoint");
 			probeInternalPort=env.getProperty("probe.internalPort");
 			repositoryNames=env.getProperty("docker.openstack.reposityNames");
+			exposeDataBrokerPort=env.getProperty(OpenStackConstants.EXPOSE_DATABROKER_PORT);
+			internalDataBrokerPort=env.getProperty(OpenStackConstants.INTERNAL_DATABROKER_PORT);
+			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
+			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
 			
 			 logger.debug("<------probePrintImage---------->"+probePrintImage);
 			 logger.debug("<------probePrintName---------->"+probePrintName);
@@ -333,31 +342,57 @@ public class OpenstackServiceController extends AbstractController {
 				HashMap<String,DeploymentBean> nodeTypeContainerMap=null;
 				ArrayList<String> list=null;
 				LinkedList<String> sequenceList=null;
+				DataBrokerBean dataBrokerBean=null;
 				logger.debug("<------probeIndicator---------->"+probeIndicator);
-				if(probeIndicator){
-					//-------------- New Probe Start ------------------- ***
-					//For new blueprint.json
-					 bluePrintProbe =parseJson.jsonFileToObjectProbe(jsonFileName);
-					//how many images
-					imageMap=parseJson.parseJsonFileProbe(jsonFileName);
+                if(probeIndicator){
+					
+					imageMap=parseJson.parseJsonFileImageMap(OpenStackConstants.JSON_FILE_NAME);
 					//Node Type and container Name in nodes
-					nodeTypeContainerMap=parseJson.getNodeTypeContainerMap(jsonFileName);
+					nodeTypeContainerMap=parseJson.getNodeTypeContainerMap(OpenStackConstants.JSON_FILE_NAME);
 					// images list
 					list=commonUtil.iterateImageMap(imageMap);
-					
+					dataBrokerBean=parseJson.getDataBrokerContainer(OpenStackConstants.JSON_FILE_NAME);
+					if(dataBrokerBean!=null){
+						if(dataBrokerBean!=null){
+							ByteArrayOutputStream byteArrayOutputStream=commonUtil.getNexusUrlFile(nexusUrl, nexusUserName, nexusPassword, dataBrokerBean.getProtobufFile());
+							logger.debug("byteArrayOutputStream "+byteArrayOutputStream);
+							if(byteArrayOutputStream!=null){
+								dataBrokerBean.setProtobufFile(byteArrayOutputStream.toString());
+							}else{
+								dataBrokerBean.setProtobufFile("");
+								
+							}
+							
+						 }
+					}
+					//For new blueprint.json
+					 bluePrintProbe =parseJson.jsonFileToObjectProbe(OpenStackConstants.JSON_FILE_NAME,dataBrokerBean);
 					//sequence
-					sequenceList=parseJson.getSequenceFromJSONProbe(jsonFileName);
+					sequenceList=parseJson.getSequenceListFromJSON(OpenStackConstants.JSON_FILE_NAME);
 				}else{
 					//old code 
-					bluePrintProbe=parseJson.jsonFileToObject(jsonFileName);
-					imageMap=parseJson.parseJsonFile(jsonFileName);
+					imageMap=parseJson.parseJsonFileImageMap(OpenStackConstants.JSON_FILE_NAME);
+					//Node Type and container Name in nodes
+					nodeTypeContainerMap=parseJson.getNodeTypeContainerMap(OpenStackConstants.JSON_FILE_NAME);
 					list=commonUtil.iterateImageMap(imageMap);
-					sequenceList=parseJson.getSequenceFromJSON(jsonFileName);
+					sequenceList=parseJson.getSequenceListFromJSON(OpenStackConstants.JSON_FILE_NAME);
+					dataBrokerBean=parseJson.getDataBrokerContainer(OpenStackConstants.JSON_FILE_NAME);
+					if(dataBrokerBean!=null){
+						if(dataBrokerBean!=null){
+							ByteArrayOutputStream byteArrayOutputStream=commonUtil.getNexusUrlFile(nexusUrl, nexusUserName, nexusPassword, dataBrokerBean.getProtobufFile());
+							logger.debug("byteArrayOutputStream "+byteArrayOutputStream);
+							if(byteArrayOutputStream!=null){
+								dataBrokerBean.setProtobufFile(byteArrayOutputStream.toString());
+							}else{
+								dataBrokerBean.setProtobufFile("");
+								
+							}
+							
+						 }
+					}
+					bluePrintProbe=parseJson.jsonFileToObject(OpenStackConstants.JSON_FILE_NAME,dataBrokerBean);
 				}
-			 /*Blueprint bluePrint=parseJson.jsonFileToObject();
-		 	 HashMap<String,String> imageMap=parseJson.parseJsonFile();
-			 ArrayList<String> list=commonUtil.iterateImageMap(imageMap);
-			 LinkedList<String> sequenceList=parseJson.getSequenceFromJSON();*/
+			
 				logger.debug("<------bluePrintProbe.getProbeIndocator()---------->"+bluePrintProbe.getProbeIndicator());
 				
 				ArrayList<ProbeIndicator> probeIndicatorList = bluePrintProbe.getProbeIndicator();
@@ -372,20 +407,14 @@ public class OpenstackServiceController extends AbstractController {
 						imageMap.put(probePrintImage, "Probe");
 						sequenceList=commonUtil.addProbeSequence(sequenceList,"Probe");
 					}
-				}	
-			/*if (bluePrintProbe.getProbeIndocator() != null && bluePrintProbe.getProbeIndocator().equalsIgnoreCase("True") ) {
-                 if (probePrintImage != null && !"".equals(probePrintImage)) {
-					list.add(probePrintImage);
-					imageMap.put(probePrintImage, "probeContainer");
-					sequenceList=commonUtil.addProbeSequence(sequenceList,"probeContainer");
-				}
-			  }	*/
+			    }
 			 if(bluePrintImage!=null && !"".equals(bluePrintImage)){
 				list.add(bluePrintImage);
 				imageMap.put(bluePrintImage, "BluePrintContainer");
 			 }
 			 logger.debug("<----list----------->"+list);
 			 logger.debug("<----imageMap----------->"+imageMap);
+			 logger.debug("<----sequenceList----------->"+sequenceList);
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
 			 logger.debug("<----uidNumStr----------->"+uidNumStr);
@@ -395,7 +424,7 @@ public class OpenstackServiceController extends AbstractController {
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
 					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrintProbe,uidNumStr,solutionPort,Sleeptime,
 					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,nodeTypeContainerMap,probeNexusEndPoint
-					 ,probeInternalPort,repositoryNames);
+					 ,probeInternalPort,repositoryNames,dataBrokerBean,exposeDataBrokerPort,internalDataBrokerPort,bluePrintStr);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 

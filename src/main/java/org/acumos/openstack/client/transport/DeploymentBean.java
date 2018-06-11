@@ -28,8 +28,14 @@ public class DeploymentBean {
 	private String nodeType;
 	private String script;
 	private String tunnelNumber;
+	private String dataBrokerType;
 	
-	
+	public String getDataBrokerType() {
+		return dataBrokerType;
+	}
+	public void setDataBrokerType(String dataBrokerType) {
+		this.dataBrokerType = dataBrokerType;
+	}
 	public String getTunnelNumber() {
 		return tunnelNumber;
 	}
