@@ -245,7 +245,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 int bluePrintPorInt=Integer.parseInt(bluePrintPortNumber);
 			 int listSize=list.size();
 			 //logger.debug("<--CompositeSolution--getImagetag()----------->"+auth.getImagetag());
-			 String portArr[]={"8556","8557","8558","8559","8560","8561","8562","8563","8564","8565"};
+			 String portArr[]={"8557","8558","8559","8560","8561","8562","8563","8564","8565"};
 			os = OSFactory.builderV3().endpoint(endpoint)
 					.credentials(userName, password, Identifier.byName(IdentifierName))
 					.scopeToProject(Identifier.byId(scopeProject))

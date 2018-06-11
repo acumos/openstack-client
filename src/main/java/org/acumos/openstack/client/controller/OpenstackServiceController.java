@@ -285,8 +285,8 @@ public class OpenstackServiceController extends AbstractController {
 			probeNexusEndPoint=env.getProperty("probe.probeNexusEndPoint");
 			probeInternalPort=env.getProperty("probe.internalPort");
 			repositoryNames=env.getProperty("docker.openstack.reposityNames");
-			exposeDataBrokerPort=env.getProperty(OpenStackConstants.EXPOSE_DATABROKER_PORT);
-			internalDataBrokerPort=env.getProperty(OpenStackConstants.INTERNAL_DATABROKER_PORT);
+			exposeDataBrokerPort=env.getProperty("docker.openstack.exposeDataBrokerPort");
+			internalDataBrokerPort=env.getProperty("docker.openstack.internalDataBrokerPort");
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
 			

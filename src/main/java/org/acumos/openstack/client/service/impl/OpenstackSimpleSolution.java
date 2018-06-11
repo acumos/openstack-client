@@ -519,7 +519,7 @@ public class OpenstackSimpleSolution implements Runnable{
 
 			logger.debug("====================start deploymentImageVM============1======");
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
-			String RUN_IMAGE = "" + "docker run -d -p 0.0.0.0:8555:8336  " + repositoryName + " \n";
+			String RUN_IMAGE = "" + "docker run -d -p 0.0.0.0:8557:8336  " + repositoryName + " \n";
 			logger.debug("====output==========Start============4======================: ");
 
 			sshShell.upload(new ByteArrayInputStream(RUN_IMAGE.getBytes()), "RUN_DOCKER_IMAGE.sh", ".azuredocker", true,
