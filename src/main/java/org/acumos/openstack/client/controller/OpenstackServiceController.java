@@ -241,6 +241,9 @@ public class OpenstackServiceController extends AbstractController {
 		String repositoryNames="";
 		String exposeDataBrokerPort="";
 		String internalDataBrokerPort="";
+		String nexusRegistyName="";
+		String nexusRegistyUserName="";
+		String nexusRegistyPwd="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -287,9 +290,12 @@ public class OpenstackServiceController extends AbstractController {
 			repositoryNames=env.getProperty("docker.openstack.reposityNames");
 			exposeDataBrokerPort=env.getProperty("docker.openstack.exposeDataBrokerPort");
 			internalDataBrokerPort=env.getProperty("docker.openstack.internalDataBrokerPort");
+			nexusRegistyName=env.getProperty("docker.openstack.nexusRegistyName");
+			nexusRegistyUserName=env.getProperty("docker.openstack.nexusRegistyUserName");
+			nexusRegistyPwd=env.getProperty("docker.openstack.nexusRegistyPwd");
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
-			
+			 logger.debug("nexusRegistyName "+nexusRegistyName);
 			 logger.debug("<------probePrintImage---------->"+probePrintImage);
 			 logger.debug("<------probePrintName---------->"+probePrintName);
 			 logger.debug("<------probUser---------->"+probUser);
@@ -330,6 +336,9 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("<----bluePrintPortNumber----------->"+bluePrintPortNumber);
 			 logger.debug("<------authObject.getSolutionRevisionId()---------->"+auth.getSolutionRevisionId());
 			 logger.debug("<----repositoryNames----------->"+repositoryNames);
+			 logger.debug("<----nexusRegistyUserName------>"+nexusRegistyUserName);
+			 logger.debug("<----nexusRegistyPwd----------->"+nexusRegistyPwd);
+			 
 			 
 			 
 			 String bluePrintStr=commonUtil.getBluePrintNexus(auth.getSolutionId(), auth.getSolutionRevisionId(),dataSource,
@@ -424,7 +433,8 @@ public class OpenstackServiceController extends AbstractController {
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
 					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrintProbe,uidNumStr,solutionPort,Sleeptime,
 					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,nodeTypeContainerMap,probeNexusEndPoint
-					 ,probeInternalPort,repositoryNames,dataBrokerBean,exposeDataBrokerPort,internalDataBrokerPort,bluePrintStr);
+					 ,probeInternalPort,repositoryNames,dataBrokerBean,exposeDataBrokerPort,internalDataBrokerPort,bluePrintStr,nexusRegistyName,
+					 nexusRegistyUserName,nexusRegistyPwd);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 

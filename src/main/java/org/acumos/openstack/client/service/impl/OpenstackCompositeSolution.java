@@ -114,6 +114,9 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String exposeDataBrokerPort;
 	private String internalDataBrokerPort;
 	private String bluePrintStr;
+	private String nexusRegistyName;
+	private String nexusRegistyUserName;
+	private String nexusRegistyPwd;
 	
 	public OpenstackCompositeSolution(){
 		
@@ -127,7 +130,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime,String proxyIP,String proxyPort,
 			 String openStackIP,String bluePrintPortNumber,String probePrintName,String probUser,String probePass,
 			 HashMap<String,DeploymentBean> nodeTypeContainerMap,String probeNexusEndPoint,String probeInternalPort,String repositoryNames,
-			 DataBrokerBean dataBrokerBean,String exposeDataBrokerPort,String internalDataBrokerPort,String bluePrintStr){
+			 DataBrokerBean dataBrokerBean,String exposeDataBrokerPort,String internalDataBrokerPort,String bluePrintStr,String nexusRegistyName,
+			 String nexusRegistyUserName,String nexusRegistyPwd){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
@@ -177,6 +181,9 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.exposeDataBrokerPort = exposeDataBrokerPort;
 			this.internalDataBrokerPort = internalDataBrokerPort;
 			this.bluePrintStr = bluePrintStr;
+			this.nexusRegistyName = nexusRegistyName;
+			this.nexusRegistyUserName = nexusRegistyUserName;
+			this.nexusRegistyPwd = nexusRegistyPwd;
 	}
 	
 	
@@ -236,8 +243,11 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("<--CompositeSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
 			 logger.debug("<--CompositeSolution---probeNexusEndPoint-------->"+probeNexusEndPoint);
 			 logger.debug("<--CompositeSolution---probeInternalPort-------->"+probeInternalPort);
+			 logger.debug("nexusRegistyName "+nexusRegistyName);
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
+			 logger.debug("nexusRegistyUserName "+nexusRegistyUserName);
+			 logger.debug("nexusRegistyPwd "+nexusRegistyPwd);
 			 logger.debug(" JSON FROM DS bluePrintStr "+bluePrintStr);
 			 //solutionPort="8336";
 			 //stackIp="10.1.0.100";
@@ -444,6 +454,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            	repositaryName=commonUtil.getRepositryName(imageNameVal,repositoryNames);
 		            		repositryImageName=commonUtil.getRepositryImageName(imageNameVal,repositoryNames);
 		            		logger.debug("==repositaryName==="+repositaryName+"======repositryImageName========"+repositryImageName);
+		            		boolean nexusRepo=commonUtil.getRepositryStatus(imageNameVal,nexusRegistyName);
+		            		logger.debug("<---nexusRepo-------->"+nexusRepo);
 	 		            	if(containerInstanceBluePrint!=null && containerInstanceBluePrint.equalsIgnoreCase(finalContainerName)){
 	 		            		portNumber=bluePrintPortNumber;
 	 		            		bluePrintPort=portNumber;
@@ -476,6 +488,11 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            			//dockerinfo.setNodeType("Probe");
 	 		            			deploymentImageVM(hostOpenStack,vmUserName,repositaryName,probUser,probePass,repositryImageName,vmBind,bytesArray,
 		 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
+	 		            		}else if(nexusRepo){
+	 		            			logger.debug("<----Deploying Container-else if--finalContainerName-->"+finalContainerName);
+	 		            			//dockerinfo.setNodeType("Probe");
+	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,nexusRegistyUserName,nexusRegistyPwd,repositryImageName,vmBind,bytesArray,
+	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
 	 		            		}else{
 	 		            			logger.debug("<----Deploying Container---finalContainerName-->"+finalContainerName);
 	 		            			//dockerinfo.setNodeType("Probe");

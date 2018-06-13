@@ -543,5 +543,22 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		 }
 		logger.debug("callCsvConfigDB End");
 	}
+	
+	public boolean getRepositryStatus(String imageName,String repositoryName){
+		logger.debug("getRepositryName Start");
+		logger.debug("imageName "+imageName+" repositoryName "+repositoryName);
+		boolean checkRepositoryName=false;
+		if(imageName!=null){
+			String imageArr[]=imageName.split("/");
+			if(repositoryName!=null){
+				if(imageArr[0].contains(repositoryName)){
+					checkRepositoryName=true;
+				}
+			}
+		}
+		logger.debug("checkRepositoryName"+checkRepositoryName);
+		logger.debug("repositaryName End");
+		return checkRepositoryName;
+	  }
 
 }
