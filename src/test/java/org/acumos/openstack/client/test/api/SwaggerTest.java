@@ -31,25 +31,25 @@ public class SwaggerTest {
 	Logger logger = LoggerFactory.getLogger(SwaggerTest.class);
 	@Test	
 	public void swaggerDeploymentAPITest(){
-		logger.debug("<-Start ----swaggerDeploymentAPITest------->");
+		logger.debug("Start swaggerDeploymentAPITest");
 		try{
 			SwaggerConfiguration sw=new SwaggerConfiguration(); 
 			assertNotNull(sw.api());
 		   }catch(Exception ex){
-			   logger.error("Error in swaggerDeploymentAPITest---> "+ex.getMessage()); 
+			   logger.error("Error in swaggerDeploymentAPITest "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----swaggerDeploymentAPITest------->");
+		logger.debug(" swaggerDeploymentAPITest End");
 	}
 	@Test	
 	public void swaggerDeploymentApiInfoTest(){
-		logger.debug("<-Start ----swaggerDeploymentApiInfoTest------->");
+		logger.debug("swaggerDeploymentApiInfoTest");
 		try{
 			SwaggerConfiguration sw=new SwaggerConfiguration(); 
 			assertNotNull(sw.apiInfo());
 		}catch(Exception ex){
-			   logger.error("Error in swaggerDeploymentApiInfoTest---> "+ex.getMessage()); 
+			   logger.error("Error in swaggerDeploymentApiInfoTest "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----swaggerDeploymentApiInfoTest------->");
+		logger.debug("End swaggerDeploymentApiInfoTest ");
 	}
 
 }

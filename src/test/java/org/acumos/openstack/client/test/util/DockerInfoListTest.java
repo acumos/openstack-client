@@ -30,10 +30,5 @@ import org.slf4j.LoggerFactory;
 public class DockerInfoListTest {
 	
 	private static Logger logger = LoggerFactory.getLogger(DockerInfoListTest.class);
-	/*@Test	
-	public void dockerinfoTestparameter(){
-		logger.info("<---------Start-------ComponentTest-------------->");
-		List<DockerInfo> dockerList =new ArrayList<DockerInfo>();
-	}*/
-
+	
 }

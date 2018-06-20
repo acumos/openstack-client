@@ -188,7 +188,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	
 	
 	public void run() {
-		logger.debug("<==================Start=RUN==CompositeSolution========================>");
+		logger.debug("Start CompositeSolution RUN");
 		String serverId="";
 		String flavourId="";
 		String securityGropId="";
@@ -216,90 +216,86 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		List<DeploymentBean> deploymentList=new ArrayList<DeploymentBean>();
 		try{
 			
-			 logger.debug("<--CompositeSolution----flavourName------->"+flavourName);
-			 logger.debug("<--CompositeSolution--securityGropName--->"+securityGropName);
-			 logger.debug("<--CompositeSolution--endpoint----------->"+endpoint);
-			 logger.debug("<--CompositeSolution--userName----------->"+userName);
-			 logger.debug("<--CompositeSolution--password----------->"+password);
-			 logger.debug("<--CompositeSolution--scopeProject----------->"+scopeProject);
-			 logger.debug("<--CompositeSolution--key----------->"+key);
-			 logger.debug("<--CompositeSolution--keyName----------->"+keyName);
-			 logger.debug("<--CompositeSolution--IdentifierName----------->"+IdentifierName);
-			 logger.debug("<--CompositeSolution--vmRegisterNumber----------->"+vmRegisterNumber);
-			 logger.debug("<--CompositeSolution--vmUserName----------->"+vmUserName);
-			 logger.debug("<--CompositeSolution--dockerUserName----------->"+dockerUserName);
-			 logger.debug("<--CompositeSolution--dockerPassword----------->"+dockerPassword);
-			 logger.debug("<--CompositeSolution--solutionPort----------->"+solutionPort);
-			 logger.debug("<--CompositeSolution--Sleeptime----------->"+Sleeptime);
-			 logger.debug("<--CompositeSolution--proxyIP----------->"+proxyIP);
-			 logger.debug("<--CompositeSolution--proxyPort----------->"+proxyPort);
-			 logger.debug("<--CompositeSolution--openStackIP----------->"+openStackIP);
-			 logger.debug("<--CompositeSolution--bluePrintPortNumber----------->"+bluePrintPortNumber);
-			 logger.debug("<--CompositeSolution--probePrintName----------->"+probePrintName);
-			 logger.debug("<--CompositeSolution--probUser----------->"+probUser);
-			 logger.debug("<--CompositeSolution--probePass----------->"+probePass);
-			 logger.debug("<--CompositeSolution--nodeTypeContainerMap----------->"+nodeTypeContainerMap);
-			 logger.debug("<--CompositeSolution--SoulutionId----------->"+auth.getSolutionId());
-			 logger.debug("<--CompositeSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
-			 logger.debug("<--CompositeSolution---probeNexusEndPoint-------->"+probeNexusEndPoint);
-			 logger.debug("<--CompositeSolution---probeInternalPort-------->"+probeInternalPort);
+			 logger.debug("flavourName "+flavourName);
+			 logger.debug("securityGropName "+securityGropName);
+			 logger.debug("endpoint "+endpoint);
+			 logger.debug("userName "+userName);
+			 logger.debug("password "+password);
+			 logger.debug("scopeProject "+scopeProject);
+			 logger.debug("key "+key);
+			 logger.debug("keyName "+keyName);
+			 logger.debug("IdentifierName "+IdentifierName);
+			 logger.debug("vmRegisterNumber "+vmRegisterNumber);
+			 logger.debug("vmUserName "+vmUserName);
+			 logger.debug("dockerUserName "+dockerUserName);
+			 logger.debug("dockerPassword "+dockerPassword);
+			 logger.debug("solutionPort "+solutionPort);
+			 logger.debug("Sleeptime "+Sleeptime);
+			 logger.debug("proxyIP "+proxyIP);
+			 logger.debug("proxyPort "+proxyPort);
+			 logger.debug("openStackIP "+openStackIP);
+			 logger.debug("bluePrintPortNumber "+bluePrintPortNumber);
+			 logger.debug("probePrintName "+probePrintName);
+			 logger.debug("probUser "+probUser);
+			 logger.debug("probePass "+probePass);
+			 logger.debug("nodeTypeContainerMap "+nodeTypeContainerMap);
+			 logger.debug("SoulutionId "+auth.getSolutionId());
+			 logger.debug("SolutionRevisionId "+auth.getSolutionRevisionId());
+			 logger.debug("probeNexusEndPoint "+probeNexusEndPoint);
+			 logger.debug("probeInternalPort "+probeInternalPort);
 			 logger.debug("nexusRegistyName "+nexusRegistyName);
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
 			 logger.debug("nexusRegistyUserName "+nexusRegistyUserName);
 			 logger.debug("nexusRegistyPwd "+nexusRegistyPwd);
 			 logger.debug(" JSON FROM DS bluePrintStr "+bluePrintStr);
-			 //solutionPort="8336";
-			 //stackIp="10.1.0.100";
 			 int proxyPortInt=Integer.parseInt(proxyPort);
 			 int bluePrintPorInt=Integer.parseInt(bluePrintPortNumber);
 			 int listSize=list.size();
-			 //logger.debug("<--CompositeSolution--getImagetag()----------->"+auth.getImagetag());
 			 String portArr[]={"8557","8558","8559","8560","8561","8562","8563","8564","8565"};
-			os = OSFactory.builderV3().endpoint(endpoint)
+			 os = OSFactory.builderV3().endpoint(endpoint)
 					.credentials(userName, password, Identifier.byName(IdentifierName))
 					.scopeToProject(Identifier.byId(scopeProject))
 					.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://"+proxyIP, proxyPortInt)))
 					.authenticate();
 			logger.debug("byId Authnetication success");
 			sleepTimeInt=Integer.parseInt(Sleeptime);
-			logger.debug("<--CompositeSolution--sleepTimeInt----------->"+sleepTimeInt);
-			logger.debug("flavourName==============>"+flavourName);
+			logger.debug("sleepTimeInt "+sleepTimeInt);
+			logger.debug("flavourName "+flavourName);
 			List< ? extends Flavor> flavourList= os.compute().flavors().list();
-			logger.debug(" flavourList==========>"+flavourList.size());
+			logger.debug("flavourList "+flavourList.size());
 			
 			if(flavourList!=null && flavourList.size() >0){
 				for(Flavor fl:flavourList){
-					logger.debug("Flavour Id==========>"+fl.getId());
+					logger.debug("Flavour Id "+fl.getId());
 					String idVal=fl.getId();
-					logger.debug("Flavour Name========>"+fl.getName());
+					logger.debug("Flavour Name "+fl.getName());
 					if(fl.getName()!=null && fl.getName().equalsIgnoreCase(flavourName)){
 						flavourId=idVal;
-						logger.debug("Flavour Name========>"+fl.getName()+"==flavourId=="+flavourId);	
 					}
 				}
 			}
-		  logger.debug("==flavourId======>"+flavourId);
-		  logger.debug("==Start Security group part==securityGropName===>"+securityGropName);
+		  logger.debug("flavourId "+flavourId);
+		  logger.debug("Start Security group part securityGropName "+securityGropName);
 		  List<? extends SecGroupExtension> sg = os.compute().securityGroups().list();
 			for(SecGroupExtension sgt: sg){
-				logger.debug("security.getName()====="+sgt.getName());
-				logger.debug("security.ID====="+sgt.getId());
-				logger.debug("security.Rules====="+sgt.getRules());
+				logger.debug("security.getName() "+sgt.getName());
+				logger.debug("security.ID "+sgt.getId());
+				logger.debug("security.Rules "+sgt.getRules());
 				if(sgt.getName()!=null && sgt.getName().equalsIgnoreCase(securityGropName)){
 					securityGropId=sgt.getId();
 				}
 			}
-		 logger.debug("== ==securityGropId===>"+securityGropId);	
+		 logger.debug("securityGropId "+securityGropId);	
 		 
-		 logger.debug("==Start Image part==>");
+		 logger.debug("Start Image part ");
 		 List<? extends Image> images = os.compute().images().list();
-		 logger.debug("Images list==============>" + images);
+		 logger.debug("Images list " + images);
 		 Image image = images.get(0);
 		 imageId=image.getId();
-		 logger.debug("Image id==================>" + imageId);
+		 logger.debug("Image id " + imageId);
 		 
-		 logger.debug("==Start Creating vm=========>");
+		 logger.debug("Start Creating vm ");
 		 Server server = os.compute().servers()
 					.boot(Builders.server()
 							.name(auth.getVmName())
@@ -309,68 +305,68 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 							.addSecurityGroup(securityGropId)
 							.build());
 		 serverId=server.getId();
-		 logger.debug("==End Creating vm=========>"+serverId);
-		 logger.debug("==Start Adding floating point ip ====================>");
+		 logger.debug("End Creating VM "+serverId);
+		 logger.debug("Start Adding floating point ip");
 		 int limit=5;
 		 for(int i=0;i<limit;i++){
-			   logger.debug("networking ##############################Start.."+i);
+			   logger.debug("networking Start i "+i);
 				Server server2 = os.compute().servers().get(serverId);
-				 logger.debug("...Address.server2.."+server2.getAddresses());
-				//listQuery(os);
+				 logger.debug("Address.server2 "+server2.getAddresses());
 				if(server2.getAddresses()!=null && server2.getAddresses().getAddresses()!=null){
-				    logger.debug("...Address.server......."+server2.getAddresses());
+				    logger.debug("Address.server "+server2.getAddresses());
 					Map<String,List<? extends Address >> addressmap=server2.getAddresses().getAddresses();
 					logger.debug("...addressmap...."+addressmap.size());
 					 if(!addressmap.isEmpty()){
 					    Iterator it = addressmap.entrySet().iterator();
 					    while (it.hasNext()) {
 					        Map.Entry pair = (Map.Entry)it.next();
-					        logger.debug("key pair=============:"+pair.getKey());
+					        logger.debug("key pair "+pair.getKey());
 					        logger.debug("value pair"+ pair.getValue()); 
 					        List<? extends Address> listAddress=(List<? extends Address>)pair.getValue();
-					        logger.debug("listAddress===="+listAddress);
+					        logger.debug("listAddress "+listAddress);
 					        if(listAddress.size() >0){
 					        	Address add=(Address)listAddress.get(0);
-					        	logger.debug("====listAddress.get(0)====>"+listAddress.get(0));
-					        	logger.debug("Address===="+add.getAddr());
-					        	logger.debug("MacAddr===="+add.getMacAddr());
-					        	logger.debug("Version===="+add.getVersion());
+					        	logger.debug("listAddress.get(0) "+listAddress.get(0));
+					        	logger.debug("Address "+add.getAddr());
+					        	logger.debug("MacAddr "+add.getMacAddr());
+					        	logger.debug("Version "+add.getVersion());
 					        	fixedAdd=add.getAddr();
 					        }
 					    }
-					    logger.debug("===============Breaking the loop=================");
+					    logger.debug("Breaking the loop");
 					    break;
 					 }else{
-						 logger.debug("============I am in first Sleep==================");
+						 logger.debug("I am in first Sleep");
 						 Thread.sleep(30000);
 					 }
 				}else{
-					logger.debug("==============I am in Second Sleep===============");
+					logger.debug("I am in Second Sleep");
 				Thread.sleep(30000);
 				}
 			}
-		 logger.debug("===========fixedAdd=============="+fixedAdd);
+		 logger.debug("fixedAdd "+fixedAdd);
 		 if(fixedAdd!=null && !"".equals(fixedAdd)){
 			  Server server3 = os.compute().servers().get(serverId);
 			  FloatingIP ip = os.compute().floatingIps().allocateIP("public");
 			  String fIp=ip.getFloatingIpAddress();
 			  floatingIp=fIp;
-			  logger.debug("ip.getFloatingIpAddress()......."+fIp);
+			  logger.debug("ip.getFloatingIpAddress() "+fIp);
 			  ActionResponse r = os.compute().floatingIps().addFloatingIP(server3, fixedAdd, fIp);
-			  logger.debug("ActionResponser........"+r.isSuccess());
+			  logger.debug("ActionResponser "+r.isSuccess());
 			  
 		}
 		
 	 Thread.sleep(60000); 
-	 logger.debug("========Start for VM register Number===wait to create vm....====");
+	 logger.debug("Start for VM register Number"); 
+	 logger.debug("wait to create VM");
 	 Thread.sleep(180000);
 	 HashMap<String,String> singlatonMap=SingletonMapClass.getInstance(); 
 	 if(singlatonMap!=null && singlatonMap.get("vmBindNum")!=null){
 		 vmBindNumber=singlatonMap.get("vmBindNum"); 
-		 logger.debug("vmBindNumber..1...."+vmBindNumber);
+		 logger.debug("vmBindNumber 1 "+vmBindNumber);
 	 }else{
 		 vmBindNumber=vmRegisterNumber; 
-		 logger.debug("vmBindNumber..2..."+vmBindNumber);
+		 logger.debug("vmBindNumber 2 "+vmBindNumber);
 	 }
 	 if(vmBindNumber!=null){
 		 vmBind=Integer.parseInt(vmBindNumber); 
@@ -378,8 +374,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 vmBindCount=vmBind;
 		 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBind));
 	 }
-	 logger.debug("=====vmRegisterNumber========"+vmRegisterNumber+"======vmBind========"+vmBind);
-	 logger.debug("======SingletonMapClass.getInstance()========="+SingletonMapClass.getInstance());
+	 logger.debug("vmRegisterNumber "+vmRegisterNumber+" vmBind "+vmBind);
+	 logger.debug("SingletonMapClass.getInstance() "+SingletonMapClass.getInstance());
 	 
 	 
 	 byte[] bytesArray=readBytesFromFile(keyName);
@@ -391,17 +387,17 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 int portTunnelInt=Integer.parseInt(portTunnel);
 		 vmBindCount=vmBindCount+1;
 		 portMap.put(portTunnel, String.valueOf(vmBindCount));
-		 logger.debug("<---Start for ------portTunnel-->"+portTunnel+"-----vmBindCount--"+vmBindCount);
+		 logger.debug("portTunnel "+portTunnel+"vmBindCount "+vmBindCount);
 		 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,portTunnelInt);
-		 logger.debug("<---End for ------portTunnel-->"+portTunnel+"-----vmBindCount--"+vmBindCount);
+		 logger.debug("portTunnel "+portTunnel+"vmBindCount "+vmBindCount);
 	 }
 	 vmBindCount=vmBindCount+1;
-	 logger.debug("======Start for Blueprint======vmBindCount="+vmBindCount);
+	 logger.debug("vmBindCount "+vmBindCount);
 	 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,bluePrintPorInt);
 	 portMap.put(bluePrintPortNumber, String.valueOf(vmBindCount));
-	 logger.debug("======portMap======="+portMap);
+	 logger.debug("portMap "+portMap);
 	 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBindCount));
-	 logger.debug("======SingletonMapClass.getInstance()===After Setup====="+SingletonMapClass.getInstance());
+	 logger.debug("SingletonMapClass.getInstance() "+SingletonMapClass.getInstance());
 	 
 	 //bluePrintPort.sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray);
@@ -409,15 +405,15 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 String portNumber="";
 	 int count=0;
 	 DockerInfoList  dockerList=new DockerInfoList();
-	 logger.debug("<----list--------->"+list);
-	 logger.debug("<----sequenceList--------->"+sequenceList);
+	 logger.debug("list "+list);
+	 logger.debug("sequenceList "+sequenceList);
 	 List<DockerInfo> dockerInfoList=new ArrayList<DockerInfo>();
 		 if(list!=null &&  list.size() > 0){
 			 if(sequenceList!=null && sequenceList.size() > 0){
 				 Iterator seqItr = sequenceList.iterator();
 	             while (seqItr.hasNext()) {
 	                 String jsonContainerName=(String)seqItr.next(); 
-	                 logger.debug("<----jsonContainerName--------->"+jsonContainerName);
+	                 logger.debug("jsonContainerName "+jsonContainerName);
 	                 if(jsonContainerName!=null && !"".equals(jsonContainerName)){
 	                	 
 	                	 Iterator repoContainer=imageMap.entrySet().iterator();
@@ -426,9 +422,9 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            	Map.Entry pair = (Map.Entry)repoContainer.next();
 	 		            	String imageNameVal=(String)pair.getKey();
 	 		            	String finalContainerName=(String)pair.getValue();
-	 		            	logger.debug("<----finalContainerName--------->"+finalContainerName);
-	 		            	logger.debug("<----jsonContainerName--------->"+jsonContainerName);
-	 		            	logger.debug("<----imageNameVal--------->"+imageNameVal);
+	 		            	logger.debug("finalContainerName "+finalContainerName);
+	 		            	logger.debug("jsonContainerName "+jsonContainerName);
+	 		            	logger.debug("imageNameVal "+imageNameVal);
 	 		            	if(finalContainerName!=null && !finalContainerName.equalsIgnoreCase(jsonContainerName)){
 			            		 logger.debug("Continue.............................................");
 			            		continue;
@@ -443,25 +439,25 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
     		            		}
     		            		
     		            	}
-    		            	logger.debug("<----nodeTypeName--------->"+nodeTypeName);
-    		            	logger.debug("<----nodeTypeContainer--------->"+nodeTypeContainer);
-	 		            	logger.debug("<----finalContainerName--------->"+finalContainerName);
-	 		            	logger.debug("<----containerInstanceBluePrint--------->"+containerInstanceBluePrint);
-	 		            	logger.debug("<----containerInstanceProbe--------->"+containerInstanceProbe);
+    		            	logger.debug("nodeTypeName "+nodeTypeName);
+    		            	logger.debug("nodeTypeContainer "+nodeTypeContainer);
+	 		            	logger.debug("finalContainerName "+finalContainerName);
+	 		            	logger.debug("containerInstanceBluePrint "+containerInstanceBluePrint);
+	 		            	logger.debug("containerInstanceProbe "+containerInstanceProbe);
 	 		            	DockerInfo dockerinfo=new DockerInfo();
 	 		            	OpanStackContainerBean containerBean=new OpanStackContainerBean();
-	 		            	logger.debug("<----imageNameVal------------->"+imageNameVal);
+	 		            	logger.debug("imageNameVal "+imageNameVal);
 	 		            	repositaryName=commonUtil.getRepositryName(imageNameVal,repositoryNames);
 		            		repositryImageName=commonUtil.getRepositryImageName(imageNameVal,repositoryNames);
-		            		logger.debug("==repositaryName==="+repositaryName+"======repositryImageName========"+repositryImageName);
+		            		logger.debug("repositaryName "+repositaryName+" repositryImageName "+repositryImageName);
 		            		boolean nexusRepo=commonUtil.getRepositryStatus(imageNameVal,nexusRegistyName);
-		            		logger.debug("<---nexusRepo-------->"+nexusRepo);
+		            		logger.debug("nexusRepo "+nexusRepo);
 	 		            	if(containerInstanceBluePrint!=null && containerInstanceBluePrint.equalsIgnoreCase(finalContainerName)){
 	 		            		portNumber=bluePrintPortNumber;
 	 		            		bluePrintPort=portNumber;
 	 		            		portNumberString=portNumber+":"+portNumber;
-	 		            		logger.debug("<----imageNameVal--------->"+imageNameVal);
-	 		            		logger.debug("<----portNumberString--------->"+portNumberString);
+	 		            		logger.debug("imageNameVal "+imageNameVal);
+	 		            		logger.debug("portNumberString "+portNumberString);
 	 		            		deploymentImageVM(hostOpenStack,vmUserName,repositaryName,bluePrintUserName,bluePrintPassword,repositryImageName,vmBind,bytesArray,
 	 		            				finalContainerName,portNumberString,11,sleepTimeInt,probeNexusEndPoint);
 	 		            	}else{
@@ -480,27 +476,24 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 				        				portNumberString=portNumber+":"+portNumber;
 				        			}
 		 		            		count++;
-		 		            		logger.debug("<-portNumberString------------------->"+portNumberString);
+		 		            		logger.debug("portNumberString "+portNumberString);
 	 		            		}
 	 		            		
 	 		            		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
-	 		            			logger.debug("<----Deploying Probe container-----finalContainerName--->"+finalContainerName);
-	 		            			//dockerinfo.setNodeType("Probe");
+	 		            			logger.debug("Deploying Probe container finalContainerName "+finalContainerName);
 	 		            			deploymentImageVM(hostOpenStack,vmUserName,repositaryName,probUser,probePass,repositryImageName,vmBind,bytesArray,
 		 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
 	 		            		}else if(nexusRepo){
-	 		            			logger.debug("<----Deploying Container-else if--finalContainerName-->"+finalContainerName);
+	 		            			logger.debug("Deploying Container else if finalContainerName "+finalContainerName);
 	 		            			//dockerinfo.setNodeType("Probe");
 	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,nexusRegistyUserName,nexusRegistyPwd,repositryImageName,vmBind,bytesArray,
 	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
 	 		            		}else{
-	 		            			logger.debug("<----Deploying Container---finalContainerName-->"+finalContainerName);
+	 		            			logger.debug(" Deploying Container finalContainerName "+finalContainerName);
 	 		            			//dockerinfo.setNodeType("Probe");
 	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray,
 	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
 	 		            		}
-	 		            		/*deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray,
-	 		            				finalContainerName,portNumberString,count,sleepTimeInt);*/
 	 		            	}
 	 		            	dockerinfo.setIpAddress(floatingIp);
 	    		            dockerinfo.setPort(portNumber);
@@ -518,7 +511,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
     		        		deploymentBean.setContainerName(finalContainerName);
     		        		deploymentBean.setContainerPort(portNumber);
     		        		if(portMap!=null && portMap.get(portNumber)!=null){
-    		        			logger.debug("==portNumber===:" + portNumber+"=TunnelNum="+portMap.get(portNumber));
+    		        			logger.debug("portNumber :" + portNumber+" TunnelNum "+portMap.get(portNumber));
     		        			deploymentBean.setTunnelNumber(portMap.get(portNumber));
     		        		}
     		        		ContainerInfo containerInfo = new ContainerInfo();
@@ -527,9 +520,9 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
     		        		containerInfo.setContainerPort(portNumber);
     		        		
     		        		//containerInfo.setNodeType(nodeTypeContainer);
-    		        		logger.debug("<--Before-Probe-containerInstanceProbe--------->"+containerInstanceProbe+"===finalContainerName==="+finalContainerName);
+    		        		logger.debug("Before-Probe-containerInstanceProbe "+containerInstanceProbe+" finalContainerName "+finalContainerName);
     		        		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
-    		        			logger.debug("<--After-Probe-containerInstanceprobe--------->"+containerInstanceProbe+"===finalContainerName==="+finalContainerName);
+    		        			logger.debug("After Probe containerInstanceprobe "+containerInstanceProbe+" finalContainerName "+finalContainerName);
 	    		        	   containerInfo.setNodeType("Probe");
 	    		        	   probeIP = floatingIp;
 	    		        	   probePort = portNumber;
@@ -554,28 +547,28 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	             } 
 				 
 			}else{
-				logger.debug("sequenceList is blank...................................."); 	
+				logger.debug("sequenceList is blank "); 	
 			}
 		 }else{
-			 logger.debug("List is blank...................................."); 
+			 logger.debug("List is blank"); 
 		 }
-		 logger.debug("====dockerInfoList======: " + dockerInfoList);
+		 logger.debug(" dockerInfoList " + dockerInfoList);
 	     if(dockerInfoList!=null && dockerInfoList.size() > 0){
 	       	dockerList.setDockerList(dockerInfoList);
 	      }
-	     logger.debug("====bluePrintPort======: " + bluePrintPort);
+	     logger.debug(" bluePrintPort " + bluePrintPort);
 	     String bluePrintTunnel=portMap.get(bluePrintPort);
-	     logger.debug("====bluePrintTunnel======: " + bluePrintTunnel);
+	     logger.debug("bluePrintTunnel " + bluePrintTunnel);
 	    
 	     String urlDockerInfo="http://"+openStackIP+":"+bluePrintTunnel+"/putDockerInfo";  
 		 String urlBluePrint="http://"+openStackIP+":"+bluePrintTunnel+"/putBlueprint";
-		 logger.debug("====urlDockerInfo======: " + urlDockerInfo);
+		 logger.debug("urlDockerInfo " + urlDockerInfo);
 		 Thread.sleep(2*sleepTimeInt);
-		 logger.debug("====urlBluePrint======: " + urlBluePrint);
+		 logger.debug("urlBluePrint " + urlBluePrint);
 		 String dataBrokerTunnelNum=commonUtil.getDataBrokerTunnelNumber(deploymentList,"DataBroker");
 		 String urlDataBroker="http://"+openStackIP+":"+dataBrokerTunnelNum+"/configDB";
-		 logger.debug("<-----urlDataBroker---------->"+urlDataBroker);
-		 logger.debug("<-----dataBrokerTunnelNum---------->"+dataBrokerTunnelNum);
+		 logger.debug("urlDataBroker "+urlDataBroker);
+		 logger.debug(" dataBrokerTunnelNum "+dataBrokerTunnelNum);
 		 
 		 String csvDataBrokerTunnel="";
 		  String csvDataBrokerUrl="";
@@ -596,7 +589,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			  commonUtil.callCsvConfigDB(auth,csvDataBrokerUrl,dataBrokerBean);
 			 }
 		  if(dataBrokerTunnelNum!=null &&  !"".equals(dataBrokerTunnelNum)){
-				 logger.debug("Inside putDataBrokerDetails ===========> ");
+				 logger.debug("Inside putDataBrokerDetails ");
 				 commonUtil.putDataBrokerDetails(auth,urlDataBroker);
 			  }
 		  if(bluePrint!=null){
@@ -608,7 +601,6 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			}
 		
 		 
-		// Added notification for probe code
 		 ArrayList<ProbeIndicator> probeIndicatorList = bluePrint.getProbeIndicator();
 		 ProbeIndicator prbIndicator = null;
 		 if(probeIndicatorList != null && probeIndicatorList.size() >0) {
@@ -616,33 +608,33 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 }
 		 
 		 if (bluePrint.getProbeIndicator() != null && prbIndicator != null && prbIndicator.getValue().equalsIgnoreCase("True")) {
-				 logger.debug("Probe indicator true. Starting generatenotircation======auth.getUserId())=====>"+auth.getUserId());
-				 logger.debug("====probeIP===>"+probeIP+"===probePort=="+probePort);
+				 logger.debug("Probe indicator true. Starting generatenotircation auth.getUserId()) "+auth.getUserId());
+				 logger.debug("probeIP "+probeIP+"probePort "+probePort);
 				 commonUtil.generateNotification(probeIP+":"+probePort,auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpwd);
 		 }
 		 if(openStackContainerBeanList!=null){
 	       	  
-  			  logger.debug("Start saving data in database=========openStackContainerBeanList====="+openStackContainerBeanList); 
+  			  logger.debug("Start saving data in database openStackContainerBeanList "+openStackContainerBeanList); 
   			commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpwd,openStackContainerBeanList,auth.getSolutionId(),
   					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"DP");
       		  
         }
 	  }catch(Exception e){
-		  logger.error("Exception in openstackCompositeSolution===RUN========" +e.getMessage());
+		  logger.error("Exception in openstackCompositeSolution " +e.getMessage());
 		  try{
 			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpwd,openStackContainerBeanList,auth.getSolutionId(),
 	  					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"FA");
 				
 			}catch(Exception ex){
-				logger.error("Exception in saving data===openstackCompositeSolution=========" +ex.getMessage());
+				logger.error("Exception in saving data openstackCompositeSolution" +ex);
 			}
 		  
 	  }
-	 logger.debug("<==================End=RUN==CompositeSolution========================>");	
+	 logger.debug("CompositeSolution Run End");	
 	}
 	
 	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray,int hostPort){
-		logger.debug("<=================Start===sshOpenStackCore=====================>");
+		logger.debug("Start sshOpenStackCore");
 		 SSHShell sshShell = null;
 		 final String host=hostName; 
 		 final String userName=user;
@@ -652,30 +644,27 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
                  public synchronized void run() {
                          SSHShell sshShell=null;
                       try{
-                               //byte[] bytesArray=readBytesFromFile("e6e-key.pem");
-                               //host="10.1.0.100";
-                               //userName="cognitaopr";
-                               logger.debug("=======host====="+host);
-                               logger.debug("=======userName====="+userName);
-                               logger.debug("=======vmNumber====="+vmNumber);
-                               logger.debug("=======floatingIp====="+floatingIp);
-                               logger.debug("=======hostPort====="+hostPort);
-                               logger.debug("=======openStackIP====="+openStackIP);
+                               logger.debug("host "+host);
+                               logger.debug("userName "+userName);
+                               logger.debug("vmNumber "+vmNumber);
+                               logger.debug("floatingIp "+floatingIp);
+                               logger.debug("hostPort "+hostPort);
+                               logger.debug("openStackIP "+openStackIP);
                                sshShell = SSHShell.open(host, 22, userName, bytesArray);
 
                                String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":"+hostPort+" "+openStackIP+" -g -T -N & \n";
-                               logger.debug("====start regiterVM===========2===================regiterVM===: " + regiterVM);
+                               logger.debug("start regiterVM check point 2 regiterVM " + regiterVM);
 
                                       //sshShell = SSHShell.open(host, 2201, userName, bytesArray);
                                       sshShell.upload(new ByteArrayInputStream(regiterVM.getBytes()), "regiterVM_"+vmNumber+".sh",
                                                       ".openstackdocker", true, "4095");
-                                      logger.debug("====start regiterVM===========3======================: ");
+                                      logger.debug("start regiterVM check point 3 ");
 
                                       String output = sshShell
                                                       .executeCommand("bash -c ~/.openstackdocker/regiterVM_"+vmNumber+".sh", true, true);
 
                  }catch(Exception e){
-                	 logger.error("Exception in sshOpenStackCore in composite solution in new thread---->"+e.getMessage());
+                	 logger.error("Exception in sshOpenStackCore in composite solution in new thread "+e);
                  }finally {
                       if (sshShell != null) {
                               sshShell.close();
@@ -691,7 +680,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 
               
 		} catch (Exception ex) {
-			logger.error("Exception in sshOpenStackCore in composite solution ---->"+ex.getMessage());
+			logger.error("Exception in sshOpenStackCore in composite solution "+ex);
 			
 		} finally {
 			if (sshShell != null) {
@@ -699,18 +688,15 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 				sshShell = null;
 			}
 		}
-		logger.debug("====================End===sshOpenStackCore===============================");
+		logger.debug("sshOpenStackCore End");
 	}
 	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray)throws Exception{
-		logger.debug("=============installDockerOpenstack===Start=============");
+		logger.debug("installDockerOpenstack Start");
 		SSHShell sshShell = null;
 		try {
-			 //byte[] bytesArray=readBytesFromFile();
-			 /*String host="10.1.0.100";
-			 String userName="ubuntu";*/
-			 logger.debug("vmNum=="+vmNum);
-			 logger.debug("host=="+host);
-			 logger.debug("userName=="+userName);
+			 logger.debug("vmNum "+vmNum);
+			 logger.debug("host "+host);
+			 logger.debug("userName "+userName);
 			 
 			 String INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS = ""
 						+ "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi\" \n"
@@ -748,26 +734,25 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 sshShell = SSHShell.open(host, vmNum, userName, bytesArray);
 			 sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes()),
 						"INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh", ".azuredocker", true, "4095");
-			 logger.debug("========Upload docker install script 1=");
+			 logger.debug("Upload docker install script check point 1");
 			
 			 sshShell.upload(new ByteArrayInputStream(daemon_file.getBytes()),
 						"daemon.json", ".azuredocker", true, "4095");
-			 logger.debug("=======Upload docker install script 2=");
-			 logger.debug("======Start installing docker================");
+			 logger.debug("Upload docker install script check point 2");
+			 logger.debug("Start installing docker");
 			 String output = sshShell
 						.executeCommand("bash -c ~/.azuredocker/INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh", true, true);
 			 
 			 
-			 //sshShell.
-			 logger.debug("SSH====================Cmplete==output="+output);
+			 logger.debug("SSH Cmplete output "+output);
 		} catch (JSchException jSchException) {
-			logger.error("JSchException====in==installDockerOpenstack==== "+jSchException.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+jSchException.getMessage());
 			throw new Exception("Exception in installDockerOpenstack"+jSchException.getMessage());
 		} catch (IOException ioException) {
-			logger.error("IOException====in==installDockerOpenstack======"+ioException.getMessage());
+			logger.error("IOException in installDockerOpenstack "+ioException.getMessage());
 			throw new Exception("Exception in installDockerOpenstack"+ioException.getMessage());
 		} catch (Exception exception) {
-			logger.error("Exception ====in==installDockerOpenstack====="+exception.getMessage());
+			logger.error("Exception in installDockerOpenstack "+exception.getMessage());
 			throw new Exception("Exception in installDockerOpenstack"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
@@ -775,10 +760,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 				sshShell = null;
 			}
 		}
-		logger.debug("===========installDockerOpenstack===End=======================");
+		logger.debug("installDockerOpenstack End");
 	}
 	public  byte[] readBytesFromFile(String fileName)throws Exception {
-		logger.debug("=======Start====readBytesFromFile=====");
+		logger.debug("Start readBytesFromFile ");
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
 
@@ -787,28 +772,25 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
             File file = new File(fileName);
             bytesArray = new byte[(int) file.length()];
 
-            //read file into bytes[]
             fileInputStream = new FileInputStream(file);
             fileInputStream.read(bytesArray);
             
-            /*for (int i = 0; i < bytesArray.length; i++) {
-            	logger.debug("==========>"+(char) bytesArray[i]);
-            }*/
 
         } catch (IOException e) {
-        	logger.error("Exception in readBytesFromFile ==== CompositeSolution========="+e.getMessage());
-        	throw new Exception("Exception in ReadBytesFromFile CompositeSolution"+e.getMessage());
+        	logger.error("Exception in readBytesFromFile CompositeSolution "+e);
+        	throw new Exception("Exception in ReadBytesFromFile CompositeSolution"+e );
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                	logger.error("Exception in readBytesFromFile Finally==== CompositeSolution========="+e.getMessage());
+                	logger.error("Exception in readBytesFromFile Finally CompositeSolution "+e.getMessage());
                 }
             }
 
         }
-        logger.debug("=======End====readBytesFromFile==bytesArray.length==="+bytesArray.length);
+        logger.debug("bytesArray.length "+bytesArray.length);
+        logger.debug("readBytesFromFile End");
         return bytesArray;
 
     }
@@ -816,41 +798,39 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName,String registryServerUrl, String username, String password, 
 			 String repositoryName,int vmNum,byte[] bytesArray,String finalContainerName,String portNumberString,int count,
 			 int sleepTime,String probeNexusEndPoint)throws Exception {
-		logger.debug("====dockerHostIP======: " + dockerHostIP);
-		logger.debug("====vmUserName======: " + vmUserName);
-		logger.debug("====registryServerUrl======: " + registryServerUrl);
-		logger.debug("====username======: " + username);
-		logger.debug("====password======: " + password);
-		logger.debug("====repositoryName======: " + repositoryName);
-		logger.debug("====finalContainerName======: " + finalContainerName);
-		logger.debug("====portNumberString======: " + portNumberString);
-		logger.debug("====vmNum======: " + vmNum);
-		logger.debug("====count======: " + count);
-		logger.debug("====probeNexusEndPoint======: " + probeNexusEndPoint);
-		logger.debug("====================start deploymentImageVM=======CompositeSolution===========");
+		logger.debug(" dockerHostIP " + dockerHostIP);
+		logger.debug("vmUserName " + vmUserName);
+		logger.debug("registryServerUrl " + registryServerUrl);
+		logger.debug("username " + username);
+		logger.debug("password " + password);
+		logger.debug("repositoryName " + repositoryName);
+		logger.debug("finalContainerName " + finalContainerName);
+		logger.debug("portNumberString " + portNumberString);
+		logger.debug("vmNum " + vmNum);
+		logger.debug("count " + count);
+		logger.debug("probeNexusEndPoint " + probeNexusEndPoint);
+		logger.debug("start deploymentImageVM CompositeSolution ");
 		SSHShell sshShell = null;
 		try {
-			//byte[] bytesArray=readBytesFromFile();
-			//int vmNum=Integer.parseInt(vmNumber);
 			String PULL_IMAGE = "" + "docker login --username=" + username + " --password=" + password + " "
 					+ registryServerUrl + " \n" + "docker pull " + repositoryName + " \n";
-			logger.debug("====start deploymentImageVM===========2===================PULL_IMAGE===: " + PULL_IMAGE);
+			logger.debug("start deploymentImageVM 2 PULL_IMAGE " + PULL_IMAGE);
 
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			sshShell.upload(new ByteArrayInputStream(PULL_IMAGE.getBytes()), "PULL_IMAGE_"+count+".sh", ".azuredocker", true,
 					"4095");
-			logger.debug("====start deploymentImageVM===========3======================: "+"PULL_IMAGE_"+count+".sh");
+			logger.debug("start deploymentImageVM 3 File "+"PULL_IMAGE_"+count+".sh");
 
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			String output2 = sshShell.executeCommand("bash -c ~/.azuredocker/PULL_IMAGE_"+count+".sh", true, true);
-			logger.debug("====start deploymentImageVM===========3===========output2===========: " + output2);
+			logger.debug("start deploymentImageVM 4 output2 " + output2);
 			try {
 				Thread.sleep(30000);
 			} catch (Exception e) {
-				logger.error("Exception in sleep======1===================");
+				logger.error("Exception in sleep "+e);
 			}
 
-			logger.debug("====================start deploymentImageVM============Container Name======"+finalContainerName);
+			logger.debug(" start deploymentImageVM Container Name "+finalContainerName);
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			String RUN_IMAGE="";
 			//String RUN_IMAGE = "" + "docker run -d -p 0.0.0.0:8555:8336  " + repositoryName + " \n";
@@ -862,24 +842,24 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 						+ "  " + repositoryName + " \n";
 			}
 			
-			logger.debug("====output==========Start============4================RUN_IMAGE======: "+RUN_IMAGE);
+			logger.debug("output Start 4 RUN_IMAGE "+RUN_IMAGE);
 
 			sshShell.upload(new ByteArrayInputStream(RUN_IMAGE.getBytes()), "RUN_DOCKER_IMAGE_"+count+".sh", ".azuredocker", true,
 					"4095");
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 
 			String output3 = sshShell.executeCommand("bash -c ~/.azuredocker/RUN_DOCKER_IMAGE_"+count+".sh", true, true);
-			logger.debug("====output==========Start============5==================output3====: " + output3);
+			logger.debug("output Start 5 output3 " + output3);
 			Thread.sleep(30000);
 			
 		} catch (JSchException jSchException) {
-			logger.error("JSchException====in==deploymentImageVM==== "+jSchException.getMessage());
+			logger.error("JSchException in deploymentImageVM "+jSchException.getMessage());
 			throw new Exception("Exception in deploymentImageVM"+jSchException.getMessage());
 		} catch (IOException ioException) {
-			logger.error("JSchException====in==deploymentImageVM==== "+ioException.getMessage());
+			logger.error("JSchException in deploymentImageVM  "+ioException.getMessage());
 			throw new Exception("Exception in deploymentImageVM"+ioException.getMessage());
 		} catch (Exception exception) {
-			logger.error("JSchException====in==deploymentImageVM==== "+exception.getMessage());
+			logger.error("JSchException in deploymentImageVM "+exception.getMessage());
 			throw new Exception("Exception in deploymentImageVM"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
@@ -887,7 +867,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 				sshShell = null;
 			}
 		}
-		logger.debug("====================End deploymentImageVM=======CompositeSolution===========");
+		logger.debug("End deploymentImageVM CompositeSolution");
 		return "sucess";
 	}
 

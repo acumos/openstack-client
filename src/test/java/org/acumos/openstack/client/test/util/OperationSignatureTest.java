@@ -30,15 +30,13 @@ public class OperationSignatureTest {
 	private static Logger logger = LoggerFactory.getLogger(OperationSignatureTest.class);
 	@Test	
 	public void OperationSignatureTestparameter(){
-		logger.info("<---------Start-------OperationSignatureTestparameter-------------->");
+		logger.info("Start OperationSignatureTestparameter ");
 		try{
 			String operation="Add";
 			OperationSignature opr=new OperationSignature();
-			//opr.setOperation(operation);
-			//Assert.assertEquals(operation, opr.getOperation());
 		}catch(Exception ex){
-			   logger.error("Error in OperationSignatureTestparameter---> "+ex.getMessage()); 
+			   logger.error("Error in OperationSignatureTestparameter "+ex); 
 		   }
-		logger.info("<---------End-------OperationSignatureTestparameter-------------->");
+		logger.info("End OperationSignatureTestparameter");
 	}
 }

@@ -34,7 +34,7 @@ public class OpenstackDeployBeanTest {
 
 	@Test	
 	public void openstackDeployBeanTestTestparameter(){
-		logger.debug("<-Start ----openstackDeployBeanTestTestparameter------->");
+		logger.debug("Start openstackDeployBeanTestTestparameter");
 		try{
 			 OpenstackDeployBean obean=new OpenstackDeployBean();
 			 String vmName="Gold24";
@@ -54,8 +54,8 @@ public class OpenstackDeployBeanTest {
 			Assert.assertEquals(userId, obean.getUserId());
 			Assert.assertEquals(imagetag, obean.getImagetag());
 		}catch(Exception ex){
-			   logger.error("Error in openstackDeployBeanTestTestparameter---> "+ex.getMessage()); 
+			   logger.error("Error in openstackDeployBeanTestTestparameter "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----openstackDeployBeanTestTestparameter------->");
+		logger.debug("End openstackDeployBeanTestTestparameter");
 	}
 }

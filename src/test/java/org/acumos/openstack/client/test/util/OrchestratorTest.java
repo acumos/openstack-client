@@ -31,11 +31,11 @@ public class OrchestratorTest {
 	private static Logger logger = LoggerFactory.getLogger(OrchestratorTest.class);
 	@Test	
 	public void OperationSignatureTestparameter(){
-		logger.debug("<-Start ----OperationSignatureTestparameter------->");
+		logger.debug("Start OperationSignatureTestparameter");
 		try{
 			String name = "Adder";
 			String version = "1";
-			String image = "cognita-nexus01:8001/newadder1";
+			String image = "test-nexus01:8001/newadder1";
 			Orchestrator orch=new Orchestrator();
 			orch.setImage(image);
 			orch.setName(name);
@@ -44,8 +44,8 @@ public class OrchestratorTest {
 			Assert.assertEquals(version, orch.getVersion());
 			Assert.assertEquals(image, orch.getImage());
 		}catch(Exception ex){
-			   logger.error("Error in OperationSignatureTestparameter---> "+ex.getMessage()); 
+			   logger.error("Error in OperationSignatureTestparameter "+ex); 
 		 }
-		logger.debug("<-End ----OperationSignatureTestparameter------->");
+		logger.debug("End OperationSignatureTestparameter");
 	}
 }

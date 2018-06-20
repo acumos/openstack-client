@@ -80,7 +80,7 @@ public class OpenStackServiceControllerTest {
 	
 	@Test	
 	public void singleImageOpenstackDeploymentTest(){
-		logger.debug("<-Start ----singleImageOpenstackDeploymentTest------->");
+		logger.debug("Start singleImageOpenstackDeploymentTest");
 		OpenstackDeployBean auth=new OpenstackDeployBean();
 		try{
 			auth.setSolutionId("Test");
@@ -90,9 +90,9 @@ public class OpenStackServiceControllerTest {
 			when(controller.singleImageOpenstackDeployment(request,auth,response)).thenReturn("{\"UIDNumber\":\"\",\"status\":\"SUCCESS\"}");
 			Assert.assertEquals(200, response.getStatus());
 		}catch(Exception e){
-			logger.error("Error in singleImageOpenstackDeploymentTest---> "+e.getMessage());
+			logger.error("Error in singleImageOpenstackDeploymentTest "+e.getMessage());
 		}
-		logger.debug("<-End  ----singleImageOpenstackDeploymentTest------->");
+		logger.debug("End  singleImageOpenstackDeploymentTest");
 		
 	}
 

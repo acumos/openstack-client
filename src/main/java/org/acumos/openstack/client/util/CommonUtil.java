@@ -64,7 +64,7 @@ public class CommonUtil {
 Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 
   public String getRepositryName(String imageName,String repositoryNames){
-	logger.debug("<----Start-getRepositryName------->"+imageName);
+	logger.debug("Start-getRepositryName "+imageName);
 	String repositaryName="";
 	if(imageName!=null){
 		String imageArr[]=imageName.split("/");
@@ -81,7 +81,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 							}
 							
 						}else{
-							logger.debug("<==Array size is not 2====> "+repositoryNamesArr.length);
+							logger.debug(" Array size is not 2  "+repositoryNamesArr.length);
 						}
 					}
 				}
@@ -89,12 +89,12 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		}
 	}
 	
-	logger.debug("<----End-repositaryName------->"+repositaryName);
+	logger.debug(" End repositaryName "+repositaryName);
 	return repositaryName;
   }
   
   public String getRepositryImageName(String imageName,String repositoryNames){
-		logger.debug("<----Start-getRepositryName------->"+imageName);
+		logger.debug(" Start-getRepositryName "+imageName);
 		String repositaryName="";
 		String repositaryImageName="";
 		String ImageName="";
@@ -114,40 +114,29 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 								}
 								
 							}else{
-								logger.debug("<==Array size is not 2====> "+repositoryNamesArr.length);
+								logger.debug("Array size is not 2  "+repositoryNamesArr.length);
 							}
 						}
 					}
 				}
 			}
-			/*if(imageArr!=null && imageArr[0]!=null){
-				if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8000")){
-					repositaryName="cognita-nexus01.eastus.cloudapp.azure.com:8000";
-				}else if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8001")){
-					repositaryName="cognita-nexus01.eastus.cloudapp.azure.com:8001";
-				}else if(imageArr[0].equalsIgnoreCase("cognita-nexus01:8002")){
-					repositaryName="cognita-nexus01.eastus.cloudapp.azure.com:8002";
-				}else{
-					repositaryName=imageArr[0];
-				}
-				
-			}*/
+			
 			if(imageArr[1]!=null){
 				ImageName=imageArr[1];
 			}
-			logger.debug("<-----repositaryName------->"+repositaryName+"--ImageName----"+ImageName);	
+			logger.debug("repositaryName "+repositaryName+" ImageName "+ImageName);	
 			
 		}
 		if(repositaryName!=null && ImageName!=null){
 			repositaryImageName=repositaryName+"/"+ImageName;
 		}
-		logger.debug("<--End-getRepositryImageName--repositaryImageName------->"+repositaryImageName);
+		logger.debug(" End getRepositryImageName repositaryImageName "+repositaryImageName);
 		
 		return repositaryImageName;
 	  }
     
    public ArrayList<String> iterateImageMap(HashMap<String,String> imageMap){
-		logger.debug("<--Start-------iterateImageMap-------imageMap---->"+imageMap);
+		logger.debug("Start iterateImageMap imageMap "+imageMap);
 		ArrayList<String> list=new ArrayList<String>();
 		 Iterator it = imageMap.entrySet().iterator();
 		    while (it.hasNext()) {
@@ -156,41 +145,40 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		        if(pair.getKey()!=null){
 		        	list.add((String)pair.getKey());
 		        }
-		        //it.remove(); // avoids a ConcurrentModificationException
 		    }
-		logger.debug("<--End-------iterateImageMap-------list---->"+list);
+		logger.debug(" End iterateImageMap list "+list);
 		return list;
 	}
    
    public CommonDataServiceRestClientImpl getClient(String datasource,String userName,String password) {
-		logger.debug("<------start----getClient------------>");
+		logger.debug("start getClient");
 		CommonDataServiceRestClientImpl client = new CommonDataServiceRestClientImpl(datasource, userName, password);
-		logger.debug("<------End----getClient---------client--->"+client);
+		logger.debug("End getClient client "+client);
 		return client;
 	}
 	public NexusArtifactClient nexusArtifactClient(String nexusUrl, String nexusUserName,String nexusPassword) {
-		logger.debug("<------start----nexusArtifactClient------------>");
+		logger.debug("start nexusArtifactClient ");
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
 		repositoryLocation.setId("1");
 		repositoryLocation.setUrl(nexusUrl);
 		repositoryLocation.setUsername(nexusUserName);
 		repositoryLocation.setPassword(nexusPassword);
 		NexusArtifactClient nexusArtifactClient = new NexusArtifactClient(repositoryLocation);
-		logger.debug("<------End----nexusArtifactClient------------>");
+		logger.debug("End nexusArtifactClient ");
 		return nexusArtifactClient;
 	}
 	
 	public String getBluePrintNexus(String solutionId, String revisionId,String datasource,String userName,String password,
 			String nexusUrl,String nexusUserName,String nexusPassword) throws  Exception{
-		  logger.debug("------ Start getBluePrintNexus-----------------");
-		  logger.debug("-------solutionId-----------"+solutionId);
-		  logger.debug("-------revisionId-----------"+revisionId);
-		  logger.debug("-------datasource-----------"+datasource);
-		  logger.debug("-------userName-----------"+userName);
-		  logger.debug("-------password-----------"+password);
-		  logger.debug("-------nexusUrl-----------"+nexusUrl);
-		  logger.debug("-------nexusUserName-----------"+nexusUserName);
-		  logger.debug("-------nexusPassword-----------"+nexusPassword);
+		  logger.debug("Start getBluePrintNexus ");
+		  logger.debug("solutionId "+solutionId);
+		  logger.debug("revisionId "+revisionId);
+		  logger.debug("datasource "+datasource);
+		  logger.debug("userName "+userName);
+		  logger.debug("password "+password);
+		  logger.debug("nexusUrl "+nexusUrl);
+		  logger.debug("nexusUserName "+nexusUserName);
+		  logger.debug("nexusPassword "+nexusPassword);
 		  List<MLPSolutionRevision> mlpSolutionRevisionList;
 		  String solutionRevisionId = revisionId;
 		  List<MLPArtifact> mlpArtifactList;
@@ -201,13 +189,12 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		  CommonDataServiceRestClientImpl cmnDataService=getClient(datasource,userName,password);
           		 
 			if (null != solutionRevisionId) {
-				// 3. Get the list of Artifiact for the SolutionId and SolutionRevisionId.
 				mlpArtifactList = cmnDataService.getSolutionRevisionArtifacts(solutionId, solutionRevisionId);
 				if (null != mlpArtifactList && !mlpArtifactList.isEmpty()) {
 					nexusURI = mlpArtifactList.stream()
 							.filter(mlpArt -> mlpArt.getArtifactTypeCode().equalsIgnoreCase(artifactType)).findFirst()
 							.get().getUri();
-					logger.debug("------ Nexus URI : " + nexusURI + " -------");
+					logger.debug("Nexus URI " + nexusURI );
 					if (null != nexusURI) {
 						NexusArtifactClient nexusArtifactClient=nexusArtifactClient(nexusUrl,nexusUserName,nexusPassword);
 						File f = new File("blueprint.json");
@@ -215,7 +202,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 						    f.delete();
 						}
 						byteArrayOutputStream = nexusArtifactClient.getArtifact(nexusURI);
-						logger.debug("------- byteArrayOutputStream ---blueprint.json-------"+byteArrayOutputStream.toString());
+						logger.debug("byteArrayOutputStream blueprint.json "+byteArrayOutputStream.toString());
 						OutputStream outputStream = new FileOutputStream("blueprint.json"); 
 						byteArrayOutputStream.writeTo(outputStream);
 						bluePrintStr=byteArrayOutputStream.toString();
@@ -226,19 +213,19 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			if(!file.exists()){
 				 throw  new Exception("blueprint.json file is not exist");
 			}
-			logger.debug("------ End getBluePrintNexus-----------------");	
+			logger.debug("End getBluePrintNexus");	
 		return bluePrintStr;	
 	  }
 	  public List<MLPSolutionRevision> getSolutionRevisionsList(String solutionId,String datasource,String userName,String password)throws  Exception{
-			logger.debug("------- getSolutionRevisions() : Start ----------");
+			logger.debug("getSolutionRevisions Start ");
 			List<MLPSolutionRevision> solRevisionsList = null;
 			CommonDataServiceRestClientImpl cmnDataService=getClient(datasource,userName,password);
 			solRevisionsList = cmnDataService.getSolutionRevisions(solutionId);
-			logger.debug("------- getSolutionRevisions() : End ----------");
+			logger.debug(" getSolutionRevisions End ");
 			return solRevisionsList;
 		}
 	  public LinkedList<String> getSequence(HashMap<String,String> hmap){
-		    logger.debug("------- getSequence() : Start ----------");
+		    logger.debug(" getSequence Start ");
 			LinkedList<String> sequenceList=new LinkedList<String>();
 			Iterator itrContainer=hmap.entrySet().iterator();
 	        while(itrContainer.hasNext()){
@@ -247,36 +234,36 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	        	String containerName=(String)pair.getKey();
 	        	sequenceList.add((String)pair.getValue());
 	        }
-	        logger.debug("====== getSequence() : End ============="+sequenceList);
+	        logger.debug(" getSequence End "+sequenceList);
 	        return sequenceList;
 		}
 	  
 	  public void putContainerDetailsJSON(DockerInfoList  dockerList,String apiUrl){
-			logger.debug("<--------Start---putContainerDetailsJSON------->");
+			logger.debug("Start putContainerDetailsJSON");
 			try {
-				logger.debug("<----dockerList---------->"+dockerList.toString()+"======apiUrl==="+apiUrl);
+				logger.debug("dockerList "+dockerList.toString()+" apiUrl "+apiUrl);
 				final String url = apiUrl;
 				RestTemplate restTemplate = new RestTemplate();
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
 				ObjectMapper mapper = new ObjectMapper();
 				String dockerJson=mapper.writeValueAsString(dockerList);
-				logger.debug("<----dockerJson---------->"+dockerJson);
+				logger.debug("dockerJson "+dockerJson);
 			    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 			    	
 			    HttpEntity<String> entity = new HttpEntity<String>(dockerJson,headers);
 			    restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
 			   
 			  } catch (Exception e) {
-				  logger.error("Exception in openstackCompositeSolution===putContainerDetailsJSON========" +e.getMessage());
+				  logger.error("Exception in openstackCompositeSolution putContainerDetailsJSON " +e);
 			 }
-			logger.debug("<--------End---putContainerDetailsJSON------->");
+			logger.debug("End putContainerDetailsJSON");
 		}
 		public void putBluePrintDetailsJSON(String  bluePrintStr,String apiUrl){
-			logger.debug("<--------Start---putBluePrintDetailsJSON------->");
+			logger.debug("Start putBluePrintDetailsJSON ");
 			try {
-				logger.debug("<---bluePrintStr----->"+bluePrintStr);
-				logger.debug("<---apiUrl----->"+apiUrl);
+				logger.debug("bluePrintStr "+bluePrintStr);
+				logger.debug("apiUrl "+apiUrl);
 				final String url = apiUrl;
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_JSON);
@@ -286,23 +273,23 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			    restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
 			   
 			  } catch (Exception e) {
-				 logger.error("Exception in openstackCompositeSolution===putBluePrintDetailsJSON========" +e.getMessage());
+				 logger.error("Exception in openstackCompositeSolution putBluePrintDetailsJSON " +e.getMessage());
 			 }
-			logger.debug("<--------End---putBluePrintDetailsJSON------->");
+			logger.debug("End putBluePrintDetailsJSON ");
 		}
 		
 		public void createDeploymentCompositeData(String dataSource,String dataUserName,String dataPassword,List<OpanStackContainerBean> openStackContainerBeanList,
 				String solutionId,String solutionRevisionId,String userId,String uidNumber,String deploymentStatusCode) throws Exception{
-			logger.debug("<---------Start createDeploymentCompositeData ------------------------->");
-			logger.debug("<---------dataSource-------->"+dataSource);
-			logger.debug("<-------dataUserName-------------->"+dataUserName);
-			logger.debug("<--------dataPassword------------->"+dataPassword);
-			logger.debug("<---------solutionId------------------->"+solutionId);
-			logger.debug("<--------solutionRevisionId-------------------->"+solutionRevisionId);
-			logger.debug("<------userId--------------->"+userId);
-			logger.debug("<------uidNumber--------------->"+uidNumber);
-			logger.debug("<------deploymentStatusCode--------------->"+deploymentStatusCode);
-			logger.debug("<------openStackContainerBeanList--------------->"+openStackContainerBeanList);
+			logger.debug("Start createDeploymentCompositeData ");
+			logger.debug("dataSource "+dataSource);
+			logger.debug("dataUserName "+dataUserName);
+			logger.debug("dataPassword "+dataPassword);
+			logger.debug("solutionId "+solutionId);
+			logger.debug("solutionRevisionId "+solutionRevisionId);
+			logger.debug("userId "+userId);
+			logger.debug("uidNumber "+uidNumber);
+			logger.debug("deploymentStatusCode "+deploymentStatusCode);
+			logger.debug("openStackContainerBeanList "+openStackContainerBeanList);
 			ObjectMapper mapper = new ObjectMapper();
 			CommonDataServiceRestClientImpl client=getClient(dataSource,dataUserName,dataPassword);
 			if(solutionId!=null && solutionRevisionId!=null && userId!=null && uidNumber!=null){
@@ -314,25 +301,25 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 				mlp.setDeploymentStatusCode(deploymentStatusCode);
 				String openStackDetails=mapper.writeValueAsString(openStackContainerBeanList);
 				mlp.setDetail(openStackDetails);
-				logger.debug("<---------openStackDetails------------------------->"+openStackDetails);
+				logger.debug("openStackDetails "+openStackDetails);
 				MLPSolutionDeployment mlpDeployment=client.createSolutionDeployment(mlp);
-				logger.debug("<---------mlpDeployment------------------------->"+mlpDeployment);
+				logger.debug("mlpDeployment "+mlpDeployment);
 			}
-			logger.debug("<---------End createDeploymentCompositeData ------------------------->");
+			logger.debug("End createDeploymentCompositeData ");
 		}
 		
 		public MLPSolutionDeployment createDeploymentData(String dataSource, String dataUserName, String dataPassword,
 				OpanStackContainerBean containerBean, String solutionId, String solutionRevisionId, String userId,
 				String uidNumber, String deploymentStatusCode) throws Exception {
-			logger.debug("<---------Start createDeploymentData ------------------------->");
-			logger.debug("<---------dataSource-------->" + dataSource);
-			logger.debug("<-------dataUserName-------------->" + dataUserName);
-			logger.debug("<--------dataPassword------------->" + dataPassword);
-			logger.debug("<---------solutionId------------------->" + solutionId);
-			logger.debug("<--------solutionRevisionId-------------------->" + solutionRevisionId);
-			logger.debug("<------userId--------------->" + userId);
-			logger.debug("<------uidNumber--------------->" + uidNumber);
-			logger.debug("<------deploymentStatusCode--------------->" + deploymentStatusCode);
+			logger.debug("Start createDeploymentData ");
+			logger.debug("dataSource " + dataSource);
+			logger.debug("dataUserName " + dataUserName);
+			logger.debug("dataPassword " + dataPassword);
+			logger.debug("solutionId " + solutionId);
+			logger.debug("solutionRevisionId " + solutionRevisionId);
+			logger.debug("userId " + userId);
+			logger.debug("uidNumber" + uidNumber);
+			logger.debug("deploymentStatusCode " + deploymentStatusCode);
 			MLPSolutionDeployment mlpDeployment=null;
 			ObjectMapper mapper = new ObjectMapper();
 			CommonDataServiceRestClientImpl client = getClient(dataSource, dataUserName, dataPassword);
@@ -345,32 +332,31 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 				mlp.setDeploymentStatusCode(deploymentStatusCode);
 				String openStackDetails = mapper.writeValueAsString(containerBean);
 				mlp.setDetail(openStackDetails);
-				logger.debug("<---------openStackDetails------------------------->" + openStackDetails);
+				logger.debug("openStackDetails " + openStackDetails);
 				mlpDeployment = client.createSolutionDeployment(mlp);
-				logger.debug("<---------mlpDeployment------------------------->" + mlpDeployment);
+				logger.debug("mlpDeployment " + mlpDeployment);
 			}
-			logger.debug("<---------End createDeploymentData ------------------------->");
+			logger.debug(" End createDeploymentData ");
 			return mlpDeployment;
 		}
 		public LinkedList<String> addProbeSequence(LinkedList<String> sequenceList,String probeContainerName){
-			  logger.debug("Start===addProbeSequence============");
-			  logger.debug("====probeContainerName==="+probeContainerName+"====sequenceList====="+sequenceList);
+			  logger.debug("Start addProbeSequence");
+			  logger.debug("probeContainerName "+probeContainerName+" sequenceList"+sequenceList);
 			  if(sequenceList!=null && sequenceList.size() > 0 && probeContainerName!=null && !"".equals(probeContainerName)){
 				  int length=sequenceList.size();
-				  logger.debug("length============"+length);
+				  logger.debug("length "+length);
 				  sequenceList.add((length-1), probeContainerName); 
 				}
-			  logger.debug("End====addProbeSequence==============="+sequenceList);
+			  logger.debug("End addProbeSequence "+sequenceList);
 			  return sequenceList;
 		  }	
 	  public void generateNotification(String msg, String userId,String dataSource,String dataUserName,String dataPassword) {
-			 logger.debug("Start===generateNotification============");
-			 logger.debug("=====userId====="+userId+"==msg==="+msg);
+			 logger.debug("Start generateNotification");
+			 logger.debug("userId "+userId+" msg "+msg);
 	         MLPNotification notification = new MLPNotification();
 	         try {
 	                 if (msg != null) {
 	                     notification.setTitle(msg);
-	                     // Provide the IP address and port of the probe Instance
 	                     notification.setMessage(msg);
 	                     Date startDate = new Date();
 	                     Date endDate = new Date(startDate.getTime() + (1000 * 60 * 60 * 24));
@@ -379,21 +365,21 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	                     CommonDataServiceRestClientImpl client=getClient(dataSource, dataUserName, dataPassword);
 	                     notification.setMsgSeverityCode(MessageSeverityCode.ME.toString());
 	                     MLNotification mLNotification = createNotification(notification,dataSource,dataUserName,dataPassword);
-	                     logger.debug("=====mLNotification.getNotificationId()====="+mLNotification.getNotificationId());
+	                     logger.debug(" mLNotification.getNotificationId() "+mLNotification.getNotificationId());
 	                     client.addUserToNotification(mLNotification.getNotificationId(),userId);
 	             }
 	         } catch (Exception e) {
 	              logger.error("Exception Occurred while getNotifications", e);
 	         }
-	         logger.debug("End===generateNotification============"); 
+	         logger.debug("End generateNotification"); 
 		 }
 		
 		public org.acumos.openstack.client.transport.MLNotification createNotification(MLPNotification mlpNotification,
 				String dataSource,String dataUserName,String dataPassword) {
-			 logger.debug("Start===createNotification============");
+			 logger.debug("Start createNotification ");
 	         CommonDataServiceRestClientImpl client=getClient(dataSource,dataUserName,dataPassword);
 	         MLNotification mlNotification = convertToMLNotification(client.createNotification(mlpNotification));
-	         logger.debug("End===createNotification============");
+	         logger.debug("End createNotification");
 	         return mlNotification;
 		 }	
 		public  MLNotification convertToMLNotification(MLPNotification mlpNotification) {
@@ -427,10 +413,10 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		}
 		
 		public String getDataBrokerTunnelNumber(List<DeploymentBean> deploymentList, String dataBrokerName){
-			logger.debug("<---------Start getDataBrokerIP ------------------------->");
+			logger.debug(" Start getDataBrokerIP ");
 			String dataBrokerTunnelNum="";
-			logger.debug("<---deploymentList---->"+deploymentList);
-			logger.debug("<---dataBrokerName---->"+dataBrokerName);
+			logger.debug("deploymentList "+deploymentList);
+			logger.debug("dataBrokerName "+dataBrokerName);
 			if(deploymentList!=null && deploymentList.size() > 0  && dataBrokerName!=null && !"".equals(dataBrokerName)){
 				for(DeploymentBean bean:deploymentList){
 					if(bean!=null && bean.getNodeType()!=null && bean.getNodeType().equalsIgnoreCase(dataBrokerName)
@@ -439,7 +425,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 					}
 				}
 			}
-			logger.debug("<---------End getDataBrokerIP -----------------dataBrokerTunnelNum-------->"+dataBrokerTunnelNum);
+			logger.debug("End getDataBrokerIP dataBrokerTunnelNum "+dataBrokerTunnelNum);
 			return dataBrokerTunnelNum;
 		}
 		public String getDataBrokerTunnelCSV(List<DeploymentBean> deploymentList, String dataBrokerName){
@@ -462,29 +448,26 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			return dataBrokerTunnel;
 		}
 		public void putDataBrokerDetails(OpenstackCompositeDeployBean deployDataObject,String apiUrl){
-			logger.debug("<--------Start---putDataBrokerDetails------->");
+			logger.debug("Start putDataBrokerDetails ");
 			try {
-				logger.debug("======apiUrl==="+apiUrl);
-				logger.debug("====UrlAttribute==="+deployDataObject.getUrlAttribute());
-				logger.debug("=====JsonMapping==="+deployDataObject.getJsonMapping());
-				logger.debug("=====JsonPosition==="+deployDataObject.getJsonPosition());
-				//logger.debug("=====dataBrokerScript==="+dataBrokerScript);
+				logger.debug("apiUrl "+apiUrl);
+				logger.debug("UrlAttribute "+deployDataObject.getUrlAttribute());
+				logger.debug("JsonMapping "+deployDataObject.getJsonMapping());
+				logger.debug("JsonPosition "+deployDataObject.getJsonPosition());
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 				RestTemplate restTemplate = new RestTemplate();
 				MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
 				map.add("jsonUrl", deployDataObject.getUrlAttribute());
-				//map.add("jsonScript", dataBrokerScript);
 				map.add("jsonMapping", deployDataObject.getJsonMapping());
 				map.add("jsonPosition", deployDataObject.getJsonPosition());
 				HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 				restTemplate.exchange(apiUrl, HttpMethod.PUT, request, String.class);
 			    
 			  } catch (Exception e) {
-	            e.printStackTrace();
-	            logger.error("<---------Exception----------->"+e.getMessage());
+	            logger.error("Exception in putDataBrokerDetails"+e);
 			 }
-			logger.debug("<--------End---putDataBrokerDetails------->");
+			logger.debug(" End putDataBrokerDetails");
 		}
 		
 		public NexusArtifactClient nexusArtifactClientDetails(String nexusUrl, String nexusUserName,String nexusPassword) {

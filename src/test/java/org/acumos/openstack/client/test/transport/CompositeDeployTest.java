@@ -29,7 +29,7 @@ public class CompositeDeployTest {
 	Logger logger = LoggerFactory.getLogger(CompositeDeployTest.class);
 	@Test	
 	public void testCompositeDeployBeanTestparameter(){
-		logger.debug("<-Start ----testCompositeDeployBeanTestparameter------->");
+		logger.debug("Start testCompositeDeployBeanTestparameter");
 		try{
 			 String vmName="Gold24";
 			 String solutionId="1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1";
@@ -46,9 +46,9 @@ public class CompositeDeployTest {
 			 Assert.assertEquals(solutionRevisionId, cmBean.getSolutionRevisionId());
 			 Assert.assertEquals(userId, cmBean.getUserId());
 		}catch(Exception ex){
-			   logger.error("Error in testCompositeDeployBeanTestparameter---> "+ex.getMessage()); 
+			   logger.error("Error in testCompositeDeployBeanTestparameter "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----testCompositeDeployBeanTestparameter------->");
+		logger.debug("End testCompositeDeployBeanTestparameter");
 	}
 	
 	 

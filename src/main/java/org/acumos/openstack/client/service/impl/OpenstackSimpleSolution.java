@@ -95,11 +95,9 @@ public class OpenstackSimpleSolution implements Runnable{
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,
 			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,String proxyIP,String proxyPort,
 			 String openStackIP,String repositoryNames,String repositoryDetails){
-		//this.os = os;
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
 		this.auth = auth;
-		
 		this.endpoint = endpoint;
 		this.userName = userName;
 		this.password = password;
@@ -139,81 +137,78 @@ public class OpenstackSimpleSolution implements Runnable{
 		OpanStackContainerBean containerBean=new OpanStackContainerBean();
 		CommonUtil commonUtil=new CommonUtil();
 		try{
-			 logger.debug("<-SimpleSolution----flavourName------->"+flavourName);
-			 logger.debug("<--SimpleSolution--securityGropName--->"+securityGropName);
-			 logger.debug("<--SimpleSolution--endpoint----------->"+endpoint);
-			 logger.debug("<--SimpleSolution--userName----------->"+userName);
-			 logger.debug("<--SimpleSolution--password----------->"+password);
-			 logger.debug("<--SimpleSolution--scopeProject----------->"+scopeProject);
-			 logger.debug("<--SimpleSolution--key----------->"+key);
-			 logger.debug("<--SimpleSolution--keyName----------->"+keyName);
-			 logger.debug("<--SimpleSolution--IdentifierName----------->"+IdentifierName);
-			 logger.debug("<--SimpleSolution--vmRegisterNumber----------->"+vmRegisterNumber);
-			 logger.debug("<--SimpleSolution--vmUserName----------->"+vmUserName);
-			 logger.debug("<--SimpleSolution--dockerUserName----------->"+dockerUserName);
-			 logger.debug("<--SimpleSolution--dockerPassword----------->"+dockerPassword);
-			 logger.debug("<--SimpleSolution--SoulutionId----------->"+auth.getSolutionId());
-			 logger.debug("<--SimpleSolution--SolutionRevisionId----------->"+auth.getSolutionRevisionId());
-			 logger.debug("<--SimpleSolution--getImagetag()----------->"+auth.getImagetag());
-			 logger.debug("<--SimpleSolution--uidNumStr---------->"+uidNumStr);
-			 logger.debug("<--SimpleSolution--dataSource---------->"+dataSource);
-			 logger.debug("<--SimpleSolution--cmndatasvcuser----------->"+cmndatasvcuser);
-			 logger.debug("<--SimpleSolution--cmndatasvcpwd---------->"+cmndatasvcpwd);
-			 logger.debug("<--SimpleSolution--proxyIP---------->"+proxyIP);
-			 logger.debug("<--SimpleSolution--proxyPort---------->"+proxyPort);
-			 logger.debug("<--SimpleSolution--openStackIP---------->"+openStackIP);
-			 logger.debug("<--SimpleSolution--repositoryNames---------->"+repositoryNames);
-			 logger.debug("<--SimpleSolution--repositoryDetails---------->"+repositoryDetails);
+			 logger.debug("flavourName "+flavourName);
+			 logger.debug("securityGropName "+securityGropName);
+			 logger.debug("endpoint "+endpoint);
+			 logger.debug("userName "+userName);
+			 logger.debug("password "+password);
+			 logger.debug("scopeProject "+scopeProject);
+			 logger.debug("key "+key);
+			 logger.debug("keyName "+keyName);
+			 logger.debug("IdentifierName "+IdentifierName);
+			 logger.debug("vmRegisterNumber "+vmRegisterNumber);
+			 logger.debug("vmUserName "+vmUserName);
+			 logger.debug("dockerUserName "+dockerUserName);
+			 logger.debug("dockerPassword "+dockerPassword);
+			 logger.debug("SoulutionId "+auth.getSolutionId());
+			 logger.debug("SolutionRevisionId "+auth.getSolutionRevisionId());
+			 logger.debug("getImagetag() "+auth.getImagetag());
+			 logger.debug("uidNumStr "+uidNumStr);
+			 logger.debug("dataSource "+dataSource);
+			 logger.debug("cmndatasvcuser "+cmndatasvcuser);
+			 logger.debug(" cmndatasvcpwd "+cmndatasvcpwd);
+			 logger.debug("proxyIP "+proxyIP);
+			 logger.debug("proxyPort "+proxyPort);
+			 logger.debug("openStackIP "+openStackIP);
+			 logger.debug("repositoryNames "+repositoryNames);
+			 logger.debug("SimpleSolution repositoryDetails "+repositoryDetails);
 			 if(proxyPort==null){
 				 proxyPort="3128"; 
 			 }
 			 int proxyPortInt=Integer.parseInt(proxyPort);
-			/*os = OSFactory.builderV3().endpoint(endpoint)
-					.credentials(userName, password, Identifier.byName(IdentifierName))
-					.scopeToProject(Identifier.byId(scopeProject)).authenticate();*/
 			 os = OSFactory.builderV3().endpoint(endpoint)
 						.credentials(userName, password, Identifier.byName(IdentifierName))
 						.scopeToProject(Identifier.byId(scopeProject))
 						.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://"+proxyIP, proxyPortInt)))
 						.authenticate();
-			logger.debug("==============byId Authnetication success===========");
+			logger.debug("byId Authnetication success");
 			
-			logger.debug("flavourName==============>"+flavourName);
+			logger.debug("flavourName "+flavourName);
 			List< ? extends Flavor> flavourList= os.compute().flavors().list();
-			logger.debug(" flavourList==========>"+flavourList.size());
+			logger.debug(" flavourList "+flavourList.size());
 			
 			if(flavourList!=null && flavourList.size() >0){
 				for(Flavor fl:flavourList){
-					logger.debug("Flavour Id==========>"+fl.getId());
+					logger.debug("Flavour Id "+fl.getId());
 					String idVal=fl.getId();
-					logger.debug("Flavour Name========>"+fl.getName());
+					logger.debug("Flavour Name "+fl.getName());
 					if(fl.getName()!=null && fl.getName().equalsIgnoreCase(flavourName)){
 						flavourId=idVal;
-						logger.debug("Flavour Name========>"+fl.getName()+"==flavourId=="+flavourId);	
+						logger.debug("Flavour Name "+fl.getName()+" flavourId "+flavourId);	
 					}
 				}
 			}
-		  logger.debug("==flavourId======>"+flavourId);
-		  logger.debug("==Start Security group part==securityGropName===>"+securityGropName);
+		  logger.debug("flavourId "+flavourId);
+		  logger.debug("Start Security group part securityGropName "+securityGropName);
 		  List<? extends SecGroupExtension> sg = os.compute().securityGroups().list();
 			for(SecGroupExtension sgt: sg){
-				logger.debug("security.getName()====="+sgt.getName());
-				logger.debug("security.ID====="+sgt.getId());
-				logger.debug("security.Rules====="+sgt.getRules());
+				logger.debug("security.getName() "+sgt.getName());
+				logger.debug("security.ID "+sgt.getId());
+				logger.debug("security.Rules "+sgt.getRules());
 				if(sgt.getName()!=null && sgt.getName().equalsIgnoreCase(securityGropName)){
 					securityGropId=sgt.getId();
 				}
 			}
-		 logger.debug("== ==securityGropId===>"+securityGropId);	
+		 logger.debug("securityGropId "+securityGropId);	
 		 
-		 logger.debug("==Start Image part==>");
+		 logger.debug("Start Image part");
 		 List<? extends Image> images = os.compute().images().list();
-		 logger.debug("Images list==============>" + images);
+		 logger.debug("Images list " + images);
 		 Image image = images.get(0);
 		 imageId=image.getId();
-		 logger.debug("Image id==================>" + imageId);
+		 logger.debug("Image id " + imageId);
 		 
-		 logger.debug("==Start Creating vm=========>");
+		 logger.debug("Start Creating VM");
 		 Server server = os.compute().servers()
 					.boot(Builders.server()
 							.name(auth.getVmName())
@@ -223,60 +218,59 @@ public class OpenstackSimpleSolution implements Runnable{
 							.addSecurityGroup(securityGropId)
 							.build());
 		 serverId=server.getId();
-		 logger.debug("==End Creating vm=========>"+serverId);
-		 logger.debug("==Start Adding floating point ip ====================>");
+		 logger.debug("End Creating VM "+serverId);
+		 logger.debug("Start Adding floating point ip ");
 		 int limit=5;
 		 for(int i=0;i<limit;i++){
-			   logger.debug("networking ##############################Start.."+i);
+			   logger.debug("networking Start "+i);
 				Server server2 = os.compute().servers().get(serverId);
-				 logger.debug("...Address.server2.."+server2.getAddresses());
-				//listQuery(os);
+				 logger.debug("Address.server2 "+server2.getAddresses());
 				if(server2.getAddresses()!=null && server2.getAddresses().getAddresses()!=null){
-				    logger.debug("...Address.server......."+server2.getAddresses());
+				    logger.debug("Address.server "+server2.getAddresses());
 					Map<String,List<? extends Address >> addressmap=server2.getAddresses().getAddresses();
-					logger.debug("...addressmap...."+addressmap.size());
+					logger.debug("addressmap "+addressmap.size());
 					 if(!addressmap.isEmpty()){
 					    Iterator it = addressmap.entrySet().iterator();
 					    while (it.hasNext()) {
 					        Map.Entry pair = (Map.Entry)it.next();
-					        logger.debug("key pair=============:"+pair.getKey());
+					        logger.debug("key pair "+pair.getKey());
 					        logger.debug("value pair"+ pair.getValue()); 
 					        List<? extends Address> listAddress=(List<? extends Address>)pair.getValue();
-					        logger.debug("listAddress===="+listAddress);
+					        logger.debug("listAddress "+listAddress);
 					        if(listAddress.size() >0){
 					        	Address add=(Address)listAddress.get(0);
-					        	logger.debug("====listAddress.get(0)====>"+listAddress.get(0));
-					        	logger.debug("Address===="+add.getAddr());
-					        	logger.debug("MacAddr===="+add.getMacAddr());
-					        	logger.debug("Version===="+add.getVersion());
+					        	logger.debug("listAddress.get(0) "+listAddress.get(0));
+					        	logger.debug("Address "+add.getAddr());
+					        	logger.debug("MacAddr "+add.getMacAddr());
+					        	logger.debug("Version "+add.getVersion());
 					        	fixedAdd=add.getAddr();
 					        }
 					    }
-					    logger.debug("===============Breaking the loop=================");
+					    logger.debug(" Breaking the loop");
 					    break;
 					 }else{
-						 logger.debug("============I am in first Sleep==================");
+						 logger.debug("I am in first Sleep");
 						 Thread.sleep(30000);
 					 }
 				}else{
-					logger.debug("==============I am in Second Sleep===============");
+					logger.debug("I am in Second Sleep");
 				Thread.sleep(30000);
 				}
 			}
-		 logger.debug("===========fixedAdd=============="+fixedAdd);
+		 logger.debug("fixedAdd "+fixedAdd);
 		 if(fixedAdd!=null && !"".equals(fixedAdd)){
 			  Server server3 = os.compute().servers().get(serverId);
 			  FloatingIP ip = os.compute().floatingIps().allocateIP("public");
 			  String fIp=ip.getFloatingIpAddress();
 			  floatingIp=fIp;
-			  logger.debug("ip.getFloatingIpAddress()......."+fIp);
+			  logger.debug("ip.getFloatingIpAddress() "+fIp);
 			  ActionResponse r = os.compute().floatingIps().addFloatingIP(server3, fixedAdd, fIp);
-			  logger.debug("ActionResponser........"+r.isSuccess());
+			  logger.debug("ActionResponser "+r.isSuccess());
 			  
 		}
 		
 	 Thread.sleep(60000); 
-	 logger.debug("========Start for VM register Number===wait to create vm....====");
+	 logger.debug("Start for VM register Number wait to create vm ");
 	 Thread.sleep(180000);
 	 HashMap<String,String> singlatonMap=SingletonMapClass.getInstance(); 
 	 if(singlatonMap!=null && singlatonMap.get("vmBindNum")!=null){
@@ -289,33 +283,33 @@ public class OpenstackSimpleSolution implements Runnable{
 		 vmBind=vmBind+1;
 		 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBind));
 	 }
-	 logger.debug("=====vmRegisterNumber========"+vmRegisterNumber+"======vmBind========"+vmBind);
-	 logger.debug("======SingletonMapClass.getInstance()========="+SingletonMapClass.getInstance());
+	 logger.debug("vmRegisterNumber "+vmRegisterNumber+" vmBind "+vmBind);
+	 logger.debug("SingletonMapClass.getInstance() "+SingletonMapClass.getInstance());
 	 
 	 repositaryName=commonUtil.getRepositryName(auth.getImagetag(),repositoryNames);
 	 repositryImageName=commonUtil.getRepositryImageName(auth.getImagetag(),repositoryNames);
 	 byte[] bytesArray=readBytesFromFile(keyName);
-	 logger.debug("==repositaryName==="+repositaryName+"======repositryImageName========"+repositryImageName);
+	 logger.debug("repositaryName "+repositaryName+" repositryImageName "+repositryImageName);
 	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
 	 deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray);
 	 commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
 			 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "DP");
-	 logger.debug("====================End Simple Image deployment==================");
+	 logger.debug("End Simple Image deployment");
 	  }catch(Exception e){
-		  logger.error("Exception in openstackSimpleSolution===RUN========" +e.getMessage());
+		  logger.error("Exception in openstackSimpleSolution RUN " +e);
 		  try{
 			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
 						 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "FA");  
 		  }catch(Exception ex){
-			  logger.error("Exception in saving data===openstackSimpleSolution=========" +ex.getMessage());
+			  logger.error("Exception in saving data openstackSimpleSolution " +ex.getMessage());
 			}
 		  
 	  }
 	}
 	
 	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray){
-		logger.debug("====================Start===sshOpenStackCore=============");
+		logger.debug("Start sshOpenStackCore");
 		 SSHShell sshShell = null;
 		 final String host=hostName; 
 		 final String userName=user;
@@ -325,30 +319,26 @@ public class OpenstackSimpleSolution implements Runnable{
                  public synchronized void run() {
                          SSHShell sshShell=null;
                       try{
-                               //byte[] bytesArray=readBytesFromFile("e6e-key.pem");
-                               //host="10.1.0.100";
-                               //userName="cognitaopr";
-                               logger.debug("=======host====="+host);
-                               logger.debug("=======userName====="+userName);
-                               logger.debug("=======vmNumber====="+vmNumber);
-                               logger.debug("=======floatingIp====="+floatingIp);
-                               logger.debug("=======bytesArray====="+bytesArray);
-                               logger.debug("=======openStackIP====="+openStackIP);
+                               logger.debug("host "+host);
+                               logger.debug("userName "+userName);
+                               logger.debug("vmNumber "+vmNumber);
+                               logger.debug("floatingIp "+floatingIp);
+                               logger.debug("bytesArray "+bytesArray);
+                               logger.debug("openStackIP "+openStackIP);
                                sshShell = SSHShell.open(host, 22, userName, bytesArray);
 
                                String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":22 "+openStackIP+" -g -T -N & \n";
-                               logger.debug("====start regiterVM===========2===================regiterVM===: " + regiterVM);
+                               logger.debug("start  regiterVM 2 regiterVM " + regiterVM);
 
-                                      //sshShell = SSHShell.open(host, 2201, userName, bytesArray);
                                       sshShell.upload(new ByteArrayInputStream(regiterVM.getBytes()), "regiterVM_"+vmNumber+".sh",
                                                       ".openstackdocker", true, "4095");
-                                      logger.debug("====start regiterVM===========3======================: ");
+                                      logger.debug("start regiterVM 3 ");
 
                                       String output = sshShell
                                                       .executeCommand("bash -c ~/.openstackdocker/regiterVM_"+vmNumber+".sh", true, true);
 
                  }catch(Exception e){
-                	 logger.error("Exception in sshOpenStackCore in Simple solution in new thread---->"+e.getMessage());
+                	 logger.error("Exception in sshOpenStackCore in Simple solution in new thread "+e);
                  }finally {
                               if (sshShell != null) {
                                       sshShell.close();
@@ -362,28 +352,28 @@ public class OpenstackSimpleSolution implements Runnable{
                Thread.sleep(60000);
                th.stop();
 
-        logger.debug("====End===sshOpenStackCore=====");      
+        logger.debug("End sshOpenStackCore");      
 		} catch (Exception exception) {
-			logger.error("Exception in sshOpenStackCore in Simple solution ---->"+exception.getMessage());
+			logger.error("Exception in sshOpenStackCore in Simple solution "+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
 				sshShell = null;
 			}
 		}
-	logger.debug("===============End===sshOpenStackCore=================="); 
+	logger.debug("sshOpenStackCore End"); 
 	}
 	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray,String repositoryDetails)throws Exception{
-		logger.debug("=================installDockerOpenstack==Simple Solution=Start================");
+		logger.debug("installDockerOpenstack Simple Solution Start ");
 		SSHShell sshShell = null;
 		try {
-			 //byte[] bytesArray=readBytesFromFile();
-			 /*String host="10.1.0.100";
-			 String userName="ubuntu";*/
-			 logger.debug("vmNum=="+vmNum);
-			 logger.debug("host=="+host);
-			 logger.debug("userName=="+userName);
+			 logger.debug("vmNum "+vmNum);
+			 logger.debug("host "+host);
+			 logger.debug("userName "+userName);
+			 logger.debug("repositoryDetails "+repositoryDetails);
 			 
+			 String repArray[]=repositoryDetails.split(",");
+			 String daemon_file="";
 			 String INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS = ""
 						+ "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi\" \n"
 						+ "if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi \n"
@@ -408,39 +398,55 @@ public class OpenstackSimpleSolution implements Runnable{
 						+ "echo Daemon restart done \n"
 						+ "sudo sudo chmod 777 /var/run/docker.sock \n";
 			 
-			 String daemon_file=""
+			 /*String daemon_file=""
 					    +	"{ \n"
 						+	 " \"insecure-registries\": [ \n"
 						+	  "\"cognita-nexus01.eastus.cloudapp.azure.com:8081\", \"cognita-nexus01.eastus.cloudapp.azure.com:8000\", \"cognita-nexus01.eastus.cloudapp.azure.com:8001\", \"cognita-nexus01.eastus.cloudapp.azure.com:8002\" \n"
 						//+ " "+repositoryDetails+" \n"
 						+	  "], \n"
 						+	 " \"disable-legacy-registry\": true \n"
-						+	"} \n";
-					
-			 
+						+	"} \n";*/
+			 String daemonFirstPart=""
+					    +	"{ \n"
+						+	 " \"insecure-registries\": [ \n";
+			String daemonSecondpart="";
+			for(int i=0;i<repArray.length;i++ ){
+				if(daemonSecondpart!=null && !"".equalsIgnoreCase(daemonSecondpart)){
+					daemonSecondpart=daemonSecondpart+","+"\""+repArray[i]+"\"";
+				}else{
+					daemonSecondpart=daemonSecondpart+"\""+repArray[i]+"\"";
+				}
+				
+			 }
+			String daemonThirdPart=	  "], \n"
+			+	 " \"disable-legacy-registry\": true \n"
+			+	"} \n";
+			
+			 daemon_file=daemonFirstPart+daemonSecondpart+daemonThirdPart;	
+			 logger.debug("daemon_file "+daemon_file);
 			 sshShell = SSHShell.open(host, vmNum, userName, bytesArray);
 			 sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes()),
 						"INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh", ".azuredocker", true, "4095");
-			 logger.debug("========Upload docker install script 1=");
+			 logger.debug("Upload docker install script 1 ");
 			
 			 sshShell.upload(new ByteArrayInputStream(daemon_file.getBytes()),
 						"daemon.json", ".azuredocker", true, "4095");
-			 logger.debug("=======Upload docker install script 2=");
-			 logger.debug("======Start installing docker================");
+			 logger.debug("Upload docker install script 2 ");
+			 logger.debug("Start installing docker ");
 			 String output = sshShell
 						.executeCommand("bash -c ~/.azuredocker/INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh", true, true);
 			 
 			 
 			 //sshShell.
-			 logger.debug("SSH====================Cmplete==output="+output);
+			 logger.debug("SSH Cmplete output "+output);
 		} catch (JSchException jSchException) {
-			logger.error("JSchException====in==installDockerOpenstack==== "+jSchException.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+jSchException.getMessage());
 			throw new Exception("Exception in installDockerOpenstack"+jSchException.getMessage());
 		} catch (IOException ioException) {
-			logger.error("JSchException====in==installDockerOpenstack==== "+ioException.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+ioException.getMessage());
 			throw new Exception("Exception in installDockerOpenstack"+ioException.getMessage());
 		} catch (Exception exception) {
-			logger.error("JSchException====in==installDockerOpenstack==== "+exception.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+exception.getMessage());
 			throw new Exception("Exception in installDockerOpenstack"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
@@ -448,10 +454,10 @@ public class OpenstackSimpleSolution implements Runnable{
 				sshShell = null;
 			}
 		}
-		logger.debug("=================installDockerOpenstack==Simple Solution=End================");
+		logger.debug(" installDockerOpenstack Simple Solution End ");
 	}
 	public  byte[] readBytesFromFile(String fileName)throws Exception  {
-		logger.debug("=======Start====readBytesFromFile=====");
+		logger.debug("Start readBytesFromFile ");
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
 
@@ -459,84 +465,72 @@ public class OpenstackSimpleSolution implements Runnable{
         	
             File file = new File(fileName);
             bytesArray = new byte[(int) file.length()];
-
-            //read file into bytes[]
             fileInputStream = new FileInputStream(file);
             fileInputStream.read(bytesArray);
             
-            /*for (int i = 0; i < bytesArray.length; i++) {
-            	logger.debug("==========>"+(char) bytesArray[i]);
-            }*/
-
+            
         } catch (IOException e) {
-        	logger.error("Exception in readBytesFromFile ==== SimpleSolution========="+e.getMessage());
-        	throw new Exception("Exception in ReadBytesFromFile in SimpleSolution"+e.getMessage());
+        	logger.error("Exception in readBytesFromFile SimpleSolution "+e);
+        	throw new Exception("Exception in ReadBytesFromFile in SimpleSolution "+e);
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                	logger.error("Exception in readBytesFromFile Finally==== SimpleSolution========="+e.getMessage());
+                	logger.error("Exception in readBytesFromFile Finally SimpleSolution "+e.getMessage());
                 }
             }
 
         }
-        logger.debug("=======End====readBytesFromFile==bytesArray.length==="+bytesArray.length);
+        logger.debug("End readBytesFromFile bytesArray.length"+bytesArray.length);
         return bytesArray;
 
     }
 	
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName, 
 			String registryServerUrl, String username, String password, String repositoryName,int vmNum,byte[] bytesArray)throws Exception {
-		logger.debug("====dockerHostIP======: " + dockerHostIP);
-		logger.debug("====vmUserName======: " + vmUserName);
-		logger.debug("====registryServerUrl======: " + registryServerUrl);
-		logger.debug("====username======: " + username);
-		logger.debug("====password======: " + password);
-		logger.debug("====repositoryName======: " + repositoryName);
-		logger.debug("====================start deploymentImageVM======SimpleSolution============");
+		logger.debug("dockerHostIP " + dockerHostIP);
+		logger.debug("vmUserName " + vmUserName);
+		logger.debug("registryServerUrl " + registryServerUrl);
+		logger.debug("username " + username);
+		logger.debug("password " + password);
+		logger.debug("repositoryName " + repositoryName);
+		logger.debug("start deploymentImageVM SimpleSolution ");
 		SSHShell sshShell = null;
 		try {
-			//byte[] bytesArray=readBytesFromFile();
-			//int vmNum=Integer.parseInt(vmNumber);
 			String PULL_IMAGE = "" + "docker login --username=" + username + " --password=" + password + " "
 					+ registryServerUrl + " \n" + "docker pull " + repositoryName + " \n";
-			logger.debug("====start deploymentImageVM===========2===================PULL_IMAGE===: " + PULL_IMAGE);
+			logger.debug("start deploymentImageVM 2 PULL_IMAGE " + PULL_IMAGE);
 
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			sshShell.upload(new ByteArrayInputStream(PULL_IMAGE.getBytes()), "PULL_IMAGE.sh", ".azuredocker", true,
 					"4095");
-			logger.debug("====start deploymentImageVM===========3======================: ");
+			logger.debug(" start deploymentImageVM 3 ");
 
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			String output2 = sshShell.executeCommand("bash -c ~/.azuredocker/PULL_IMAGE.sh", true, true);
-			logger.debug("====start deploymentImageVM===========3===========output2===========: " + output2);
-			try {
-				Thread.sleep(30000);
-			} catch (Exception e) {
-				logger.error("Exception in sleep======1===================");
-			}
-
-			logger.debug("====================start deploymentImageVM============1======");
+			logger.debug("start deploymentImageVM 3 output2 " + output2);
+			Thread.sleep(30000);
+			logger.debug(" start deploymentImageVM check point 1");
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			String RUN_IMAGE = "" + "docker run -d -p 0.0.0.0:8557:8336  " + repositoryName + " \n";
-			logger.debug("====output==========Start============4======================: ");
+			logger.debug("output Start check point 4");
 
 			sshShell.upload(new ByteArrayInputStream(RUN_IMAGE.getBytes()), "RUN_DOCKER_IMAGE.sh", ".azuredocker", true,
 					"4095");
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 
 			String output3 = sshShell.executeCommand("bash -c ~/.azuredocker/RUN_DOCKER_IMAGE.sh", true, true);
-			logger.debug("====output==========Start============5==================output3====: " + output3);
+			logger.debug("output Start check point 5 output3 " + output3);
 
 		} catch (JSchException jSchException) {
-			logger.error("JSchException====in==deploymentImageVM==== "+jSchException.getMessage());
+			logger.error("JSchException in deploymentImageVM "+jSchException.getMessage());
 			throw new Exception("Exception in deploymentImageVM"+jSchException.getMessage());
 		} catch (IOException ioException) {
-			logger.error("JSchException====in==deploymentImageVM==== "+ioException.getMessage());
+			logger.error("JSchException in deploymentImageVM "+ioException.getMessage());
 			throw new Exception("Exception in deploymentImageVM"+ioException.getMessage());
 		} catch (Exception exception) {
-			logger.error("JSchException====in==deploymentImageVM==== "+exception.getMessage());
+			logger.error("JSchException in deploymentImageVM  "+exception.getMessage());
 			throw new Exception("Exception in deploymentImageVM"+exception.getMessage());
 		} finally {
 			if (sshShell != null) {
@@ -544,7 +538,7 @@ public class OpenstackSimpleSolution implements Runnable{
 				sshShell = null;
 			}
 		}
-		logger.debug("====================End deploymentImageVM=======SimpleSolution===========");
+		logger.debug("End deploymentImageVM SimpleSolution");
 		return "sucess";
 	}
 

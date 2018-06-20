@@ -30,7 +30,7 @@ public class OpenstackCompositeDeployBeanTest {
 	Logger logger = LoggerFactory.getLogger(OpenstackCompositeDeployBeanTest.class);
 	@Test	
 	public void openstackCompositeDeployBeanTestTestparameter(){
-		logger.debug("<-Start ----openstackCompositeDeployBeanTestTestparameter------->");
+		logger.debug("Start openstackCompositeDeployBeanTestTestparameter");
 		try{
 			 OpenstackCompositeDeployBean obean=new OpenstackCompositeDeployBean();
 			 String vmName="Gold24";
@@ -49,10 +49,9 @@ public class OpenstackCompositeDeployBeanTest {
 			Assert.assertEquals(solutionRevisionId, obean.getSolutionRevisionId());
 			Assert.assertEquals(userId, obean.getUserId());
 		}catch(Exception ex){
-			   logger.error("Error in openstackCompositeDeployBeanTestTestparameter---> "+ex.getMessage()); 
+			   logger.error("Error in openstackCompositeDeployBeanTestTestparameter "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----openstackCompositeDeployBeanTestTestparameter------->");
-		//Assert.assertEquals(imagetag, obean.getImagetag());
+		logger.debug("End openstackCompositeDeployBeanTestTestparameter");
 		
 	}
 

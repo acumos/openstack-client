@@ -81,7 +81,7 @@ This API is used to deploy single solution in openstack cloud.
 **- Request**
 
 {
-  "imagetag": "cognita-nexus01:8001/newadder1:1",
+  "imagetag": "test-nexus01:8001/newadder1:1",
   
   "solutionId": "02eab846-2bd0-4cfe8470-9fc69fa0d877",
   
@@ -117,7 +117,7 @@ This API is used to deploy single solution in openstack cloud.
   
   "urlAttribute": "testUrl",
   
-  "imagetag": "cognita-nexus01:8001/newadder1:1",
+  "imagetag": "test-nexus01:8001/newadder1:1",
   
   "solutionId": "02eab846-2bd0-4cfe8470-9fc69fa0d877",
   

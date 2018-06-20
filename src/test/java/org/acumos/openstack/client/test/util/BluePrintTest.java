@@ -37,7 +37,7 @@ public class BluePrintTest {
 	private static Logger logger = LoggerFactory.getLogger(BluePrintTest.class);
 	@Test	
 	public void BluePrintTestObjectparameter(){
-		logger.debug("<-Start ----BluePrintTestObjectparameter------->");
+		logger.debug("Start BluePrintTestObjectparameter");
 		try{
 			String name = "bluePrint";
 			String version = "1";
@@ -47,21 +47,15 @@ public class BluePrintTest {
 			List<Node> nodes=(List)new ArrayList<Node>();
 			
 			Blueprint blueprint=new Blueprint();
-			//blueprint.setInputs(inputs);
 			blueprint.setName(name);
-			//blueprint.setNodes(nodes);
-			//blueprint.setOrchestrator(orchestrator);
 			blueprint.setVersion(version);
 			
 			Assert.assertEquals(name, blueprint.getName());
-			//Assert.assertEquals(inputs, blueprint.getInputs());
-			//Assert.assertEquals(nodes, blueprint.getNodes());
-			//Assert.assertEquals(orchestrator, blueprint.getOrchestrator());
 			Assert.assertEquals(version, blueprint.getVersion());
 		}catch(Exception ex){
-			   logger.error("Error in BluePrintTestObjectparameter---> "+ex.getMessage()); 
+			   logger.error("Error in BluePrintTestObjectparameter "+ex.getMessage()); 
 		}
-		logger.debug("<-End ----BluePrintTestObjectparameter------->");
+		logger.debug("End BluePrintTestObjectparameter");
 	}
 
 }

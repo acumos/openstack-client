@@ -35,11 +35,11 @@ public class NodeTest {
 	private static Logger logger = LoggerFactory.getLogger(NodeTest.class);
 	@Test	
 	public void nodeTestObjectparameter(){
-		logger.info("<---------Start-------nodeTestObjectparameter-------------->");
+		logger.info("Start nodeTestObjectparameter");
 		try{
 			OperationSignature operationSignature = new OperationSignature();
 			String containerName = "Adder1";
-		    String image = "cognita-nexus01:8001/newadder1:1";
+		    String image = "test-nexus01:8001/newadder1:1";
 		    Component component=new Component();
 		    component.setName("testName");
 			component.setOperationSignature(operationSignature);
@@ -54,9 +54,9 @@ public class NodeTest {
 		    Assert.assertEquals(image, node.getImage());
 		   // Assert.assertEquals(dependsOn, node.getDependsOn());
 		}catch(Exception ex){
-			   logger.error("Error in nodeTestObjectparameter---> "+ex.getMessage()); 
+			   logger.error("Error in nodeTestObjectparameter "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----nodeTestObjectparameter------->");
+		logger.debug("End nodeTestObjectparameter");
    
 	}
 }

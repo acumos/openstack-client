@@ -32,15 +32,15 @@ public class OpenstackSimpleSolutionTest {
 	Logger logger = LoggerFactory.getLogger(OpenstackSimpleSolutionTest.class);
 	@Test	
 	public void readBytesFromFileTest(){
-		logger.debug("<-Start ----OpenstackSimpleSolutionTest------->");
+		logger.debug("Start OpenstackSimpleSolutionTest");
 		try{
 		OpenstackSimpleSolution solution=new OpenstackSimpleSolution();
 		byte[] bytesArray=solution.readBytesFromFile("e6e-key.pem");
 		assertNotNull(bytesArray);
 		 }catch(Exception ex){
-			   logger.error("Error in OpenstackSimpleSolutionTest---> "+ex.getMessage()); 
+			   logger.error("Error in OpenstackSimpleSolutionTest "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----OpenstackSimpleSolutionTest------->");
+		logger.debug("End OpenstackSimpleSolutionTest");
 	}
 
 }

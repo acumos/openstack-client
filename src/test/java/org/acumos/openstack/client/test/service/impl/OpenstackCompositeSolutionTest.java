@@ -31,15 +31,15 @@ public class OpenstackCompositeSolutionTest {
 	Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolutionTest.class);
 	@Test	
 	public void readBytesFromFileTest(){
-		logger.debug("<-Start ----OpenstackCompositeSolutionTest------->");
+		logger.debug("Start OpenstackCompositeSolutionTest");
 		try{
 			OpenstackCompositeSolution solution=new OpenstackCompositeSolution();
 			byte[] bytesArray=solution.readBytesFromFile("e6e-key.pem");
 			assertNotNull(bytesArray);
 		}catch(Exception ex){
-			   logger.error("Error in OpenstackCompositeSolutionTest---> "+ex.getMessage()); 
+			   logger.error("Error in OpenstackCompositeSolutionTest "+ex.getMessage()); 
 		   }
-		logger.debug("<-End ----OpenstackCompositeSolutionTest------->");
+		logger.debug("End OpenstackCompositeSolutionTest");
 	}
 	
 

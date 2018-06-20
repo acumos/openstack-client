@@ -109,7 +109,7 @@ public final class SSHShell {
 	 * @throws IOException
 	 */
 	private SSHShell(String host, int port, String userName, byte[] sshPrivateKey) throws JSchException, IOException {
-		logger.debug("<-start ssh--------->");
+		logger.debug(" start ssh ");
 		Closure expectClosure = getExpectClosure();
 		for (String linuxPromptPattern : new String[] { "\\>", "#", "~#", "~\\$" }) {
 			try {
@@ -120,21 +120,21 @@ public final class SSHShell {
 			}
 		}
 		JSch jsch = new JSch();
-		logger.debug("<-user.home-------->"+System.getProperty("user.home"));
+		logger.debug(" user.home "+System.getProperty("user.home"));
 		jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
-		logger.debug("<- SSHShell-1------->");
+		logger.debug(" SSHShell check point 1");
 		jsch.addIdentity(host, sshPrivateKey, (byte[]) null, (byte[]) null);
-		logger.debug("<- SSHShell-2------->");
+		logger.debug("SSHShell check point 2");
 		this.session = jsch.getSession(userName, host, port);
-		logger.debug("<- SSHShell-3------->");
+		logger.debug(" SSHShell check point 3");
 		this.session.setConfig("StrictHostKeyChecking", "no");
 		this.session.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
-		logger.debug("<- SSHShell-4------>");
+		logger.debug("SSHShell check point 4");
 		session.connect(60000);
 		this.channel = (ChannelShell) session.openChannel("shell");
-		logger.debug("<- SSHShell-5------->");
+		logger.debug(" SSHShell check point 5");
 		this.expect = new Expect4j(channel.getInputStream(), channel.getOutputStream());
-		logger.debug("<- SSHShell-6------->");
+		logger.debug(" SSHShell check point 6");
 		channel.connect();
 	}
 

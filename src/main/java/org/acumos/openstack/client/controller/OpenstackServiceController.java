@@ -85,23 +85,10 @@ public class OpenstackServiceController extends AbstractController {
 	
 	@Autowired
 	private Environment env;
-	/*@RequestMapping(value ="/getUIDDetails",  method = RequestMethod.GET, produces=APPLICATION_JSON)
-	@ResponseBody
-	public String getUIDDetails() {
-		JSONObject  jsonOutput = new JSONObject();
-		System.out.println("=======getUIDDetails=========");
-		try{
-			jsonOutput.put("Status", "Succeess");
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-        return "Hello bbbbbbb!";
-    }*/
-	
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_SINGLE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String singleImageOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
-		logger.debug("=======singleImageOpenstackDeployment===Start==============");
+		logger.debug(" singleImageOpenstackDeployment Start");
 		String uidNumStr="";
 		String flavourName="";
 		String securityGropName="";
@@ -152,29 +139,29 @@ public class OpenstackServiceController extends AbstractController {
 			 repositoryNames=env.getProperty("docker.openstack.reposityNames");
 			 repositoryDetails=env.getProperty("docker.openstack.reposityDetails");
 			 
-			 logger.debug("<-----flavourName------->"+flavourName);
-			 logger.debug("<----securityGropName--->"+securityGropName);
-			 logger.debug("<----endpoint----------->"+endpoint);
-			 logger.debug("<----userName----------->"+userName);
-			 logger.debug("<----password----------->"+password);
-			 logger.debug("<----scopeProject----------->"+scopeProject);
-			 logger.debug("<----key----------->"+key);
-			 logger.debug("<----keyName----------->"+keyName);
-			 logger.debug("<----IdentifierName----------->"+IdentifierName);
-			 logger.debug("<----vnRegisterNumber----------->"+vmRegisterNumber);
-			 logger.debug("<----hostOpenStack----------->"+hostOpenStack);
-			 logger.debug("<----hostUserName----------->"+hostUserName);
-			 logger.debug("<----vmUserName----------->"+vmUserName);
-			 logger.debug("<----dockerUserName----------->"+dockerUserName);
-			 logger.debug("<----dockerPassword----------->"+dockerPassword);
-			 logger.debug("<----dataSource----------->"+dataSource);
-			 logger.debug("<----cmndatasvcuser----------->"+cmndatasvcuser);
-			 logger.debug("<----cmndatasvcpwd----------->"+cmndatasvcpwd);
-			 logger.debug("<----proxyIP----------------->"+proxyIP);
-			 logger.debug("<----proxyPort--------------->"+proxyPort);
-			 logger.debug("<----openStackIP--------------->"+openStackIP);
-			 logger.debug("<----repositoryNames----------->"+repositoryNames);
-			 logger.debug("<----repositoryDetails----------->"+repositoryDetails);
+			 logger.debug("flavourName "+flavourName);
+			 logger.debug("securityGropName "+securityGropName);
+			 logger.debug("endpoint "+endpoint);
+			 logger.debug("userName "+userName);
+			 logger.debug("password "+password);
+			 logger.debug("scopeProject "+scopeProject);
+			 logger.debug("key "+key);
+			 logger.debug("keyName "+keyName);
+			 logger.debug("IdentifierName "+IdentifierName);
+			 logger.debug("vnRegisterNumber "+vmRegisterNumber);
+			 logger.debug("hostOpenStack "+hostOpenStack);
+			 logger.debug("hostUserName "+hostUserName);
+			 logger.debug("vmUserName "+vmUserName);
+			 logger.debug("dockerUserName "+dockerUserName);
+			 logger.debug("dockerPassword "+dockerPassword);
+			 logger.debug("dataSource "+dataSource);
+			 logger.debug("cmndatasvcuser "+cmndatasvcuser);
+			 logger.debug("cmndatasvcpwd "+cmndatasvcpwd);
+			 logger.debug("proxyIP "+proxyIP);
+			 logger.debug("proxyPort "+proxyPort);
+			 logger.debug("openStackIP "+openStackIP);
+			 logger.debug("repositoryNames "+repositoryNames);
+			 logger.debug("repositoryDetails "+repositoryDetails);
 			 
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
@@ -187,17 +174,17 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		 
 		}catch(Exception e){
-			logger.error("Exception in---singleImageOpenstackDeployment------>"+e.getMessage());
+			logger.error("Exception in singleImageOpenstackDeployment "+e);
 		}
-		//logger.debug("<------start----singleImageOpenstackDeployment------------>");
-		logger.debug("=======singleImageOpenstackDeployment=End first thread==jsonOutput.toString()===="+jsonOutput.toString());
+		logger.debug("jsonOutput.toString()===="+jsonOutput.toString());
+		logger.debug("singleImageOpenstackDeployment End");
 		return jsonOutput.toString();
 	}
 	
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String compositeOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackCompositeDeployBean auth,HttpServletResponse response) throws Exception {
-		logger.debug("=======compositeOpenstackDeployment===Start==============");
+		logger.debug("compositeOpenstackDeployment Start");
 		
 		String uidNumStr="";
 		String flavourName="";
@@ -296,54 +283,54 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
 			 logger.debug("nexusRegistyName "+nexusRegistyName);
-			 logger.debug("<------probePrintImage---------->"+probePrintImage);
-			 logger.debug("<------probePrintName---------->"+probePrintName);
-			 logger.debug("<------probUser---------->"+probUser);
-			 logger.debug("<------probePass---------->"+probePass);
-			 logger.debug("<------probeNexusEndPoint---------->"+probeNexusEndPoint);
-			 logger.debug("<------probeInternalPort---------->"+probeInternalPort);
-			 logger.debug("<-----flavourName------->"+flavourName);
-			 logger.debug("<----securityGropName--->"+securityGropName);
-			 logger.debug("<----endpoint----------->"+endpoint);
-			 logger.debug("<----userName----------->"+userName);
-			 logger.debug("<----password----------->"+password);
-			 logger.debug("<----scopeProject----------->"+scopeProject);
-			 logger.debug("<----key----------->"+key);
-			 logger.debug("<----keyName----------->"+keyName);
-			 logger.debug("<----IdentifierName----------->"+IdentifierName);
-			 logger.debug("<----vnRegisterNumber----------->"+vmRegisterNumber);
-			 logger.debug("<----hostOpenStack----------->"+hostOpenStack);
-			 logger.debug("<----hostUserName----------->"+hostUserName);
-			 logger.debug("<----vmUserName----------->"+vmUserName);
-			 logger.debug("<----dockerUserName----------->"+dockerUserName);
-			 logger.debug("<----dockerPassword----------->"+dockerPassword);
-			 logger.debug("<----bluePrintImage----------->"+bluePrintImage);
-			 logger.debug("<----bluePrintName----------->"+bluePrintName);
-			 logger.debug("<----bluePrintUserName----------->"+bluePrintUserName);
-			 logger.debug("<----bluePrintPassword----------->"+bluePrintPassword);
-			 logger.debug("<----dataSource----------->"+dataSource);
-			 logger.debug("<----cmndatasvcuser----------->"+cmndatasvcuser);
-			 logger.debug("<----cmndatasvcpwd----------->"+cmndatasvcpwd);
-			 logger.debug("<----nexusUrl----------->"+nexusUrl);
-			 logger.debug("<----nexusUserName----------->"+nexusUserName);
-			 logger.debug("<----nexusPassword----------->"+nexusPassword);
-			 logger.debug("<----solutionPort----------->"+solutionPort);
-			 logger.debug("<----Sleeptime----------->"+Sleeptime);
-			 logger.debug("<------SolutionId---------->"+auth.getSolutionId());
-			 logger.debug("<----proxyIP--------------->"+proxyIP);
-			 logger.debug("<----proxyPort------------->"+proxyPort);
-			 logger.debug("<----openStackIP----------->"+openStackIP);
-			 logger.debug("<----bluePrintPortNumber----------->"+bluePrintPortNumber);
-			 logger.debug("<------authObject.getSolutionRevisionId()---------->"+auth.getSolutionRevisionId());
-			 logger.debug("<----repositoryNames----------->"+repositoryNames);
-			 logger.debug("<----nexusRegistyUserName------>"+nexusRegistyUserName);
-			 logger.debug("<----nexusRegistyPwd----------->"+nexusRegistyPwd);
+			 logger.debug("probePrintImage "+probePrintImage);
+			 logger.debug("probePrintName "+probePrintName);
+			 logger.debug("probUser "+probUser);
+			 logger.debug("probePass "+probePass);
+			 logger.debug("probeNexusEndPoint "+probeNexusEndPoint);
+			 logger.debug("probeInternalPort "+probeInternalPort);
+			 logger.debug("flavourName "+flavourName);
+			 logger.debug("securityGropName "+securityGropName);
+			 logger.debug("endpoint "+endpoint);
+			 logger.debug("userName "+userName);
+			 logger.debug("password "+password);
+			 logger.debug("scopeProject "+scopeProject);
+			 logger.debug("key "+key);
+			 logger.debug("keyName "+keyName);
+			 logger.debug("IdentifierName "+IdentifierName);
+			 logger.debug("vnRegisterNumber "+vmRegisterNumber);
+			 logger.debug("hostOpenStack "+hostOpenStack);
+			 logger.debug("hostUserName "+hostUserName);
+			 logger.debug("vmUserName "+vmUserName);
+			 logger.debug("dockerUserName "+dockerUserName);
+			 logger.debug("dockerPassword "+dockerPassword);
+			 logger.debug("bluePrintImage "+bluePrintImage);
+			 logger.debug("bluePrintName "+bluePrintName);
+			 logger.debug("bluePrintUserName "+bluePrintUserName);
+			 logger.debug("bluePrintPassword "+bluePrintPassword);
+			 logger.debug("dataSource "+dataSource);
+			 logger.debug("cmndatasvcuser "+cmndatasvcuser);
+			 logger.debug("cmndatasvcpwd "+cmndatasvcpwd);
+			 logger.debug("nexusUrl "+nexusUrl);
+			 logger.debug("nexusUserName "+nexusUserName);
+			 logger.debug("nexusPassword "+nexusPassword);
+			 logger.debug("solutionPort "+solutionPort);
+			 logger.debug("Sleeptime "+Sleeptime);
+			 logger.debug("SolutionId "+auth.getSolutionId());
+			 logger.debug("proxyIP "+proxyIP);
+			 logger.debug("proxyPort "+proxyPort);
+			 logger.debug("openStackIP "+openStackIP);
+			 logger.debug("bluePrintPortNumber "+bluePrintPortNumber);
+			 logger.debug("authObject.getSolutionRevisionId() "+auth.getSolutionRevisionId());
+			 logger.debug("repositoryNames "+repositoryNames);
+			 logger.debug("nexusRegistyUserName "+nexusRegistyUserName);
+			 logger.debug("nexusRegistyPwd "+nexusRegistyPwd);
 			 
 			 
 			 
 			 String bluePrintStr=commonUtil.getBluePrintNexus(auth.getSolutionId(), auth.getSolutionRevisionId(),dataSource,
 					 cmndatasvcuser,cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword);
-			 logger.debug("<------bluePrintStr---------->"+bluePrintStr);
+			 logger.debug("bluePrintStr "+bluePrintStr);
 			 
 			    boolean probeIndicator=parseJson.checkProbeIndicator(jsonFileName);
 				Blueprint bluePrintProbe=null;
@@ -352,7 +339,7 @@ public class OpenstackServiceController extends AbstractController {
 				ArrayList<String> list=null;
 				LinkedList<String> sequenceList=null;
 				DataBrokerBean dataBrokerBean=null;
-				logger.debug("<------probeIndicator---------->"+probeIndicator);
+				logger.debug("probeIndicator "+probeIndicator);
                 if(probeIndicator){
 					
 					imageMap=parseJson.parseJsonFileImageMap(OpenStackConstants.JSON_FILE_NAME);
@@ -402,7 +389,7 @@ public class OpenstackServiceController extends AbstractController {
 					bluePrintProbe=parseJson.jsonFileToObject(OpenStackConstants.JSON_FILE_NAME,dataBrokerBean);
 				}
 			
-				logger.debug("<------bluePrintProbe.getProbeIndocator()---------->"+bluePrintProbe.getProbeIndicator());
+				logger.debug("bluePrintProbe.getProbeIndocator() "+bluePrintProbe.getProbeIndicator());
 				
 				ArrayList<ProbeIndicator> probeIndicatorList = bluePrintProbe.getProbeIndicator();
 				ProbeIndicator prbIndicator = null;
@@ -421,12 +408,12 @@ public class OpenstackServiceController extends AbstractController {
 				list.add(bluePrintImage);
 				imageMap.put(bluePrintImage, "BluePrintContainer");
 			 }
-			 logger.debug("<----list----------->"+list);
-			 logger.debug("<----imageMap----------->"+imageMap);
-			 logger.debug("<----sequenceList----------->"+sequenceList);
+			 logger.debug("list "+list);
+			 logger.debug("imageMap "+imageMap);
+			 logger.debug("sequenceList "+sequenceList);
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
-			 logger.debug("<----uidNumStr----------->"+uidNumStr);
+			 logger.debug("uidNumStr "+uidNumStr);
 			 jsonOutput.put("Status", uidNumStr);
 			 OpenstackCompositeSolution compositeSolution=new OpenstackCompositeSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
@@ -440,10 +427,10 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		 
 		}catch(Exception e){
-			logger.error("Exception in---compositeOpenstackDeployment------>"+e.getMessage());
+			logger.error("Exception in compositeOpenstackDeployment "+e);
 		}
 		
-		logger.debug("=======compositeOpenstackDeployment===End first thread==============");
+		logger.debug("compositeOpenstackDeployment End");
 		return jsonOutput.toString();
 	}
 }

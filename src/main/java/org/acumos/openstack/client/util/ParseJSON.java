@@ -138,7 +138,7 @@ public  HashMap<String,String> parseJsonFile(String jsonFileName)throws  Excepti
 	            Map.Entry pair = itr1.next();
 	            String key=(String)pair.getKey();
 	            String value=(String)pair.getValue();
-	            log.debug("-->"+pair.getKey() + " : " + pair.getValue());
+	            log.debug("pair key "+pair.getKey() + " : " + pair.getValue());
 	            if(key!=null && key.equalsIgnoreCase(OpenStackConstants.NAME)){
 	            	orchestratorBean.setName(value);
 	             }
@@ -172,7 +172,7 @@ public  HashMap<String,String> parseJsonFile(String jsonFileName)throws  Excepti
 				while (itr1.hasNext()) {
 					Map.Entry pair = itr1.next();
 					String key = (String) pair.getKey();
-					log.debug("-->" + pair.getKey() + " : " + pair.getValue());
+					log.debug("pair key " + pair.getKey() + " : " + pair.getValue());
 					if (key != null && key.equalsIgnoreCase(OpenStackConstants.OPERATION_SIGNATURE)) {
 						JSONObject jsonObject = (JSONObject) pair.getValue();
 						String operationName =(String) jsonObject.get(OpenStackConstants.OPERATION_NAME);
@@ -704,7 +704,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 					while (itr1.hasNext()) {
 						Map.Entry pair = itr1.next();
 						String key = (String) pair.getKey();
-						log.debug("-->" + pair.getKey() + " : " + pair.getValue());
+						log.debug("pair key " + pair.getKey() + " : " + pair.getValue());
 						if (key != null && key.equalsIgnoreCase(OpenStackConstants.OPERATION_SIGNATURE)) {
 							JSONObject jsonObject = (JSONObject) pair.getValue();
 							String operationName =(String) jsonObject.get(OpenStackConstants.OPERATION_NAME);
@@ -750,7 +750,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 								
 							
 						  }else {
-								log.debug("-->" + pair.getKey() + " : " + pair.getValue());
+								log.debug("pair key val " + pair.getKey() + "  " + pair.getValue());
 								if (key != null && key.equalsIgnoreCase(OpenStackConstants.CONTAINER_NAME)) {
 									node.setContainerName((String) pair.getValue());
 								}
@@ -1230,7 +1230,5 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 		log.debug(" getDataBrokerContainer End");
 		return dataBrokerBean;	
 	}
-	
-	
 	
 }
