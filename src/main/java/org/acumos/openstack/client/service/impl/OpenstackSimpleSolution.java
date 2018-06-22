@@ -398,14 +398,7 @@ public class OpenstackSimpleSolution implements Runnable{
 						+ "echo Daemon restart done \n"
 						+ "sudo sudo chmod 777 /var/run/docker.sock \n";
 			 
-			 /*String daemon_file=""
-					    +	"{ \n"
-						+	 " \"insecure-registries\": [ \n"
-						+	  "\"cognita-nexus01.eastus.cloudapp.azure.com:8081\", \"cognita-nexus01.eastus.cloudapp.azure.com:8000\", \"cognita-nexus01.eastus.cloudapp.azure.com:8001\", \"cognita-nexus01.eastus.cloudapp.azure.com:8002\" \n"
-						//+ " "+repositoryDetails+" \n"
-						+	  "], \n"
-						+	 " \"disable-legacy-registry\": true \n"
-						+	"} \n";*/
+			 
 			 String daemonFirstPart=""
 					    +	"{ \n"
 						+	 " \"insecure-registries\": [ \n";

@@ -231,6 +231,7 @@ public class OpenstackServiceController extends AbstractController {
 		String nexusRegistyName="";
 		String nexusRegistyUserName="";
 		String nexusRegistyPwd="";
+		String repositoryDetails="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -280,6 +281,8 @@ public class OpenstackServiceController extends AbstractController {
 			nexusRegistyName=env.getProperty("docker.openstack.nexusRegistyName");
 			nexusRegistyUserName=env.getProperty("docker.openstack.nexusRegistyUserName");
 			nexusRegistyPwd=env.getProperty("docker.openstack.nexusRegistyPwd");
+			repositoryDetails=env.getProperty("docker.openstack.reposityDetails");
+			 logger.debug("repositoryDetails "+repositoryDetails);
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
 			 logger.debug("nexusRegistyName "+nexusRegistyName);
@@ -421,7 +424,7 @@ public class OpenstackServiceController extends AbstractController {
 					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrintProbe,uidNumStr,solutionPort,Sleeptime,
 					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,nodeTypeContainerMap,probeNexusEndPoint
 					 ,probeInternalPort,repositoryNames,dataBrokerBean,exposeDataBrokerPort,internalDataBrokerPort,bluePrintStr,nexusRegistyName,
-					 nexusRegistyUserName,nexusRegistyPwd);
+					 nexusRegistyUserName,nexusRegistyPwd,repositoryDetails);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 

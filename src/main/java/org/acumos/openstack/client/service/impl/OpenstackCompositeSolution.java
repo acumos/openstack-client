@@ -117,6 +117,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String nexusRegistyName;
 	private String nexusRegistyUserName;
 	private String nexusRegistyPwd;
+	private String repositoryDetails;
 	
 	public OpenstackCompositeSolution(){
 		
@@ -131,7 +132,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 String openStackIP,String bluePrintPortNumber,String probePrintName,String probUser,String probePass,
 			 HashMap<String,DeploymentBean> nodeTypeContainerMap,String probeNexusEndPoint,String probeInternalPort,String repositoryNames,
 			 DataBrokerBean dataBrokerBean,String exposeDataBrokerPort,String internalDataBrokerPort,String bluePrintStr,String nexusRegistyName,
-			 String nexusRegistyUserName,String nexusRegistyPwd){
+			 String nexusRegistyUserName,String nexusRegistyPwd,String repositoryDetails){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
@@ -184,6 +185,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.nexusRegistyName = nexusRegistyName;
 			this.nexusRegistyUserName = nexusRegistyUserName;
 			this.nexusRegistyPwd = nexusRegistyPwd;
+			this.repositoryDetails=repositoryDetails;
 	}
 	
 	
@@ -400,7 +402,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 logger.debug("SingletonMapClass.getInstance() "+SingletonMapClass.getInstance());
 	 
 	 //bluePrintPort.sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
-	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray);
+	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
 	 
 	 String portNumber="";
 	 int count=0;
@@ -690,14 +692,15 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		}
 		logger.debug("sshOpenStackCore End");
 	}
-	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray)throws Exception{
+	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray,String repositoryDetails)throws Exception{
 		logger.debug("installDockerOpenstack Start");
 		SSHShell sshShell = null;
 		try {
 			 logger.debug("vmNum "+vmNum);
 			 logger.debug("host "+host);
 			 logger.debug("userName "+userName);
-			 
+			 String repArray[]=repositoryDetails.split(",");
+			 String daemon_file="";
 			 String INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS = ""
 						+ "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi\" \n"
 						+ "if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi \n"
@@ -722,14 +725,24 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 						+ "echo Daemon restart done \n"
 						+ "sudo sudo chmod 777 /var/run/docker.sock \n";
 			 
-			 String daemon_file=""
+			 
+			 String daemonFirstPart=""
 					    +	"{ \n"
-						+	 " \"insecure-registries\": [ \n"
-						+	  "\"cognita-nexus01.eastus.cloudapp.azure.com:8081\", \"cognita-nexus01.eastus.cloudapp.azure.com:8000\", \"cognita-nexus01.eastus.cloudapp.azure.com:8001\", \"cognita-nexus01.eastus.cloudapp.azure.com:8002\" \n"
-						+	  "], \n"
-						+	 " \"disable-legacy-registry\": true \n"
-						+	"} \n";
-					
+						+	 " \"insecure-registries\": [ \n";
+			String daemonSecondpart="";
+			for(int i=0;i<repArray.length;i++ ){
+				if(daemonSecondpart!=null && !"".equalsIgnoreCase(daemonSecondpart)){
+					daemonSecondpart=daemonSecondpart+","+"\""+repArray[i]+"\"";
+				}else{
+					daemonSecondpart=daemonSecondpart+"\""+repArray[i]+"\"";
+				}
+				
+			 }
+			String daemonThirdPart=	  "], \n"
+			+	 " \"disable-legacy-registry\": true \n"
+			+	"} \n";
+			
+			 daemon_file=daemonFirstPart+daemonSecondpart+daemonThirdPart;
 			 
 			 sshShell = SSHShell.open(host, vmNum, userName, bytesArray);
 			 sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes()),
