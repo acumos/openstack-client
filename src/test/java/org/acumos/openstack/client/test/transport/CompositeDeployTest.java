@@ -29,26 +29,22 @@ public class CompositeDeployTest {
 	Logger logger = LoggerFactory.getLogger(CompositeDeployTest.class);
 	@Test	
 	public void testCompositeDeployBeanTestparameter(){
-		logger.debug("Start testCompositeDeployBeanTestparameter");
-		try{
-			 String vmName="Gold24";
-			 String solutionId="1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1";
-			 String solutionRevisionId="05cac760-cd53-49a3-85f3-df908f14211d";
-			 String userId="7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4";
-			 
-			 CompositeDeployBean cmBean=new CompositeDeployBean();
-			 cmBean.setVmName("Gold24");
-			 cmBean.setSolutionId("1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1");
-			 cmBean.setSolutionRevisionId("05cac760-cd53-49a3-85f3-df908f14211d");
-			 cmBean.setUserId("7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4");
-			 Assert.assertEquals(vmName, cmBean.getVmName());
-			 Assert.assertEquals(solutionId, cmBean.getSolutionId());
-			 Assert.assertEquals(solutionRevisionId, cmBean.getSolutionRevisionId());
-			 Assert.assertEquals(userId, cmBean.getUserId());
-		}catch(Exception ex){
-			   logger.error("Error in testCompositeDeployBeanTestparameter "+ex.getMessage()); 
-		   }
-		logger.debug("End testCompositeDeployBeanTestparameter");
+		 logger.debug("Start testCompositeDeployBeanTestparameter");
+		 String vmName="Gold24";
+		 String solutionId="1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1";
+		 String solutionRevisionId="05cac760-cd53-49a3-85f3-df908f14211d";
+		 String userId="7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4";
+		 
+		 CompositeDeployBean cmBean=new CompositeDeployBean();
+		 cmBean.setVmName("Gold24");
+		 cmBean.setSolutionId("1566ec6f-cdc7-4ba9-8fb6-3124ab9e17c1");
+		 cmBean.setSolutionRevisionId("05cac760-cd53-49a3-85f3-df908f14211d");
+		 cmBean.setUserId("7cd47ca4-1c5d-4cdc-909c-f7c17367b4d4");
+		 Assert.assertEquals(vmName, cmBean.getVmName());
+		 Assert.assertEquals(solutionId, cmBean.getSolutionId());
+		 Assert.assertEquals(solutionRevisionId, cmBean.getSolutionRevisionId());
+		 Assert.assertEquals(userId, cmBean.getUserId());
+		 logger.debug("End testCompositeDeployBeanTestparameter");
 	}
 	
 	 

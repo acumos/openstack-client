@@ -31,12 +31,8 @@ public class OperationSignatureTest {
 	@Test	
 	public void OperationSignatureTestparameter(){
 		logger.info("Start OperationSignatureTestparameter ");
-		try{
-			String operation="Add";
-			OperationSignature opr=new OperationSignature();
-		}catch(Exception ex){
-			   logger.error("Error in OperationSignatureTestparameter "+ex); 
-		   }
+		String operation="Add";
+		OperationSignature opr=new OperationSignature();
 		logger.info("End OperationSignatureTestparameter");
 	}
 }

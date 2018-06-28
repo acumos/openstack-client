@@ -238,7 +238,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	        return sequenceList;
 		}
 	  
-	  public void putContainerDetailsJSON(DockerInfoList  dockerList,String apiUrl){
+	  public void putContainerDetailsJSON(DockerInfoList  dockerList,String apiUrl) throws Exception{
 			logger.debug("Start putContainerDetailsJSON");
 			try {
 				logger.debug("dockerList "+dockerList.toString()+" apiUrl "+apiUrl);
@@ -256,10 +256,11 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			   
 			  } catch (Exception e) {
 				  logger.error("Exception in openstackCompositeSolution putContainerDetailsJSON " +e);
+				  throw e;
 			 }
 			logger.debug("End putContainerDetailsJSON");
 		}
-		public void putBluePrintDetailsJSON(String  bluePrintStr,String apiUrl){
+		public void putBluePrintDetailsJSON(String  bluePrintStr,String apiUrl)throws Exception{
 			logger.debug("Start putBluePrintDetailsJSON ");
 			try {
 				logger.debug("bluePrintStr "+bluePrintStr);
@@ -273,7 +274,8 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			    restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
 			   
 			  } catch (Exception e) {
-				 logger.error("Exception in openstackCompositeSolution putBluePrintDetailsJSON " +e.getMessage());
+				 logger.error("Exception in openstackCompositeSolution putBluePrintDetailsJSON " +e);
+				 throw e;
 			 }
 			logger.debug("End putBluePrintDetailsJSON ");
 		}
@@ -350,7 +352,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			  logger.debug("End addProbeSequence "+sequenceList);
 			  return sequenceList;
 		  }	
-	  public void generateNotification(String msg, String userId,String dataSource,String dataUserName,String dataPassword) {
+	  public void generateNotification(String msg, String userId,String dataSource,String dataUserName,String dataPassword)throws Exception {
 			 logger.debug("Start generateNotification");
 			 logger.debug("userId "+userId+" msg "+msg);
 	         MLPNotification notification = new MLPNotification();
@@ -370,6 +372,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	             }
 	         } catch (Exception e) {
 	              logger.error("Exception Occurred while getNotifications", e);
+	              throw e;
 	         }
 	         logger.debug("End generateNotification"); 
 		 }
@@ -447,7 +450,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			logger.debug("getDataBrokerTunnelCSV End");
 			return dataBrokerTunnel;
 		}
-		public void putDataBrokerDetails(OpenstackCompositeDeployBean deployDataObject,String apiUrl){
+		public void putDataBrokerDetails(OpenstackCompositeDeployBean deployDataObject,String apiUrl)throws Exception{
 			logger.debug("Start putDataBrokerDetails ");
 			try {
 				logger.debug("apiUrl "+apiUrl);
@@ -466,6 +469,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			    
 			  } catch (Exception e) {
 	            logger.error("Exception in putDataBrokerDetails"+e);
+	            throw e;
 			 }
 			logger.debug(" End putDataBrokerDetails");
 		}

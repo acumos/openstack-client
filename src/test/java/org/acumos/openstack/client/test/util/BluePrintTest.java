@@ -37,8 +37,7 @@ public class BluePrintTest {
 	private static Logger logger = LoggerFactory.getLogger(BluePrintTest.class);
 	@Test	
 	public void BluePrintTestObjectparameter(){
-		logger.debug("Start BluePrintTestObjectparameter");
-		try{
+		   logger.debug("Start BluePrintTestObjectparameter");
 			String name = "bluePrint";
 			String version = "1";
 			
@@ -52,10 +51,7 @@ public class BluePrintTest {
 			
 			Assert.assertEquals(name, blueprint.getName());
 			Assert.assertEquals(version, blueprint.getVersion());
-		}catch(Exception ex){
-			   logger.error("Error in BluePrintTestObjectparameter "+ex.getMessage()); 
-		}
-		logger.debug("End BluePrintTestObjectparameter");
+		    logger.debug("End BluePrintTestObjectparameter");
 	}
 
 }

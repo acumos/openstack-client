@@ -98,49 +98,67 @@ public final class OpenStackConstants {
 	public static final String TYPE_AND_ROLE_HIERARCHY_LIST="type_and_role_hierarchy_list";
 	public static final String ROLE="role";
 	public static final String VM_CREATION_ERROR="role";
+	public static final String NGINX_CONTAINER="Nginx";
+	public static final String NGINX_IMAGE="nginx";
+	public static final String DATAFILE_FOLDER="/home/dockerUser/AzureDataFiles/";
 	
-	public static final String BLUEPRINT_NAME_PROP="blueprint.name";
-	public static final String REGISTRY_BLUEPRINT_USERNAME_PROP="docker.registry.bluePrint.username";
-	public static final String REGISTRY_BLUEPRINT_PASSWORD_PROP="docker.registry.bluePrint.password";
-	public static final String REGISTRY_NETWORKGROUPNAME_PROP="docker.registry.networkgroupName";
-	public static final String REGISTRY_PORT_PROP="docker.registry.port";
-	public static final String CMNDATASVC_CMNDATASVCENDPOINURL_PROP="cmndatasvc.cmndatasvcendpoinurl";
-	public static final String CMNDATASVC_CMNDATASVCUSER_PROP="cmndatasvc.cmndatasvcuser";
-	public static final String CMNDATASVC_CMNDATASVCPWD_PROP="cmndatasvc.cmndatasvcpwd";
-	public static final String DOCKERVMUSERNAME_PROP="docker.dockerVMUserName";
-	public static final String DOCKERVMPASSWORD_PROP="docker.dockerVMPassword";
-	public static final String REPLACECHAR_PROP="docker.replaceChar";
-	public static final String IGNORE_DOLLER_PROP="docker.ignordoller";
-	public static final String SPECIAL_CHAR_PROP="$";
-	public static final String SOLUTIONPORT_PROP="docker.solutionPort";
-	public static final String SUBNET_PROP="docker.subnet";
-	public static final String VNET_PROP="docker.vnet";
-	public static final String SLEEPTIME_FIRST="docker.sleepTimeFirst";
-	public static final String SLEEPTIME_SECOND="docker.sleepTimeSecond";
-	public static final String REGISTRY_NAME_PROP="docker.registry.name";
-	public static final String CONTAINERNAMEPREFIX_PROP="docker.containerNamePrefix";
-	public static final String REGISTRY_USERNAME_PROP="docker.registry.username";
-	public static final String REGISTRY_PASSWORD_PROP="docker.registry.password";
-	public static final String HOST_PROP="docker.host";
-	public static final String PORT_PROP="docker.port";
-	public static final String BLUEPRINT_IMAGENAME_PROP="blueprint.ImageName";
-	public static final String PROBE_IMAGENAME_PROP="probe.ImageName";
-	public static final String PROBE_NAME_PROP="probe.name";
-	public static final String PROBE_INTERNALPORT_PROP="probe.internalPort";
-	public static final String PROBE_PROBENEXUSENDPOINT_PROP="probe.probeNexusEndPoint";
-	public static final String DOCKER_REGISTRY_PROBE_USERNAME_PROP="docker.registry.probe.username";
-	public static final String DOCKER_REGISTRY_PROBE_PASSWORD_PROP="docker.registry.probe.password";
-	public static final String NEXUS_URL_PROP="nexus.url";
-	public static final String NEXUS_USERNAME_PROP="nexus.username";
-	public static final String NEXUS_PASSWORD_PROP="nexus.password";
-	public static final String NEXUS_REGISTY_USERNAME="docker.nexusRegistyUserName";
-	public static final String NEXUS_REGISTY_PWD="docker.nexusRegistyPwd";
-	public static final String NEXUS_REGISTY_NAME="docker.nexusRegistyName";
-	public static final String OTHER_REGISTY_NAME="docker.otherRegistyName";
-	public static final String EXPOSE_DATABROKER_PORT="docker.exposeDataBrokerPort";
-	public static final String INTERNAL_DATABROKER_PORT="docker.internalDataBrokerPort";
+	public static final String OPENSTACK_FLAVOURNAME="docker.openstack.flavourName";
+	public static final String OPENSTACK_ENDPOINT="docker.openstack.endpoint";
+	public static final String OPENSTACK_SECURITYGROUPNAME="docker.openstack.securityGroupName";
+	public static final String OPENSTACK_USERNAME="docker.openstack.userName";
+	public static final String OPENSTACK_PASSWORD="docker.openstack.password";
+	public static final String OPENSTACK_SCOPEPROJECT="docker.openstack.scopeProject";
+	public static final String OPENSTACK_KEY="docker.openstack.key";
+	public static final String OPENSTACK_KEYNAME="docker.openstack.keyName";
+	public static final String OPENSTACK_IDENTIFIERNAME="docker.openstack.IdentifierName";
+	public static final String OPENSTACK_VMREGISTERNUMBER="docker.openstack.vmRegisterNumber";
+	public static final String OPENSTACK_HOSTOPENSTACK="docker.openstack.hostOpenStack";
+	public static final String OPENSTACK_HOSTUSERNAME="docker.openstack.hostUserName";
+	public static final String OPENSTACK_VMUSERNAME="docker.openstack.vmUserName";
+	public static final String OPENSTACK_DOCKERUSERNAME="docker.openstack.dockerUserName";
+	public static final String OPENSTACK_DOCKERPASSWORD="docker.openstack.dockerPassword";
 	
+	public static final String OPENSTACK_SOLUTIONPORT="docker.openstack.solutionPort";
+	public static final String OPENSTACK_SLEEPTIME="docker.openstack.Sleeptime";
+	public static final String OPENSTACK_PROXYIP="docker.openstack.proxyIP";
+	public static final String OPENSTACK_PROXYPORT="docker.openstack.proxyPort";
+	public static final String OPENSTACK_OPENSTACKIP="docker.openstack.openStackIP";
+	public static final String OPENSTACK_REPOSITYNAMES="docker.openstack.reposityNames";
+	public static final String OPENSTACK_EXPOSEDATABROKERPORT="docker.openstack.exposeDataBrokerPort";
+	public static final String OPENSTACK_INTERNALDATABROKERPORT="docker.openstack.internalDataBrokerPort";
+	public static final String OPENSTACK_NEXUSREGISTYNAME="docker.openstack.nexusRegistyName";
+	public static final String OPENSTACK_NEXUSREGISTYUSERNAME="docker.openstack.nexusRegistyUserName";
+	public static final String OPENSTACK_NEXUSREGISTYPWD="docker.openstack.nexusRegistyPwd";
+	public static final String OPENSTACK_REPOSITYDETAILS="docker.openstack.reposityDetails";
 	
+	public static final String BLUEPRINT_IMAGENAME="blueprint.bluePrintImageName";
+	public static final String BLUEPRINT_NAME="blueprint.bluePrintName";
+	public static final String BLUEPRINT_USERNAME="blueprint.bluePrintUserName";
+	public static final String BLUEPRINT_PASSWORD="blueprint.bluePrintPassword";
+	public static final String BLUEPRINT_PORTNUMBER="docker.openstack.bluePrintPortNumber";
 	
+	public static final String NGINX_MAPFOLDER="nginx.nginxMapFolder";
+	public static final String NGINX_WEBFOLDER="nginx.nginxWebFolder";
+	public static final String NGINX_IMAGENAME="nginx.nginxImageName";
+	public static final String NGINX_INTERNALPORT="nginx.nginxInternalPort";
 
+	public static final String CMNDATASVC_ENDPOINURL="cmndatasvc.cmndatasvcendpoinurl";
+	public static final String CMNDATASVC_USER="cmndatasvc.cmndatasvcuser";
+	public static final String CMNDATASVC_PWD="cmndatasvc.cmndatasvcpwd";
+
+	public static final String NEXUS_URL="nexus.url";
+	public static final String NEXUS_USERNAME="nexus.username";
+	public static final String NEXUS_PASSWORD="nexus.password";
+
+	public static final String PROBE_IMAGENAME="probe.ImageName";
+	public static final String PROBE_NAME="probe.name";
+	public static final String PROBE_USERNAME="probe.username";
+	public static final String PROBE_PASSWORD="probe.password";
+	public static final String PROBE_PROBENEXUSENDPOINT="probe.probeNexusEndPoint";
+	public static final String PROBE_INTERNALPORT="probe.internalPort";
+	
+	
+	
+	
+	
 }

@@ -32,8 +32,7 @@ public class DockerinfoTest {
 	private static Logger logger = LoggerFactory.getLogger(DockerinfoTest.class);
 	@Test	
 	public void dockerinfoTestparameter(){
-		logger.info("Start dockerinfoTestparameter ");
-		try{
+		    logger.info("Start dockerinfoTestparameter ");
 			String container = "Adder1";
 	        String ipAddress ="10.21.13.63";
 	        String port = "8557";
@@ -44,10 +43,7 @@ public class DockerinfoTest {
 	        Assert.assertEquals(container, dockerInfo.getContainer());
 	        Assert.assertEquals(ipAddress, dockerInfo.getIpAddress());
 	        Assert.assertEquals(port, dockerInfo.getPort());
-		}catch(Exception ex){
-		   logger.error("Error in dockerinfoTestparameter "+ex.getMessage()); 
-		}
-		logger.debug("End dockerinfoTestparameter ");
+		    logger.debug("End dockerinfoTestparameter ");
 
 	}
 

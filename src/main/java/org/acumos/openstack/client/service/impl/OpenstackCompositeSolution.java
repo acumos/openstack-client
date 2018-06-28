@@ -202,7 +202,6 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		OSClientV3 os=null;
 		String repositaryName="";
 		String repositryImageName="";
-		//String solutionPort="";
 		String bluePrintPort="";
 		List<OpanStackContainerBean> openStackContainerBeanList=new ArrayList<OpanStackContainerBean>();
 		CommonUtil commonUtil=new CommonUtil();
@@ -622,7 +621,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
       		  
         }
 	  }catch(Exception e){
-		  logger.error("Exception in openstackCompositeSolution " +e.getMessage());
+		  logger.error("Exception in openstackCompositeSolution " +e);
 		  try{
 			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpwd,openStackContainerBeanList,auth.getSolutionId(),
 	  					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"FA");
@@ -635,7 +634,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 logger.debug("CompositeSolution Run End");	
 	}
 	
-	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray,int hostPort){
+	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray,int hostPort)throws Exception{
 		logger.debug("Start sshOpenStackCore");
 		 SSHShell sshShell = null;
 		 final String host=hostName; 
@@ -683,7 +682,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
               
 		} catch (Exception ex) {
 			logger.error("Exception in sshOpenStackCore in composite solution "+ex);
-			
+			throw ex;
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
@@ -759,14 +758,14 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 
 			 logger.debug("SSH Cmplete output "+output);
 		} catch (JSchException jSchException) {
-			logger.error("JSchException in installDockerOpenstack "+jSchException.getMessage());
-			throw new Exception("Exception in installDockerOpenstack"+jSchException.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+jSchException);
+			throw jSchException;
 		} catch (IOException ioException) {
-			logger.error("IOException in installDockerOpenstack "+ioException.getMessage());
-			throw new Exception("Exception in installDockerOpenstack"+ioException.getMessage());
+			logger.error("IOException in installDockerOpenstack "+ioException);
+			throw ioException;
 		} catch (Exception exception) {
-			logger.error("Exception in installDockerOpenstack "+exception.getMessage());
-			throw new Exception("Exception in installDockerOpenstack"+exception.getMessage());
+			logger.error("Exception in installDockerOpenstack "+exception);
+			throw exception;
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
@@ -791,13 +790,14 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 
         } catch (IOException e) {
         	logger.error("Exception in readBytesFromFile CompositeSolution "+e);
-        	throw new Exception("Exception in ReadBytesFromFile CompositeSolution"+e );
+        	throw e;
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                	logger.error("Exception in readBytesFromFile Finally CompositeSolution "+e.getMessage());
+                	logger.error("Exception in readBytesFromFile Finally CompositeSolution "+e);
+                	throw e;
                 }
             }
 
@@ -837,16 +837,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			String output2 = sshShell.executeCommand("bash -c ~/.azuredocker/PULL_IMAGE_"+count+".sh", true, true);
 			logger.debug("start deploymentImageVM 4 output2 " + output2);
-			try {
-				Thread.sleep(30000);
-			} catch (Exception e) {
-				logger.error("Exception in sleep "+e);
-			}
-
+			Thread.sleep(30000);
 			logger.debug(" start deploymentImageVM Container Name "+finalContainerName);
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
 			String RUN_IMAGE="";
-			//String RUN_IMAGE = "" + "docker run -d -p 0.0.0.0:8555:8336  " + repositoryName + " \n";
 			if(finalContainerName!=null && finalContainerName.trim().equalsIgnoreCase("Probe")){
 				RUN_IMAGE = "" + "docker run --name " + finalContainerName + " -itd -p 0.0.0.0:" + portNumberString
 						+ "  -e NEXUSENDPOINTURL='"+probeNexusEndPoint+"' " + repositoryName + " \n";
@@ -854,26 +848,22 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 				RUN_IMAGE = "" + "docker run --name " + finalContainerName + " -d -p 0.0.0.0:" + portNumberString
 						+ "  " + repositoryName + " \n";
 			}
-			
 			logger.debug("output Start 4 RUN_IMAGE "+RUN_IMAGE);
-
 			sshShell.upload(new ByteArrayInputStream(RUN_IMAGE.getBytes()), "RUN_DOCKER_IMAGE_"+count+".sh", ".azuredocker", true,
 					"4095");
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
-
 			String output3 = sshShell.executeCommand("bash -c ~/.azuredocker/RUN_DOCKER_IMAGE_"+count+".sh", true, true);
 			logger.debug("output Start 5 output3 " + output3);
 			Thread.sleep(30000);
-			
 		} catch (JSchException jSchException) {
-			logger.error("JSchException in deploymentImageVM "+jSchException.getMessage());
-			throw new Exception("Exception in deploymentImageVM"+jSchException.getMessage());
+			logger.error("JSchException in deploymentImageVM "+jSchException);
+			throw jSchException;
 		} catch (IOException ioException) {
-			logger.error("JSchException in deploymentImageVM  "+ioException.getMessage());
-			throw new Exception("Exception in deploymentImageVM"+ioException.getMessage());
+			logger.error("JSchException in deploymentImageVM  "+ioException);
+			throw ioException;
 		} catch (Exception exception) {
-			logger.error("JSchException in deploymentImageVM "+exception.getMessage());
-			throw new Exception("Exception in deploymentImageVM"+exception.getMessage());
+			logger.error("JSchException in deploymentImageVM "+exception);
+			throw exception;
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();

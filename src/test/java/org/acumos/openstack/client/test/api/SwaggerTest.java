@@ -32,23 +32,15 @@ public class SwaggerTest {
 	@Test	
 	public void swaggerDeploymentAPITest(){
 		logger.debug("Start swaggerDeploymentAPITest");
-		try{
-			SwaggerConfiguration sw=new SwaggerConfiguration(); 
-			assertNotNull(sw.api());
-		   }catch(Exception ex){
-			   logger.error("Error in swaggerDeploymentAPITest "+ex.getMessage()); 
-		   }
+		SwaggerConfiguration sw=new SwaggerConfiguration(); 
+		assertNotNull(sw.api());
 		logger.debug(" swaggerDeploymentAPITest End");
 	}
 	@Test	
 	public void swaggerDeploymentApiInfoTest(){
 		logger.debug("swaggerDeploymentApiInfoTest");
-		try{
-			SwaggerConfiguration sw=new SwaggerConfiguration(); 
-			assertNotNull(sw.apiInfo());
-		}catch(Exception ex){
-			   logger.error("Error in swaggerDeploymentApiInfoTest "+ex.getMessage()); 
-		   }
+		SwaggerConfiguration sw=new SwaggerConfiguration(); 
+		assertNotNull(sw.apiInfo());
 		logger.debug("End swaggerDeploymentApiInfoTest ");
 	}
 

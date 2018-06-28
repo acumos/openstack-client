@@ -79,19 +79,15 @@ public class OpenStackServiceControllerTest {
 	
 	
 	@Test	
-	public void singleImageOpenstackDeploymentTest(){
+	public void singleImageOpenstackDeploymentTest() throws Exception{
 		logger.debug("Start singleImageOpenstackDeploymentTest");
 		OpenstackDeployBean auth=new OpenstackDeployBean();
-		try{
-			auth.setSolutionId("Test");
-			auth.setImagetag("TestImage");
-			auth.setUserId("TestUser");
-			auth.setVmName("Gold84");
-			when(controller.singleImageOpenstackDeployment(request,auth,response)).thenReturn("{\"UIDNumber\":\"\",\"status\":\"SUCCESS\"}");
-			Assert.assertEquals(200, response.getStatus());
-		}catch(Exception e){
-			logger.error("Error in singleImageOpenstackDeploymentTest "+e.getMessage());
-		}
+		auth.setSolutionId("Test");
+		auth.setImagetag("TestImage");
+		auth.setUserId("TestUser");
+		auth.setVmName("Gold84");
+		when(controller.singleImageOpenstackDeployment(request,auth,response)).thenReturn("{\"UIDNumber\":\"\",\"status\":\"SUCCESS\"}");
+		Assert.assertEquals(200, response.getStatus());
 		logger.debug("End  singleImageOpenstackDeploymentTest");
 		
 	}

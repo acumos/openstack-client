@@ -302,13 +302,13 @@ public class OpenstackSimpleSolution implements Runnable{
 			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
 						 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "FA");  
 		  }catch(Exception ex){
-			  logger.error("Exception in saving data openstackSimpleSolution " +ex.getMessage());
+			  logger.error("Exception in saving data openstackSimpleSolution " +ex);
 			}
 		  
 	  }
 	}
 	
-	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray){
+	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray)throws Exception{
 		logger.debug("Start sshOpenStackCore");
 		 SSHShell sshShell = null;
 		 final String host=hostName; 
@@ -354,7 +354,8 @@ public class OpenstackSimpleSolution implements Runnable{
 
         logger.debug("End sshOpenStackCore");      
 		} catch (Exception exception) {
-			logger.error("Exception in sshOpenStackCore in Simple solution "+exception.getMessage());
+			logger.error("Exception in sshOpenStackCore in Simple solution "+exception);
+			throw exception;
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
@@ -428,19 +429,17 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("Start installing docker ");
 			 String output = sshShell
 						.executeCommand("bash -c ~/.azuredocker/INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh", true, true);
-			 
-			 
 			 //sshShell.
 			 logger.debug("SSH Cmplete output "+output);
 		} catch (JSchException jSchException) {
-			logger.error("JSchException in installDockerOpenstack "+jSchException.getMessage());
-			throw new Exception("Exception in installDockerOpenstack"+jSchException.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+jSchException);
+			throw jSchException;
 		} catch (IOException ioException) {
-			logger.error("JSchException in installDockerOpenstack "+ioException.getMessage());
-			throw new Exception("Exception in installDockerOpenstack"+ioException.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+ioException);
+			throw ioException;
 		} catch (Exception exception) {
-			logger.error("JSchException in installDockerOpenstack "+exception.getMessage());
-			throw new Exception("Exception in installDockerOpenstack"+exception.getMessage());
+			logger.error("JSchException in installDockerOpenstack "+exception);
+			throw exception;
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();
@@ -464,13 +463,14 @@ public class OpenstackSimpleSolution implements Runnable{
             
         } catch (IOException e) {
         	logger.error("Exception in readBytesFromFile SimpleSolution "+e);
-        	throw new Exception("Exception in ReadBytesFromFile in SimpleSolution "+e);
+        	throw e;
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                	logger.error("Exception in readBytesFromFile Finally SimpleSolution "+e.getMessage());
+                	logger.error("Exception in readBytesFromFile Finally SimpleSolution "+e);
+                	throw e;
                 }
             }
 
@@ -517,14 +517,14 @@ public class OpenstackSimpleSolution implements Runnable{
 			logger.debug("output Start check point 5 output3 " + output3);
 
 		} catch (JSchException jSchException) {
-			logger.error("JSchException in deploymentImageVM "+jSchException.getMessage());
-			throw new Exception("Exception in deploymentImageVM"+jSchException.getMessage());
+			logger.error("JSchException in deploymentImageVM "+jSchException);
+			throw jSchException;
 		} catch (IOException ioException) {
-			logger.error("JSchException in deploymentImageVM "+ioException.getMessage());
-			throw new Exception("Exception in deploymentImageVM"+ioException.getMessage());
+			logger.error("JSchException in deploymentImageVM "+ioException);
+			throw ioException;
 		} catch (Exception exception) {
-			logger.error("JSchException in deploymentImageVM  "+exception.getMessage());
-			throw new Exception("Exception in deploymentImageVM"+exception.getMessage());
+			logger.error("JSchException in deploymentImageVM  "+exception);
+			throw  exception;
 		} finally {
 			if (sshShell != null) {
 				sshShell.close();

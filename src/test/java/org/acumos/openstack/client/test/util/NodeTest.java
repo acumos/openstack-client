@@ -35,8 +35,7 @@ public class NodeTest {
 	private static Logger logger = LoggerFactory.getLogger(NodeTest.class);
 	@Test	
 	public void nodeTestObjectparameter(){
-		logger.info("Start nodeTestObjectparameter");
-		try{
+		   logger.info("Start nodeTestObjectparameter");
 			OperationSignature operationSignature = new OperationSignature();
 			String containerName = "Adder1";
 		    String image = "test-nexus01:8001/newadder1:1";
@@ -52,11 +51,6 @@ public class NodeTest {
 		    node.setImage(image);
 		    Assert.assertEquals(containerName, node.getContainerName());
 		    Assert.assertEquals(image, node.getImage());
-		   // Assert.assertEquals(dependsOn, node.getDependsOn());
-		}catch(Exception ex){
-			   logger.error("Error in nodeTestObjectparameter "+ex.getMessage()); 
-		   }
-		logger.debug("End nodeTestObjectparameter");
-   
+		    logger.debug("End nodeTestObjectparameter");
 	}
 }

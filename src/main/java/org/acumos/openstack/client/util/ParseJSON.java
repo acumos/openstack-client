@@ -93,7 +93,7 @@ public  HashMap<String,String> parseJsonFile(String jsonFileName)throws  Excepti
          }
         }catch(Exception e){
         	log.error("parseJsonFile failed", e);
-    	    throw new Exception(e.getMessage());
+    	    throw e;
        }
 		log.debug("imageMap "+imageMap);
 		log.debug("parseJsonFile in ParseJSON End");
@@ -260,7 +260,7 @@ public  HashMap<String,String> parseJsonFile(String jsonFileName)throws  Excepti
         log.debug("blueprint "+ mapper.writeValueAsString(blueprint)+" "+blueprint.toString());
 		}catch(Exception e){
 			 log.error("jsonFileToObject failed", e);
-			throw new Exception(e.getMessage());
+			throw e;
        }
 		log.debug("list "+list);
 		log.debug("jsonFileToObject End");
@@ -497,7 +497,7 @@ public LinkedList<String> getSequenceFromJSON(String jsonFileName)throws  Except
         
         }catch(Exception e){
         	log.error("getSequenceFromJSON failed", e);
-    	    throw new Exception(e.getMessage());
+    	    throw e;
        }
 		log.debug("linkedList "+linkedList);
 		log.debug("getSequenceFromJSON End");
@@ -649,7 +649,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 			  }	
 	   } catch (Exception e) {
 		    log.error("checkProbeIndicator failed", e);
-			throw new Exception(e.getMessage());
+			throw e;
 		}
 	   log.debug("probeIndicator "+probeIndicatorValue);
 	   log.debug("checkProbeIndicator End");
@@ -793,7 +793,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 			log.debug("blueprint " + mapper.writeValueAsString(blueprint) + " " + blueprint.toString());
 		} catch (Exception e) {
 			log.error("jsonFileToObjectProbe failed", e);
-			throw new Exception(e.getMessage());
+			throw e;
 		}
 		log.debug("blueprint "+blueprint);
 		log.debug("jsonFileToObjectProbe End ");
@@ -843,7 +843,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 			
 		}catch(Exception e){
 			log.error("parseJsonFileProbe failed", e);
-    	    throw new Exception(e.getMessage());
+    	    throw e;
        }
 		log.debug("imageMap "+imageMap);
 		log.debug(" parseJsonFileProbe End");
@@ -916,7 +916,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 			
 		}catch(Exception e){
 			log.error("getNodeTypeContainerMap failed", e);
-    	    throw new Exception(e.getMessage());
+    	    throw e;
        }
 		log.debug("imageMap "+imageMap);
 		log.debug(" getNodeTypeContainerMap End");
@@ -1002,7 +1002,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
         
         }catch(Exception e){
         	log.error("getSequenceFromJSONProbe failed", e);
-    	    throw new Exception(e.getMessage());
+    	    throw e;
        }
 		log.debug(" getSequenceFromJSONProbe End");
 		return linkedList;	
@@ -1224,7 +1224,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 			
 		}catch(Exception e){
 			log.error("parseJsonFile failed", e);
-    	    throw new Exception(e.getMessage());
+    	    throw e;
        }
 		log.debug("dataBrokerBean "+dataBrokerBean);
 		log.debug(" getDataBrokerContainer End");

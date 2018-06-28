@@ -29,8 +29,7 @@ public class OpanStackContainerBeanTest {
 	Logger logger = LoggerFactory.getLogger(OpanStackContainerBeanTest.class);
 	@Test	
 	public void opanStackContainerBeanTestparameter(){
-		logger.debug("Start opanStackContainerBeanTestparameter");
-		try{
+		    logger.debug("Start opanStackContainerBeanTestparameter");
 			String containerName="Adder";
 			String containerIp="10.1.0.0";	
 			String containerPort="8556";
@@ -41,10 +40,7 @@ public class OpanStackContainerBeanTest {
 			Assert.assertEquals(containerName, bean.getContainerName());
 			Assert.assertEquals(containerIp, bean.getContainerIp());
 			Assert.assertEquals(containerPort, bean.getContainerPort());
-		}catch(Exception ex){
-			   logger.error("Error in opanStackContainerBeanTestparameter "+ex.getMessage()); 
-		   }
-		logger.debug("End opanStackContainerBeanTestparameter");
+		    logger.debug("End opanStackContainerBeanTestparameter");
 	}
 	
 

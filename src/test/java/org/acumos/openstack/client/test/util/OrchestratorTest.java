@@ -31,8 +31,7 @@ public class OrchestratorTest {
 	private static Logger logger = LoggerFactory.getLogger(OrchestratorTest.class);
 	@Test	
 	public void OperationSignatureTestparameter(){
-		logger.debug("Start OperationSignatureTestparameter");
-		try{
+		    logger.debug("Start OperationSignatureTestparameter");
 			String name = "Adder";
 			String version = "1";
 			String image = "test-nexus01:8001/newadder1";
@@ -43,9 +42,6 @@ public class OrchestratorTest {
 			Assert.assertEquals(name, orch.getName());
 			Assert.assertEquals(version, orch.getVersion());
 			Assert.assertEquals(image, orch.getImage());
-		}catch(Exception ex){
-			   logger.error("Error in OperationSignatureTestparameter "+ex); 
-		 }
-		logger.debug("End OperationSignatureTestparameter");
+		    logger.debug("End OperationSignatureTestparameter");
 	}
 }

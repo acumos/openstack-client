@@ -31,12 +31,9 @@ public class SingletonClassTest {
 	@Test	
 	public void singletonClassTest(){
 		logger.debug("Start singletonClassTest");
-		try{
+		
 		HashMap<String,String> singlatonMap=SingletonMapClass.getInstance();
 		Assert.assertEquals(singlatonMap, SingletonMapClass.getInstance());
-		}catch(Exception ex){
-			   logger.error("Error in singletonClassTest "+ex.getMessage()); 
-		   }
 		logger.debug("End singletonClassTest ");
 	}
 }

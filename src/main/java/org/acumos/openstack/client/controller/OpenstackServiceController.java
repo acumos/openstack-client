@@ -115,29 +115,31 @@ public class OpenstackServiceController extends AbstractController {
 		String repositoryDetails="";
 		JSONObject  jsonOutput = new JSONObject();
 		try{
-			 flavourName=env.getProperty("docker.openstack.flavourName");
-			 securityGropName=env.getProperty("docker.openstack.securityGroupName");
-			 endpoint=env.getProperty("docker.openstack.endpoint");
-			 userName=env.getProperty("docker.openstack.userName");
-			 password=env.getProperty("docker.openstack.password");
-			 scopeProject=env.getProperty("docker.openstack.scopeProject");
-			 key=env.getProperty("docker.openstack.key");
-			 keyName=env.getProperty("docker.openstack.keyName");
-			 IdentifierName=env.getProperty("docker.openstack.IdentifierName");
-			 vmRegisterNumber=env.getProperty("docker.openstack.vmRegisterNumber");
-			 hostOpenStack=env.getProperty("docker.openstack.hostOpenStack");
-			 hostUserName=env.getProperty("docker.openstack.hostUserName");
-			 vmUserName=env.getProperty("docker.openstack.vmUserName");
-			 dockerUserName=env.getProperty("docker.openstack.dockerUserName");
-			 dockerPassword=env.getProperty("docker.openstack.dockerPassword");
-			 dataSource=env.getProperty("cmndatasvc.cmndatasvcendpoinurl");
-			 cmndatasvcuser=env.getProperty("cmndatasvc.cmndatasvcuser");
-			 cmndatasvcpwd=env.getProperty("cmndatasvc.cmndatasvcpwd");
-			 proxyIP=env.getProperty("docker.openstack.proxyIP");
-			 proxyPort=env.getProperty("docker.openstack.proxyPort");
-			 openStackIP=env.getProperty("docker.openstack.openStackIP");
-			 repositoryNames=env.getProperty("docker.openstack.reposityNames");
-			 repositoryDetails=env.getProperty("docker.openstack.reposityDetails");
+			 flavourName=env.getProperty(OpenStackConstants.OPENSTACK_FLAVOURNAME);
+			 securityGropName=env.getProperty(OpenStackConstants.OPENSTACK_SECURITYGROUPNAME);
+			 endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
+			 userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
+			 password=env.getProperty(OpenStackConstants.OPENSTACK_PASSWORD);
+			 scopeProject=env.getProperty(OpenStackConstants.OPENSTACK_SCOPEPROJECT);
+			 key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
+			 keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
+			 IdentifierName=env.getProperty(OpenStackConstants.OPENSTACK_IDENTIFIERNAME);
+			 vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
+			 hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
+			 hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
+			 vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
+			 dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
+			 dockerPassword=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPASSWORD);
+			 
+			 proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
+			 proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
+			 openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
+			 repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
+			 repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
+			 
+			 dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
+			 cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
+			 cmndatasvcpwd=env.getProperty(OpenStackConstants.CMNDATASVC_PWD);
 			 
 			 logger.debug("flavourName "+flavourName);
 			 logger.debug("securityGropName "+securityGropName);
@@ -165,7 +167,7 @@ public class OpenstackServiceController extends AbstractController {
 			 
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
-			 jsonOutput.put("Status", uidNumStr);
+			 jsonOutput.put("status", APINames.SUCCESS_RESPONSE);
 			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPassword,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpwd,proxyIP,proxyPort,openStackIP,repositoryNames,repositoryDetails);
@@ -175,8 +177,11 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		}catch(Exception e){
 			logger.error("Exception in singleImageOpenstackDeployment "+e);
+			response.setStatus(401);
+			jsonOutput.put("status", APINames.FAILED);
 		}
-		logger.debug("jsonOutput.toString()===="+jsonOutput.toString());
+		jsonOutput.put("UIDNumber", uidNumStr);
+		logger.debug("jsonOutput.toString() "+jsonOutput.toString());
 		logger.debug("singleImageOpenstackDeployment End");
 		return jsonOutput.toString();
 	}
@@ -236,52 +241,57 @@ public class OpenstackServiceController extends AbstractController {
 		try{
 			 ParseJSON parseJson=new ParseJSON();
 			 CommonUtil commonUtil=new CommonUtil();
-			 flavourName=env.getProperty("docker.openstack.flavourName");
-			 securityGropName=env.getProperty("docker.openstack.securityGroupName");
-			 endpoint=env.getProperty("docker.openstack.endpoint");
-			 userName=env.getProperty("docker.openstack.userName");
-			 password=env.getProperty("docker.openstack.password");
-			 scopeProject=env.getProperty("docker.openstack.scopeProject");
-			 key=env.getProperty("docker.openstack.key");
-			 keyName=env.getProperty("docker.openstack.keyName");
-			 IdentifierName=env.getProperty("docker.openstack.IdentifierName");
-			 vmRegisterNumber=env.getProperty("docker.openstack.vmRegisterNumber");
-			 hostOpenStack=env.getProperty("docker.openstack.hostOpenStack");
-			 hostUserName=env.getProperty("docker.openstack.hostUserName");
-			 vmUserName=env.getProperty("docker.openstack.vmUserName");
-			 dockerUserName=env.getProperty("docker.openstack.dockerUserName");
-			 dockerPassword=env.getProperty("docker.openstack.dockerPassword");
-			 bluePrintImage=env.getProperty("docker.openstack.bluePrintImageName");
-			 bluePrintName=env.getProperty("docker.openstack.bluePrintName");
-			 bluePrintUserName=env.getProperty("docker.openstack.bluePrintUserName");
-			 bluePrintPassword=env.getProperty("docker.openstack.bluePrintPassword");
-			 dataSource=env.getProperty("cmndatasvc.cmndatasvcendpoinurl");
-			 cmndatasvcuser=env.getProperty("cmndatasvc.cmndatasvcuser");
-			 cmndatasvcpwd=env.getProperty("cmndatasvc.cmndatasvcpwd");
-			 nexusUrl=env.getProperty("nexus.url");
-			 nexusUserName=env.getProperty("nexus.username");
-			 nexusPassword=env.getProperty("nexus.password");
-			 solutionPort=env.getProperty("docker.openstack.solutionPort");
-			 Sleeptime=env.getProperty("docker.openstack.Sleeptime");
-			 proxyIP=env.getProperty("docker.openstack.proxyIP");
-			 proxyPort=env.getProperty("docker.openstack.proxyPort");
-			 openStackIP=env.getProperty("docker.openstack.openStackIP");
-			 bluePrintPortNumber=env.getProperty("docker.openstack.bluePrintPortNumber");
+			 flavourName=env.getProperty(OpenStackConstants.OPENSTACK_FLAVOURNAME);
+			 securityGropName=env.getProperty(OpenStackConstants.OPENSTACK_SECURITYGROUPNAME);
+			 endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
+			 userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
+			 password=env.getProperty(OpenStackConstants.OPENSTACK_PASSWORD);
+			 scopeProject=env.getProperty(OpenStackConstants.OPENSTACK_SCOPEPROJECT);
+			 key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
+			 keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
+			 IdentifierName=env.getProperty(OpenStackConstants.OPENSTACK_IDENTIFIERNAME);
+			 vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
+			 hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
+			 hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
+			 vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
+			 dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
+			 dockerPassword=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPASSWORD);
+			 solutionPort=env.getProperty(OpenStackConstants.OPENSTACK_SOLUTIONPORT);
+			 Sleeptime=env.getProperty(OpenStackConstants.OPENSTACK_SLEEPTIME);
+			 proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
+			 proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
+			 openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
+			 repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
+			 exposeDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_EXPOSEDATABROKERPORT);
+			 internalDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_INTERNALDATABROKERPORT);
+			 nexusRegistyName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYNAME);
+			 nexusRegistyUserName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYUSERNAME);
+			 nexusRegistyPwd=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYPWD);
+			 repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
 			 
-			//probe
-			probePrintImage=env.getProperty("probe.ImageName");
-			probePrintName=env.getProperty("probe.name");
-			probUser=env.getProperty("probe.username");
-			probePass=env.getProperty("probe.password");
-			probeNexusEndPoint=env.getProperty("probe.probeNexusEndPoint");
-			probeInternalPort=env.getProperty("probe.internalPort");
-			repositoryNames=env.getProperty("docker.openstack.reposityNames");
-			exposeDataBrokerPort=env.getProperty("docker.openstack.exposeDataBrokerPort");
-			internalDataBrokerPort=env.getProperty("docker.openstack.internalDataBrokerPort");
-			nexusRegistyName=env.getProperty("docker.openstack.nexusRegistyName");
-			nexusRegistyUserName=env.getProperty("docker.openstack.nexusRegistyUserName");
-			nexusRegistyPwd=env.getProperty("docker.openstack.nexusRegistyPwd");
-			repositoryDetails=env.getProperty("docker.openstack.reposityDetails");
+			 
+			 bluePrintImage=env.getProperty(OpenStackConstants.BLUEPRINT_IMAGENAME);
+			 bluePrintName=env.getProperty(OpenStackConstants.BLUEPRINT_NAME);
+			 bluePrintUserName=env.getProperty(OpenStackConstants.BLUEPRINT_USERNAME);
+			 bluePrintPassword=env.getProperty(OpenStackConstants.BLUEPRINT_PASSWORD);
+			 bluePrintPortNumber=env.getProperty(OpenStackConstants.BLUEPRINT_PORTNUMBER);
+			 
+			 dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
+			 cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
+			 cmndatasvcpwd=env.getProperty(OpenStackConstants.CMNDATASVC_PWD);
+			 
+			 nexusUrl=env.getProperty(OpenStackConstants.NEXUS_URL);
+			 nexusUserName=env.getProperty(OpenStackConstants.NEXUS_USERNAME);
+			 nexusPassword=env.getProperty(OpenStackConstants.NEXUS_PASSWORD);
+			 //probe
+			 probePrintImage=env.getProperty(OpenStackConstants.PROBE_IMAGENAME);
+			 probePrintName=env.getProperty(OpenStackConstants.PROBE_NAME);
+			 probUser=env.getProperty(OpenStackConstants.PROBE_USERNAME);
+			 probePass=env.getProperty(OpenStackConstants.PROBE_PASSWORD);
+			 probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
+			 probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
+			
+			
 			 logger.debug("repositoryDetails "+repositoryDetails);
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
@@ -403,13 +413,13 @@ public class OpenstackServiceController extends AbstractController {
 
 					if (probePrintImage != null && !"".equals(probePrintImage)) {
 						list.add(probePrintImage);
-						imageMap.put(probePrintImage, "Probe");
-						sequenceList=commonUtil.addProbeSequence(sequenceList,"Probe");
+						imageMap.put(probePrintImage, OpenStackConstants.PROBE_CONTAINER_NAME);
+						sequenceList=commonUtil.addProbeSequence(sequenceList,OpenStackConstants.PROBE_CONTAINER_NAME);
 					}
 			    }
 			 if(bluePrintImage!=null && !"".equals(bluePrintImage)){
 				list.add(bluePrintImage);
-				imageMap.put(bluePrintImage, "BluePrintContainer");
+				imageMap.put(bluePrintImage, OpenStackConstants.BLUEPRINT_CONTAINER_NAME);
 			 }
 			 logger.debug("list "+list);
 			 logger.debug("imageMap "+imageMap);
@@ -417,7 +427,7 @@ public class OpenstackServiceController extends AbstractController {
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
 			 logger.debug("uidNumStr "+uidNumStr);
-			 jsonOutput.put("Status", uidNumStr);
+			 jsonOutput.put("status", APINames.SUCCESS_RESPONSE);
 			 OpenstackCompositeSolution compositeSolution=new OpenstackCompositeSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,password,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPassword,bluePrintImage,bluePrintName,bluePrintUserName,bluePrintPassword,dataSource,cmndatasvcuser,
@@ -431,8 +441,11 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		}catch(Exception e){
 			logger.error("Exception in compositeOpenstackDeployment "+e);
+			response.setStatus(401);
+			jsonOutput.put("status", APINames.FAILED);
 		}
-		
+		jsonOutput.put("UIDNumber", uidNumStr);
+		logger.debug("jsonOutput.toString() "+jsonOutput.toString());
 		logger.debug("compositeOpenstackDeployment End");
 		return jsonOutput.toString();
 	}

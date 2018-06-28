@@ -30,15 +30,11 @@ import org.slf4j.LoggerFactory;
 public class OpenstackCompositeSolutionTest {
 	Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolutionTest.class);
 	@Test	
-	public void readBytesFromFileTest(){
+	public void readBytesFromFileTest() throws Exception{
 		logger.debug("Start OpenstackCompositeSolutionTest");
-		try{
-			OpenstackCompositeSolution solution=new OpenstackCompositeSolution();
-			byte[] bytesArray=solution.readBytesFromFile("e6e-key.pem");
-			assertNotNull(bytesArray);
-		}catch(Exception ex){
-			   logger.error("Error in OpenstackCompositeSolutionTest "+ex.getMessage()); 
-		   }
+		OpenstackCompositeSolution solution=new OpenstackCompositeSolution();
+		byte[] bytesArray=solution.readBytesFromFile("e6e-key.pem");
+		assertNotNull(bytesArray);
 		logger.debug("End OpenstackCompositeSolutionTest");
 	}
 	
