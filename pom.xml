@@ -5,7 +5,7 @@
 
 	<groupId>org.acumos.openstack</groupId>
 	<artifactId>openstack-client</artifactId>
-	<version>1.1.4-SNAPSHOT</version>
+	<version>1.1.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>openstack-client</name>
@@ -103,7 +103,7 @@
 		<dependency>
 			<groupId>org.acumos.common-dataservice</groupId>
 			<artifactId>cmn-data-svc-client</artifactId>
-			<version>1.14.4</version>
+			<version>1.15.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.acumos.acumos-nexus-client</groupId>

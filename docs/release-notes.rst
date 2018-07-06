@@ -20,7 +20,11 @@
 Openstack Client Release Notes
 =================================
 
+Version 1.1.5, July 6th 2018
+----------------------------
+* CDS 1.15.3 upgrade
+
 Version 1.47.0, March 2018
 ----------------------------
 
-Latest release of the Openstack Client.
+* Latest release of the Openstack Client.
