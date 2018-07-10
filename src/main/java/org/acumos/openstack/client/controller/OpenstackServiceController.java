@@ -41,6 +41,7 @@ import org.acumos.openstack.client.service.impl.OpenstackSimpleSolution;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
+import org.acumos.openstack.client.transport.TransportBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.CommonUtil;
 import org.acumos.openstack.client.util.DataBrokerBean;
@@ -237,6 +238,12 @@ public class OpenstackServiceController extends AbstractController {
 		String nexusRegistyUserName="";
 		String nexusRegistyPwd="";
 		String repositoryDetails="";
+		String nginxMapFolder="";
+		String nginxWebFolder="";
+		String nginxImageName="";
+		String nginxInternalPort="";
+		String azureDataFiles="";
+		TransportBean tbean=new TransportBean();
 		JSONObject  jsonOutput = new JSONObject();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
@@ -268,7 +275,11 @@ public class OpenstackServiceController extends AbstractController {
 			 nexusRegistyUserName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYUSERNAME);
 			 nexusRegistyPwd=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYPWD);
 			 repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
-			 
+			 nginxMapFolder=env.getProperty(OpenStackConstants.NGINX_MAPFOLDER);
+			 nginxWebFolder=env.getProperty(OpenStackConstants.NGINX_WEBFOLDER);
+			 nginxImageName=env.getProperty(OpenStackConstants.NGINX_IMAGENAME);
+			 nginxInternalPort=env.getProperty(OpenStackConstants.NGINX_INTERNALPORT);
+			 azureDataFiles=env.getProperty(OpenStackConstants.DATAFILE_FOLDER);
 			 
 			 bluePrintImage=env.getProperty(OpenStackConstants.BLUEPRINT_IMAGENAME);
 			 bluePrintName=env.getProperty(OpenStackConstants.BLUEPRINT_NAME);
@@ -290,8 +301,13 @@ public class OpenstackServiceController extends AbstractController {
 			 probePass=env.getProperty(OpenStackConstants.PROBE_PASSWORD);
 			 probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
 			 probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
-			
-			
+			 
+			 logger.debug("nginxMapFolder "+nginxMapFolder);
+			 logger.debug("nginxWebFolder "+nginxWebFolder);
+			 logger.debug("nginxImageName "+nginxImageName);
+			 logger.debug("nginxInternalPort "+nginxInternalPort);
+			 logger.debug("azureDataFiles "+azureDataFiles);
+			 logger.debug("azureDataFiles "+azureDataFiles);
 			 logger.debug("repositoryDetails "+repositoryDetails);
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
@@ -410,11 +426,13 @@ public class OpenstackServiceController extends AbstractController {
 					prbIndicator = probeIndicatorList.get(0);
 				}			
 			    if (bluePrintProbe.getProbeIndicator() != null && prbIndicator != null && prbIndicator.getValue().equalsIgnoreCase("True") ) {
-
+			    	list.add(nginxImageName);
+					imageMap.put(nginxImageName, OpenStackConstants.NGINX_CONTAINER);
+					sequenceList=commonUtil.addContainerSequence(sequenceList,OpenStackConstants.NGINX_CONTAINER);
 					if (probePrintImage != null && !"".equals(probePrintImage)) {
 						list.add(probePrintImage);
 						imageMap.put(probePrintImage, OpenStackConstants.PROBE_CONTAINER_NAME);
-						sequenceList=commonUtil.addProbeSequence(sequenceList,OpenStackConstants.PROBE_CONTAINER_NAME);
+						sequenceList=commonUtil.addContainerSequence(sequenceList,OpenStackConstants.PROBE_CONTAINER_NAME);
 					}
 			    }
 			 if(bluePrintImage!=null && !"".equals(bluePrintImage)){
@@ -424,6 +442,15 @@ public class OpenstackServiceController extends AbstractController {
 			 logger.debug("list "+list);
 			 logger.debug("imageMap "+imageMap);
 			 logger.debug("sequenceList "+sequenceList);
+			 tbean.setNexusUrl(nexusUrl);
+			 tbean.setNexusUserName(nexusUserName);	
+			 tbean.setNexusPassword(nexusPassword);
+			 tbean.setNginxMapFolder(nginxMapFolder);
+			 tbean.setNginxWebFolder(nginxWebFolder);
+			 tbean.setNginxImageName(nginxImageName);
+			 tbean.setNginxInternalPort(nginxInternalPort);
+			 tbean.setAzureDataFiles(azureDataFiles);
+			 
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
 			 logger.debug("uidNumStr "+uidNumStr);
@@ -434,7 +461,7 @@ public class OpenstackServiceController extends AbstractController {
 					 cmndatasvcpwd,nexusUrl,nexusUserName,nexusPassword,list,imageMap,sequenceList,bluePrintProbe,uidNumStr,solutionPort,Sleeptime,
 					 proxyIP,proxyPort,openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,nodeTypeContainerMap,probeNexusEndPoint
 					 ,probeInternalPort,repositoryNames,dataBrokerBean,exposeDataBrokerPort,internalDataBrokerPort,bluePrintStr,nexusRegistyName,
-					 nexusRegistyUserName,nexusRegistyPwd,repositoryDetails);
+					 nexusRegistyUserName,nexusRegistyPwd,repositoryDetails,tbean);
 			 Thread t = new Thread(compositeSolution);
 	         t.start();
 		 

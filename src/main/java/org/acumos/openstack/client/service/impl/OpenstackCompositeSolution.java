@@ -30,10 +30,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
 import org.acumos.openstack.client.transport.ContainerInfo;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
+import org.acumos.openstack.client.transport.TransportBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.CommonUtil;
 import org.acumos.openstack.client.util.DataBrokerBean;
@@ -118,7 +120,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String nexusRegistyUserName;
 	private String nexusRegistyPwd;
 	private String repositoryDetails;
-	
+	private TransportBean tbean;
 	public OpenstackCompositeSolution(){
 		
 	}
@@ -132,7 +134,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 String openStackIP,String bluePrintPortNumber,String probePrintName,String probUser,String probePass,
 			 HashMap<String,DeploymentBean> nodeTypeContainerMap,String probeNexusEndPoint,String probeInternalPort,String repositoryNames,
 			 DataBrokerBean dataBrokerBean,String exposeDataBrokerPort,String internalDataBrokerPort,String bluePrintStr,String nexusRegistyName,
-			 String nexusRegistyUserName,String nexusRegistyPwd,String repositoryDetails){
+			 String nexusRegistyUserName,String nexusRegistyPwd,String repositoryDetails,TransportBean tbean){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
@@ -186,6 +188,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.nexusRegistyUserName = nexusRegistyUserName;
 			this.nexusRegistyPwd = nexusRegistyPwd;
 			this.repositoryDetails=repositoryDetails;
+			this.tbean=tbean;
 	}
 	
 	
@@ -380,8 +383,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 
 	 
 	 byte[] bytesArray=readBytesFromFile(keyName);
-	 
-	 
+	 commonUtil.getProtoDetails(tbean);
+	 logger.debug("Protomap "+tbean.getProtoMap());
 	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray,22);
 	 for(int i=0;i<listSize;i++){
 		 String portTunnel=portArr[i];
@@ -402,7 +405,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 
 	 //bluePrintPort.sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
-	 
+	 //Map Nginx folder
+	 protoFileVM(hostOpenStack,vmUserName,bytesArray,tbean,vmBind);
 	 String portNumber="";
 	 int count=0;
 	 DockerInfoList  dockerList=new DockerInfoList();
@@ -469,7 +473,12 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	    		        					&& nodeTypeName!=null && !"".equals(nodeTypeName) && nodeTypeName.equalsIgnoreCase(OpenStackConstants.DATA_BROKER_CSV_FILE)){
 	    		        				portNumberString=exposeDataBrokerPort+":"+internalDataBrokerPort;
 	    		        				portNumber=exposeDataBrokerPort;
-	 		            		}else{
+	 		            		}else if(finalContainerName.equalsIgnoreCase(OpenStackConstants.NGINX_CONTAINER)){
+    		        				portNumber=portArr[count];
+    		        				portNumberString=portNumber+":"+tbean.getNginxInternalPort();
+    		        				tbean.setNginxPort(portNumber);
+    		        				count++;
+    		        			}else{
 	 		            			portNumber=portArr[count];
 	 		            			if(solutionPort!=null && !"".equals(solutionPort)){
 				        				portNumberString=portNumber+":"+solutionPort;
@@ -844,11 +853,16 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			if(finalContainerName!=null && finalContainerName.trim().equalsIgnoreCase("Probe")){
 				RUN_IMAGE = "" + "docker run --name " + finalContainerName + " -itd -p 0.0.0.0:" + portNumberString
 						+ "  -e NEXUSENDPOINTURL='"+probeNexusEndPoint+"' " + repositoryName + " \n";
+			}else if(finalContainerName!=null && finalContainerName.equalsIgnoreCase(OpenStackConstants.NGINX_CONTAINER)){
+				logger.debug("nginx Condition");
+				RUN_IMAGE = "" + "docker run --name "+finalContainerName+" -v "+tbean.getNginxMapFolder()+":"+tbean.getNginxWebFolder()+":ro  -d -p 0.0.0.0:" + portNumberString
+						+ "  " + repositoryName + " \n";
+				
 			}else{
 				RUN_IMAGE = "" + "docker run --name " + finalContainerName + " -d -p 0.0.0.0:" + portNumberString
 						+ "  " + repositoryName + " \n";
 			}
-			logger.debug("output Start 4 RUN_IMAGE "+RUN_IMAGE);
+			logger.debug("output Start  RUN_IMAGE "+RUN_IMAGE);
 			sshShell.upload(new ByteArrayInputStream(RUN_IMAGE.getBytes()), "RUN_DOCKER_IMAGE_"+count+".sh", ".azuredocker", true,
 					"4095");
 			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
@@ -872,6 +886,45 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		}
 		logger.debug("End deploymentImageVM CompositeSolution");
 		return "sucess";
+	}
+	
+	public void protoFileVM(String dockerHostIP, String vmUserName, byte[] bytesArray,TransportBean tbean,int vmBind)
+			throws Exception{
+		SSHShell sshShell = null;
+		logger.debug("protoFileVM Start");
+		try{
+		sshShell = SSHShell.open(dockerHostIP, vmBind, vmUserName, bytesArray);
+		String createFolderScript = sshShell.executeCommand("sudo mkdir -p "+tbean.getNginxMapFolder()+" ", true,true);
+		logger.debug("createFolderScript  " + createFolderScript);
+		Iterator protoItr = tbean.getProtoMap().entrySet().iterator();
+	    while (protoItr.hasNext()) {
+	        Map.Entry protoPair = (Map.Entry)protoItr.next();
+	        if(protoPair!=null && protoPair.getKey()!=null && protoPair.getValue()!=null){
+	        	logger.debug(protoPair.getKey() + " keyAndValue " + protoPair.getValue());
+	        	String protoFilePathName=(String)protoPair.getKey();
+	        	String protoDetails=(String)protoPair.getValue();
+	        	int index = protoFilePathName.lastIndexOf("/");
+	        	String protoFileName=protoFilePathName.substring(index+1);
+	        	String protoUriFolder= protoFilePathName.substring(0,index);
+	        	String copyFolderName=tbean.getNginxMapFolder()+"/"+protoUriFolder;
+	        	logger.debug("protoFileName "+protoFileName);
+	        	logger.debug("protoUriFolder "+protoUriFolder);
+	        	logger.debug("copyFolderName "+copyFolderName);
+	        	createFolderScript = sshShell.executeCommand("sudo mkdir -p "+copyFolderName+" ", true,true);
+	        	logger.debug("createFolderScript folder " + createFolderScript);
+	    		
+	    		sshShell.upload(new ByteArrayInputStream(protoDetails.getBytes()), protoFileName,
+	        			"OpenStackDataFiles", true, "4095");
+	    		logger.debug("File uploaded in AzureDataFiles folder " );
+	        	String copyScript = sshShell.executeCommand("sudo cp -R "+tbean.getAzureDataFiles()+"/"+protoFileName+" "+ copyFolderName, true,true);
+	        	logger.debug("copy file in folder finish"+copyScript);
+	        }
+	    }
+		}catch(Exception e){
+			logger.error("protoFileVM failed", e);
+			throw e;
+		}
+		logger.debug("protoFileVM End");
 	}
 
 }

@@ -48,6 +48,7 @@ import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.MLNotification;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackCompositeDeployBean;
+import org.acumos.openstack.client.transport.TransportBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -341,15 +342,15 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			logger.debug(" End createDeploymentData ");
 			return mlpDeployment;
 		}
-		public LinkedList<String> addProbeSequence(LinkedList<String> sequenceList,String probeContainerName){
+		public LinkedList<String> addContainerSequence(LinkedList<String> sequenceList,String ContainerName){
 			  logger.debug("Start addProbeSequence");
-			  logger.debug("probeContainerName "+probeContainerName+" sequenceList"+sequenceList);
-			  if(sequenceList!=null && sequenceList.size() > 0 && probeContainerName!=null && !"".equals(probeContainerName)){
+			  logger.debug("ContainerName "+ContainerName+" sequenceList"+sequenceList);
+			  if(sequenceList!=null && sequenceList.size() > 0 && ContainerName!=null && !"".equals(ContainerName)){
 				  int length=sequenceList.size();
 				  logger.debug("length "+length);
-				  sequenceList.add((length-1), probeContainerName); 
+				  sequenceList.add((length-1), ContainerName); 
 				}
-			  logger.debug("End addProbeSequence "+sequenceList);
+			  logger.debug("End addSequence "+sequenceList);
 			  return sequenceList;
 		  }	
 	  public void generateNotification(String msg, String userId,String dataSource,String dataUserName,String dataPassword)throws Exception {
@@ -547,5 +548,36 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		logger.debug("repositaryName End");
 		return checkRepositoryName;
 	  }
+	
+	public void getProtoDetails(TransportBean tbean)throws Exception{
+		logger.debug("getProtoDetails Start");
+		Map<String,String> protoMap=new HashMap<String,String>();
+		try {
+			
+	        if(tbean!=null && tbean.getProtoContainerMap()!=null && tbean.getProtoContainerMap().size() > 0){
+	        	Iterator protoItr = tbean.getProtoContainerMap().entrySet().iterator();
+			    while (protoItr.hasNext()) {
+			        Map.Entry protoPair = (Map.Entry)protoItr.next();
+			        if(protoPair!=null && protoPair.getKey()!=null && protoPair.getValue()!=null){
+			        	logger.debug(protoPair.getKey() + " = " + protoPair.getValue());
+			        	String containerName=(String)protoPair.getKey();
+			        	String protoPath=(String)protoPair.getValue();
+			        	ByteArrayOutputStream byteArrayOutputStream=getNexusUrlFile(tbean.getNexusUrl(), tbean.getNexusUserName(),
+			        			tbean.getNexusPassword(), protoPath);
+						logger.debug(protoPair.getKey() +"byteArrayOutputStream "+byteArrayOutputStream);
+						protoMap.put(protoPath, byteArrayOutputStream.toString());
+						logger.debug("protoPath "+protoPath);
+						logger.debug("proto file Details "+byteArrayOutputStream.toString());
+			        }
+			    }
+	        }
+		} catch (Exception e) {
+			  logger.error("getProtoDetails failed", e);
+			  throw e;
+		 }
+        logger.debug("protoMap "+protoMap);
+        tbean.setProtoMap(protoMap);
+        logger.debug("getProtoDetails End");
+	}
 
 }
