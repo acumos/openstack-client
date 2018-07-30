@@ -153,7 +153,7 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
    
    public CommonDataServiceRestClientImpl getClient(String datasource,String userName,String password) {
 		logger.debug("start getClient");
-		CommonDataServiceRestClientImpl client = new CommonDataServiceRestClientImpl(datasource, userName, password);
+		CommonDataServiceRestClientImpl client = new CommonDataServiceRestClientImpl(datasource, userName, password,null);
 		logger.debug("End getClient client "+client);
 		return client;
 	}
