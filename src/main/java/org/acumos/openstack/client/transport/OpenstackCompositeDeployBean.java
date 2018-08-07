@@ -30,7 +30,7 @@ public class OpenstackCompositeDeployBean {
 	private String jsonMapping;
 	
 	private String username;
-	private String password;
+	private String userPd;
 	private String host;
 	private String port;
 	
@@ -42,11 +42,12 @@ public class OpenstackCompositeDeployBean {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getPassword() {
-		return password;
+	
+	public String getUserPd() {
+		return userPd;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUserPd(String userPd) {
+		this.userPd = userPd;
 	}
 	public String getHost() {
 		return host;

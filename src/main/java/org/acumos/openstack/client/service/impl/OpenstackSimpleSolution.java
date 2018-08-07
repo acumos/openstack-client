@@ -65,7 +65,7 @@ public class OpenstackSimpleSolution implements Runnable{
 	private OpenstackDeployBean auth;
 	private String endpoint;
 	private String userName;
-	private String password;
+	private String userPd;
 	private String scopeProject;
 	private String key;
 	private String keyName;
@@ -75,11 +75,11 @@ public class OpenstackSimpleSolution implements Runnable{
 	private String hostUserName;
 	private String vmUserName;
 	private String dockerUserName;
-	private String dockerPassword;
+	private String dockerPd;
 	private String uidNumStr;
 	private String dataSource;
 	private String cmndatasvcuser;
-	private String cmndatasvcpwd;
+	private String cmndatasvcpd;
 	private String proxyIP;
 	private String proxyPort;
 	private String openStackIP;
@@ -91,16 +91,16 @@ public class OpenstackSimpleSolution implements Runnable{
 	}
 	
 	public OpenstackSimpleSolution(String flavourName,String  securityGropName,OpenstackDeployBean auth,String endpoint
-			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
-			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,
-			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,String proxyIP,String proxyPort,
+			 ,String userName,String userPd,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
+			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPd,
+			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpd,String proxyIP,String proxyPort,
 			 String openStackIP,String repositoryNames,String repositoryDetails){
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
 		this.auth = auth;
 		this.endpoint = endpoint;
 		this.userName = userName;
-		this.password = password;
+		this.userPd = userPd;
 		this.scopeProject = scopeProject;
 		this.key = key;
 		this.keyName = keyName;
@@ -110,11 +110,11 @@ public class OpenstackSimpleSolution implements Runnable{
 		this.hostUserName = hostUserName;
 		this.vmUserName = vmUserName;
 		this.dockerUserName = dockerUserName;
-		this.dockerPassword = dockerPassword;
+		this.dockerPd = dockerPd;
 		this.uidNumStr = uidNumStr;
 		this.dataSource = dataSource;
 		this.cmndatasvcuser = cmndatasvcuser;
-		this.cmndatasvcpwd = cmndatasvcpwd;
+		this.cmndatasvcpd = cmndatasvcpd;
 		this.proxyIP=proxyIP;
 		this.proxyPort=proxyPort;
 		this.openStackIP=openStackIP;
@@ -141,7 +141,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("securityGropName "+securityGropName);
 			 logger.debug("endpoint "+endpoint);
 			 logger.debug("userName "+userName);
-			 logger.debug("password "+password);
+			 logger.debug("userPd "+userPd);
 			 logger.debug("scopeProject "+scopeProject);
 			 logger.debug("key "+key);
 			 logger.debug("keyName "+keyName);
@@ -149,14 +149,14 @@ public class OpenstackSimpleSolution implements Runnable{
 			 logger.debug("vmRegisterNumber "+vmRegisterNumber);
 			 logger.debug("vmUserName "+vmUserName);
 			 logger.debug("dockerUserName "+dockerUserName);
-			 logger.debug("dockerPassword "+dockerPassword);
+			 logger.debug("dockerPd "+dockerPd);
 			 logger.debug("SoulutionId "+auth.getSolutionId());
 			 logger.debug("SolutionRevisionId "+auth.getSolutionRevisionId());
 			 logger.debug("getImagetag() "+auth.getImagetag());
 			 logger.debug("uidNumStr "+uidNumStr);
 			 logger.debug("dataSource "+dataSource);
 			 logger.debug("cmndatasvcuser "+cmndatasvcuser);
-			 logger.debug(" cmndatasvcpwd "+cmndatasvcpwd);
+			 logger.debug(" cmndatasvcpd "+cmndatasvcpd);
 			 logger.debug("proxyIP "+proxyIP);
 			 logger.debug("proxyPort "+proxyPort);
 			 logger.debug("openStackIP "+openStackIP);
@@ -167,7 +167,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			 }
 			 int proxyPortInt=Integer.parseInt(proxyPort);
 			 os = OSFactory.builderV3().endpoint(endpoint)
-						.credentials(userName, password, Identifier.byName(IdentifierName))
+						.credentials(userName, userPd, Identifier.byName(IdentifierName))
 						.scopeToProject(Identifier.byId(scopeProject))
 						.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://"+proxyIP, proxyPortInt)))
 						.authenticate();
@@ -292,14 +292,14 @@ public class OpenstackSimpleSolution implements Runnable{
 	 logger.debug("repositaryName "+repositaryName+" repositryImageName "+repositryImageName);
 	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
-	 deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray);
-	 commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
+	 deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPd,repositryImageName,vmBind,bytesArray);
+	 commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpd, containerBean,auth.getSolutionId(), 
 			 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "DP");
 	 logger.debug("End Simple Image deployment");
 	  }catch(Exception e){
 		  logger.error("Exception in openstackSimpleSolution RUN " +e);
 		  try{
-			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpwd, containerBean,auth.getSolutionId(), 
+			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpd, containerBean,auth.getSolutionId(), 
 						 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "FA");  
 		  }catch(Exception ex){
 			  logger.error("Exception in saving data openstackSimpleSolution " +ex);
@@ -481,17 +481,17 @@ public class OpenstackSimpleSolution implements Runnable{
     }
 	
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName, 
-			String registryServerUrl, String username, String password, String repositoryName,int vmNum,byte[] bytesArray)throws Exception {
+			String registryServerUrl, String username, String userPd, String repositoryName,int vmNum,byte[] bytesArray)throws Exception {
 		logger.debug("dockerHostIP " + dockerHostIP);
 		logger.debug("vmUserName " + vmUserName);
 		logger.debug("registryServerUrl " + registryServerUrl);
 		logger.debug("username " + username);
-		logger.debug("password " + password);
+		logger.debug("userPd " + userPd);
 		logger.debug("repositoryName " + repositoryName);
 		logger.debug("start deploymentImageVM SimpleSolution ");
 		SSHShell sshShell = null;
 		try {
-			String PULL_IMAGE = "" + "docker login --username=" + username + " --password=" + password + " "
+			String PULL_IMAGE = "" + "docker login --username=" + username + " --password=" + userPd + " "
 					+ registryServerUrl + " \n" + "docker pull " + repositoryName + " \n";
 			logger.debug("start deploymentImageVM 2 PULL_IMAGE " + PULL_IMAGE);
 

@@ -73,7 +73,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private OpenstackCompositeDeployBean auth;
 	private String endpoint;
 	private String userName;
-	private String password;
+	private String userPd;
 	private String scopeProject;
 	private String key;
 	private String keyName;
@@ -83,17 +83,17 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String hostUserName;
 	private String vmUserName;
 	private String dockerUserName;
-	private String dockerPassword;	
+	private String dockerPd;	
 	private String bluePrintImage;
 	private String bluePrintName;
 	private String bluePrintUserName;
-	private String bluePrintPassword;
+	private String bluePrintPd;
 	private String dataSource;
 	private String cmndatasvcuser;
-	private String cmndatasvcpwd;
+	private String cmndatasvcpd;
 	private String nexusUrl;
 	private String nexusUserName;
-	private String nexusPassword;
+	private String nexusPd;
 	private ArrayList<String> list;
 	private HashMap<String,String> imageMap;
 	private LinkedList<String> sequenceList;
@@ -118,7 +118,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	private String bluePrintStr;
 	private String nexusRegistyName;
 	private String nexusRegistyUserName;
-	private String nexusRegistyPwd;
+	private String nexusRegistyPd;
 	private String repositoryDetails;
 	private TransportBean tbean;
 	public OpenstackCompositeSolution(){
@@ -126,22 +126,22 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	}
 	
 	public OpenstackCompositeSolution(String flavourName,String  securityGropName,OpenstackCompositeDeployBean auth,String endpoint
-			 ,String userName,String password,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
-			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPassword,String bluePrintImage,
-			 String bluePrintName,String bluePrintUserName,String bluePrintPassword,String dataSource,String cmndatasvcuser,String cmndatasvcpwd,
-			 String nexusUrl,String nexusUserName,String nexusPassword,ArrayList<String> list,HashMap<String,String> imageMap,LinkedList<String> sequenceList,
+			 ,String userName,String userPd,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
+			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPd,String bluePrintImage,
+			 String bluePrintName,String bluePrintUserName,String bluePrintPd,String dataSource,String cmndatasvcuser,String cmndatasvcpd,
+			 String nexusUrl,String nexusUserName,String nexusPd,ArrayList<String> list,HashMap<String,String> imageMap,LinkedList<String> sequenceList,
 			 Blueprint bluePrint,String uidNumStr,String solutionPort,String Sleeptime,String proxyIP,String proxyPort,
 			 String openStackIP,String bluePrintPortNumber,String probePrintName,String probUser,String probePass,
 			 HashMap<String,DeploymentBean> nodeTypeContainerMap,String probeNexusEndPoint,String probeInternalPort,String repositoryNames,
 			 DataBrokerBean dataBrokerBean,String exposeDataBrokerPort,String internalDataBrokerPort,String bluePrintStr,String nexusRegistyName,
-			 String nexusRegistyUserName,String nexusRegistyPwd,String repositoryDetails,TransportBean tbean){
+			 String nexusRegistyUserName,String nexusRegistyPd,String repositoryDetails,TransportBean tbean){
 			//this.os = os;
 			this.flavourName = flavourName;
 			this.securityGropName = securityGropName;
 			this.auth = auth;
 			this.endpoint = endpoint;
 			this.userName = userName;
-			this.password = password;
+			this.userPd = userPd;
 			this.scopeProject = scopeProject;
 			this.key = key;
 			this.keyName = keyName;
@@ -151,17 +151,17 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.hostUserName = hostUserName;
 			this.vmUserName = vmUserName;
 			this.dockerUserName = dockerUserName;
-			this.dockerPassword = dockerPassword;
+			this.dockerPd = dockerPd;
 			this.bluePrintImage = bluePrintImage;
 			this.bluePrintName = bluePrintName;
 			this.bluePrintUserName = bluePrintUserName;
-			this.bluePrintPassword = bluePrintPassword;
+			this.bluePrintPd = bluePrintPd;
 			this.dataSource = dataSource;
 			this.cmndatasvcuser = cmndatasvcuser;
-			this.cmndatasvcpwd = cmndatasvcpwd;
+			this.cmndatasvcpd = cmndatasvcpd;
 			this.nexusUrl = nexusUrl;
 			this.nexusUserName = nexusUserName;
-			this.nexusPassword = nexusPassword;
+			this.nexusPd = nexusPd;
 			this.list=list;
 			this.imageMap=imageMap;
 			this.sequenceList=sequenceList;
@@ -186,7 +186,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			this.bluePrintStr = bluePrintStr;
 			this.nexusRegistyName = nexusRegistyName;
 			this.nexusRegistyUserName = nexusRegistyUserName;
-			this.nexusRegistyPwd = nexusRegistyPwd;
+			this.nexusRegistyPd = nexusRegistyPd;
 			this.repositoryDetails=repositoryDetails;
 			this.tbean=tbean;
 	}
@@ -224,7 +224,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("securityGropName "+securityGropName);
 			 logger.debug("endpoint "+endpoint);
 			 logger.debug("userName "+userName);
-			 logger.debug("password "+password);
+			 logger.debug("userPd "+userPd);
 			 logger.debug("scopeProject "+scopeProject);
 			 logger.debug("key "+key);
 			 logger.debug("keyName "+keyName);
@@ -232,7 +232,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("vmRegisterNumber "+vmRegisterNumber);
 			 logger.debug("vmUserName "+vmUserName);
 			 logger.debug("dockerUserName "+dockerUserName);
-			 logger.debug("dockerPassword "+dockerPassword);
+			 logger.debug("dockerPd "+dockerPd);
 			 logger.debug("solutionPort "+solutionPort);
 			 logger.debug("Sleeptime "+Sleeptime);
 			 logger.debug("proxyIP "+proxyIP);
@@ -251,14 +251,14 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
 			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
 			 logger.debug("nexusRegistyUserName "+nexusRegistyUserName);
-			 logger.debug("nexusRegistyPwd "+nexusRegistyPwd);
+			 logger.debug("nexusRegistyPd "+nexusRegistyPd);
 			 logger.debug(" JSON FROM DS bluePrintStr "+bluePrintStr);
 			 int proxyPortInt=Integer.parseInt(proxyPort);
 			 int bluePrintPorInt=Integer.parseInt(bluePrintPortNumber);
 			 int listSize=list.size();
 			 String portArr[]={"8557","8558","8559","8560","8561","8562","8563","8564","8565"};
 			 os = OSFactory.builderV3().endpoint(endpoint)
-					.credentials(userName, password, Identifier.byName(IdentifierName))
+					.credentials(userName, userPd, Identifier.byName(IdentifierName))
 					.scopeToProject(Identifier.byId(scopeProject))
 					.withConfig(Config.newConfig().withProxy(ProxyHost.of("http://"+proxyIP, proxyPortInt)))
 					.authenticate();
@@ -463,7 +463,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            		portNumberString=portNumber+":"+portNumber;
 	 		            		logger.debug("imageNameVal "+imageNameVal);
 	 		            		logger.debug("portNumberString "+portNumberString);
-	 		            		deploymentImageVM(hostOpenStack,vmUserName,repositaryName,bluePrintUserName,bluePrintPassword,repositryImageName,vmBind,bytesArray,
+	 		            		deploymentImageVM(hostOpenStack,vmUserName,repositaryName,bluePrintUserName,bluePrintPd,repositryImageName,vmBind,bytesArray,
 	 		            				finalContainerName,portNumberString,11,sleepTimeInt,probeNexusEndPoint);
 	 		            	}else{
 	 		            		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
@@ -496,12 +496,12 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            		}else if(nexusRepo){
 	 		            			logger.debug("Deploying Container else if finalContainerName "+finalContainerName);
 	 		            			//dockerinfo.setNodeType("Probe");
-	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,nexusRegistyUserName,nexusRegistyPwd,repositryImageName,vmBind,bytesArray,
+	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,nexusRegistyUserName,nexusRegistyPd,repositryImageName,vmBind,bytesArray,
 	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
 	 		            		}else{
 	 		            			logger.debug(" Deploying Container finalContainerName "+finalContainerName);
 	 		            			//dockerinfo.setNodeType("Probe");
-	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPassword,repositryImageName,vmBind,bytesArray,
+	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPd,repositryImageName,vmBind,bytesArray,
 	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
 	 		            		}
 	 		            	}
@@ -620,19 +620,19 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 if (bluePrint.getProbeIndicator() != null && prbIndicator != null && prbIndicator.getValue().equalsIgnoreCase("True")) {
 				 logger.debug("Probe indicator true. Starting generatenotircation auth.getUserId()) "+auth.getUserId());
 				 logger.debug("probeIP "+probeIP+"probePort "+probePort);
-				 commonUtil.generateNotification(probeIP+":"+probePort,auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpwd);
+				 commonUtil.generateNotification(probeIP+":"+probePort,auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 		 }
 		 if(openStackContainerBeanList!=null){
 	       	  
   			  logger.debug("Start saving data in database openStackContainerBeanList "+openStackContainerBeanList); 
-  			commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpwd,openStackContainerBeanList,auth.getSolutionId(),
+  			commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpd,openStackContainerBeanList,auth.getSolutionId(),
   					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"DP");
       		  
         }
 	  }catch(Exception e){
 		  logger.error("Exception in openstackCompositeSolution " +e);
 		  try{
-			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpwd,openStackContainerBeanList,auth.getSolutionId(),
+			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpd,openStackContainerBeanList,auth.getSolutionId(),
 	  					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"FA");
 				
 			}catch(Exception ex){
@@ -817,14 +817,14 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 
     }
 	
-	public  String deploymentImageVM(String dockerHostIP, String vmUserName,String registryServerUrl, String username, String password, 
+	public  String deploymentImageVM(String dockerHostIP, String vmUserName,String registryServerUrl, String username, String userPd, 
 			 String repositoryName,int vmNum,byte[] bytesArray,String finalContainerName,String portNumberString,int count,
 			 int sleepTime,String probeNexusEndPoint)throws Exception {
 		logger.debug(" dockerHostIP " + dockerHostIP);
 		logger.debug("vmUserName " + vmUserName);
 		logger.debug("registryServerUrl " + registryServerUrl);
 		logger.debug("username " + username);
-		logger.debug("password " + password);
+		logger.debug("userPd " + userPd);
 		logger.debug("repositoryName " + repositoryName);
 		logger.debug("finalContainerName " + finalContainerName);
 		logger.debug("portNumberString " + portNumberString);
@@ -834,7 +834,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		logger.debug("start deploymentImageVM CompositeSolution ");
 		SSHShell sshShell = null;
 		try {
-			String PULL_IMAGE = "" + "docker login --username=" + username + " --password=" + password + " "
+			String PULL_IMAGE = "" + "docker login --username=" + username + " --password=" + userPd + " "
 					+ registryServerUrl + " \n" + "docker pull " + repositoryName + " \n";
 			logger.debug("start deploymentImageVM 2 PULL_IMAGE " + PULL_IMAGE);
 

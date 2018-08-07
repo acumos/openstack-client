@@ -106,7 +106,7 @@ public final class OpenStackConstants {
 	public static final String OPENSTACK_ENDPOINT="docker.openstack.endpoint";
 	public static final String OPENSTACK_SECURITYGROUPNAME="docker.openstack.securityGroupName";
 	public static final String OPENSTACK_USERNAME="docker.openstack.userName";
-	public static final String OPENSTACK_PASSWORD="docker.openstack.password";
+	public static final String OPENSTACK_PD="docker.openstack.password";
 	public static final String OPENSTACK_SCOPEPROJECT="docker.openstack.scopeProject";
 	public static final String OPENSTACK_KEY="docker.openstack.key";
 	public static final String OPENSTACK_KEYNAME="docker.openstack.keyName";
@@ -116,7 +116,7 @@ public final class OpenStackConstants {
 	public static final String OPENSTACK_HOSTUSERNAME="docker.openstack.hostUserName";
 	public static final String OPENSTACK_VMUSERNAME="docker.openstack.vmUserName";
 	public static final String OPENSTACK_DOCKERUSERNAME="docker.openstack.dockerUserName";
-	public static final String OPENSTACK_DOCKERPASSWORD="docker.openstack.dockerPassword";
+	public static final String OPENSTACK_DOCKERPD="docker.openstack.dockerPassword";
 	
 	public static final String OPENSTACK_SOLUTIONPORT="docker.openstack.solutionPort";
 	public static final String OPENSTACK_SLEEPTIME="docker.openstack.Sleeptime";
@@ -128,13 +128,13 @@ public final class OpenStackConstants {
 	public static final String OPENSTACK_INTERNALDATABROKERPORT="docker.openstack.internalDataBrokerPort";
 	public static final String OPENSTACK_NEXUSREGISTYNAME="docker.openstack.nexusRegistyName";
 	public static final String OPENSTACK_NEXUSREGISTYUSERNAME="docker.openstack.nexusRegistyUserName";
-	public static final String OPENSTACK_NEXUSREGISTYPWD="docker.openstack.nexusRegistyPwd";
+	public static final String OPENSTACK_NEXUSREGISTYPD="docker.openstack.nexusRegistyPwd";
 	public static final String OPENSTACK_REPOSITYDETAILS="docker.openstack.reposityDetails";
 	
 	public static final String BLUEPRINT_IMAGENAME="blueprint.bluePrintImageName";
 	public static final String BLUEPRINT_NAME="blueprint.bluePrintName";
 	public static final String BLUEPRINT_USERNAME="blueprint.bluePrintUserName";
-	public static final String BLUEPRINT_PASSWORD="blueprint.bluePrintPassword";
+	public static final String BLUEPRINT_PD="blueprint.bluePrintPassword";
 	public static final String BLUEPRINT_PORTNUMBER="docker.openstack.bluePrintPortNumber";
 	
 	public static final String NGINX_MAPFOLDER="nginx.nginxMapFolder";
@@ -144,16 +144,16 @@ public final class OpenStackConstants {
 
 	public static final String CMNDATASVC_ENDPOINURL="cmndatasvc.cmndatasvcendpoinurl";
 	public static final String CMNDATASVC_USER="cmndatasvc.cmndatasvcuser";
-	public static final String CMNDATASVC_PWD="cmndatasvc.cmndatasvcpwd";
+	public static final String CMNDATASVC_PD="cmndatasvc.cmndatasvcpwd";
 
 	public static final String NEXUS_URL="nexus.url";
 	public static final String NEXUS_USERNAME="nexus.username";
-	public static final String NEXUS_PASSWORD="nexus.password";
+	public static final String NEXUS_PD="nexus.password";
 
 	public static final String PROBE_IMAGENAME="probe.ImageName";
 	public static final String PROBE_NAME="probe.name";
 	public static final String PROBE_USERNAME="probe.username";
-	public static final String PROBE_PASSWORD="probe.password";
+	public static final String PROBE_PD="probe.password";
 	public static final String PROBE_PROBENEXUSENDPOINT="probe.probeNexusEndPoint";
 	public static final String PROBE_INTERNALPORT="probe.internalPort";
 	
