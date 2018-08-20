@@ -20,6 +20,12 @@
 package org.acumos.openstack.client.service.impl;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +38,11 @@ import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.core.transport.Config;
 import org.openstack4j.core.transport.ProxyHost;
+import org.openstack4j.model.common.ActionResponse;
+import org.openstack4j.model.common.Identifier;
+import org.openstack4j.model.compute.Address;
 import org.openstack4j.model.compute.Flavor;
+import org.openstack4j.model.compute.FloatingIP;
 import org.openstack4j.model.compute.Image;
 import org.openstack4j.model.compute.SecGroupExtension;
 import org.openstack4j.model.compute.Server;
@@ -41,20 +51,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jcraft.jsch.JSchException;
-
-import org.openstack4j.model.compute.Address;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import org.openstack4j.model.compute.FloatingIP;
-import org.openstack4j.model.compute.SecurityGroup;
-import org.openstack4j.model.common.ActionResponse;
-import org.openstack4j.model.common.Identifier;
 
 public class OpenstackSimpleSolution implements Runnable{
 	Logger logger = LoggerFactory.getLogger(OpenstackSimpleSolution.class);
