@@ -21,9 +21,6 @@
 package org.acumos.openstack.client.util;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MappingTable implements Serializable {
 

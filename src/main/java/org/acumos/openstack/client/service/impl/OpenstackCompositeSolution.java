@@ -30,7 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
 import org.acumos.openstack.client.transport.ContainerInfo;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;

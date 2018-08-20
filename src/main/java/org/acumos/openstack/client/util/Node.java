@@ -24,8 +24,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.acumos.openstack.client.util.DataBrokerMap;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Node implements Serializable {

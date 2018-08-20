@@ -29,11 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-
-import org.acumos.cds.client.CommonDataServiceRestClientImpl;
-import org.acumos.cds.client.ICommonDataServiceRestClient;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

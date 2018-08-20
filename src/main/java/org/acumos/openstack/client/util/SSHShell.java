@@ -20,6 +20,19 @@
 
 package org.acumos.openstack.client.util;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+
+import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
@@ -28,24 +41,12 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.KeyPair;
 import com.jcraft.jsch.Session;
+
 import expect4j.Closure;
 import expect4j.Expect4j;
 import expect4j.ExpectState;
 import expect4j.matches.Match;
 import expect4j.matches.RegExpMatch;
-
-import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
 
 /**
  * Utility class to run commands on Linux VM via SSH.
