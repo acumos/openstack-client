@@ -20,6 +20,10 @@
 Openstack Client Release Notes
 =================================
 
+Version 1.1.112 Sepetember 6th 2018
+----------------------------
+* CDS 1.18.0
+
 Version 1.1.11, August 16th 2018
 ----------------------------
 * CDS 1.17.1 upgrade (ACUMOS-1607)
