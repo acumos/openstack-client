@@ -5,7 +5,7 @@
 
 	<groupId>org.acumos.openstack</groupId>
 	<artifactId>openstack-client</artifactId>
-	<version>1.1.18-SNAPSHOT</version>
+	<version>1.1.19-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>openstack-client</name>
@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.4.RELEASE</version>
+		<version>1.5.10.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -22,7 +22,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<!-- Stand-alone RESTFul application -->
 		<start-class>org.acumos.openstack.client.OpenstackClientApplication</start-class>
+		<!-- tests still depend on Azure host -->
 		<skipTests>false</skipTests>
 		<!-- Jenkins invokes mvn with argument -Dbuild.number=${BUILD_NUMBER} -->
 		<build.number>0</build.number>
@@ -45,22 +47,47 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-         <dependency>
-			<groupId>org.acumos.common-dataservice</groupId>
-			<artifactId>cmn-data-svc-client</artifactId>
-			<version>1.18.0</version>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.acumos.acumos-nexus-client</groupId>
-			<artifactId>acumos-nexus-client</artifactId>
-			<version>2.2.0</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+			
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions> 
 		</dependency>
-		 <dependency>
+		<dependency>
 		    <groupId>com.googlecode.json-simple</groupId>
 		    <artifactId>json-simple</artifactId>
 		    <version>1.1.1</version>
-        </dependency>
-        <dependency>
+		</dependency>
+		<dependency>
+		   <groupId>org.json</groupId>
+		   <artifactId>json</artifactId>
+		   <version>20080701</version>
+		</dependency>
+		 <dependency>
+	    <groupId>org.pacesys</groupId>
+	    <artifactId>openstack4j</artifactId>
+	    <version>3.1.0</version>
+    </dependency>
+    
+    <dependency>
 			<groupId>com.github.cverges.expect4j</groupId>
 			<artifactId>expect4j</artifactId>
 			<version>1.6</version>
@@ -73,56 +100,17 @@
 			</exclusions> 
 			 
 		</dependency>
-	    <dependency>
-		    <groupId>com.fasterxml.jackson.dataformat</groupId>
-		    <artifactId>jackson-dataformat-yaml</artifactId>
-		    <version>2.7.3</version>
-       </dependency> 
-       <dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-compress</artifactId>
-		    <version>1.0</version>
+		<dependency>
+			<groupId>org.acumos.common-dataservice</groupId>
+			<artifactId>cmn-data-svc-client</artifactId>
+			<version>1.18.0</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.6.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.acumos.acumos-nexus-client</groupId>
+			<artifactId>acumos-nexus-client</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.6.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions> 
-		</dependency>
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>servlet-api</artifactId>
-		    <version>2.5</version>
-		    <scope>provided</scope>
-		</dependency>
-		<dependency>
-		   <groupId>org.json</groupId>
-		   <artifactId>json</artifactId>
-		   <version>20080701</version>
-		</dependency>
-		 <dependency>
-		    <groupId>org.pacesys</groupId>
-		    <artifactId>openstack4j</artifactId>
-		    <version>3.1.0</version>
-       </dependency>
-
-        <dependency>
 			<groupId>com.att.eelf</groupId>
 			<artifactId>eelf-core</artifactId>
 			<version>1.0.0</version>
@@ -131,7 +119,7 @@
 
 	<build>
 		<plugins>
-		    <plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<version>1.14</version>
@@ -188,9 +176,9 @@
 				<executions>
 					<execution>
 						<phase>package</phase>
-						 <goals>
-							<goal>single</goal>
-						</goals> 
+						<goals>
+							<goal>attached</goal>
+						</goals>
 						<configuration>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
@@ -219,7 +207,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
@@ -235,13 +222,21 @@
 						<image>
 							<!-- Specify a tag to avoid default tag "latest" -->
 							<name>openstack-client:${project.version}</name>
+							<!-- <run>
+							   <env>
+							     <http_proxy>http://10.1.0.6:3128</http_proxy>
+							   </env>
+							</run> -->
 							<build>
+							 <env>
+							   <http_proxy>http://10.1.0.6:3128</http_proxy>
+							 </env> 
 								<from>frolvlad/alpine-oraclejdk8:slim</from>
 								<tags>
 									<!-- Add tag with build number -->
 									<tag>${project.version}-b${build.number}</tag>
 								</tags>
-								<assembly>
+						        <assembly>
 									<inline>
 										<files>
 											<file>
@@ -300,5 +295,4 @@
 			<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url>
 		</repository>
 	</distributionManagement>
-
 </project>
