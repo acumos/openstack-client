@@ -20,6 +20,10 @@
 Openstack Client Release Notes
 =================================
 
+Version 1.2.21, 17 September 2018
+---------------------------------
+logs not written to location same as others(ACUMOS-1635)
+
 Version 1.1.112 Sepetember 6th 2018
 ----------------------------
 * CDS 1.18.0
