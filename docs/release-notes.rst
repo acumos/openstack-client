@@ -20,6 +20,10 @@
 Openstack Client Release Notes
 =================================
 
+Version 1.2.22, 4 October 2018
+---------------------------------
+* update CDS 1.18.2 for Openstack-client (`ACUMOS-1821 <https://jira.acumos.org/browse/ACUMOS-1821>`_)
+
 Version 1.2.21, 17 September 2018
 ---------------------------------
 logs not written to location same as others(ACUMOS-1635)
