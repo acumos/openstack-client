@@ -115,6 +115,11 @@
 			<artifactId>eelf-core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.apache.maven.wagon</groupId>
+		    <artifactId>wagon-provider-api</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
