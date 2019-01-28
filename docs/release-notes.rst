@@ -20,7 +20,7 @@
 Openstack Client Release Notes
 =================================
 
-Version 1.1.24, 25 January 2019
+Version 2.0.0, 28 January 2019
 ---------------------------------
 * update CDS 2.0.4 for Openstack-client (`ACUMOS-2412 <https://jira.acumos.org/browse/ACUMOS-2412>`_)
 
