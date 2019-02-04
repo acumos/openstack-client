@@ -101,6 +101,7 @@ public final class OpenStackConstants {
 	public static final String NGINX_CONTAINER="Nginx";
 	public static final String NGINX_IMAGE="nginx";
 	public static final String DATAFILE_FOLDER="/home/dockerUser/AzureDataFiles/";
+	public static final String MSG_SEVERITY_ME="ME";
 	
 	public static final String OPENSTACK_FLAVOURNAME="docker.openstack.flavourName";
 	public static final String OPENSTACK_ENDPOINT="docker.openstack.endpoint";

@@ -289,12 +289,18 @@ public class OpenstackSimpleSolution implements Runnable{
 	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
 	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
 	 deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPd,repositryImageName,vmBind,bytesArray);
+	 
+	 if(floatingIp!=null && !"".equals(floatingIp)) {
+		 logger.debug("Openstack Notification start floatingIp "+floatingIp);
+			commonUtil.generateNotification("RackSpace VM is created for Single solution , IP is: "+floatingIp,auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
+	 }
 	 commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpd, containerBean,auth.getSolutionId(), 
 			 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "DP");
 	 logger.debug("End Simple Image deployment");
 	  }catch(Exception e){
 		  logger.error("Exception in openstackSimpleSolution RUN " +e);
 		  try{
+			  commonUtil.generateNotification("Error in vm for single solution in rackspace ",auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpd, containerBean,auth.getSolutionId(), 
 						 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "FA");  
 		  }catch(Exception ex){

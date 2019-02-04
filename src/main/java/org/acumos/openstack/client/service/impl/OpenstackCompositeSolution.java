@@ -615,6 +615,10 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		 if(probeIndicatorList != null && probeIndicatorList.size() >0) {
 				prbIndicator = probeIndicatorList.get(0);
 		 }
+		 if(floatingIp!=null && !"".equals(floatingIp)) {
+			 logger.debug("Openstack Notification start floatingIp "+floatingIp);
+				commonUtil.generateNotification("RackSpace VM is created for composite solution , IP is: "+floatingIp,auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
+		 }
 		 
 		 if (bluePrint.getProbeIndicator() != null && prbIndicator != null && prbIndicator.getValue().equalsIgnoreCase("True")) {
 				 logger.debug("Probe indicator true. Starting generatenotircation auth.getUserId()) "+auth.getUserId());
@@ -622,8 +626,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 				 commonUtil.generateNotification(probeIP+":"+probePort,auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 		 }
 		 if(openStackContainerBeanList!=null){
-	       	  
-  			  logger.debug("Start saving data in database openStackContainerBeanList "+openStackContainerBeanList); 
+  			logger.debug("Start saving data in database openStackContainerBeanList "+openStackContainerBeanList); 
   			commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpd,openStackContainerBeanList,auth.getSolutionId(),
   					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"DP");
       		  
@@ -631,6 +634,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	  }catch(Exception e){
 		  logger.error("Exception in openstackCompositeSolution " +e);
 		  try{
+			  commonUtil.generateNotification("Error in vm for composite solution in rackspace ",auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpd,openStackContainerBeanList,auth.getSolutionId(),
 	  					auth.getSolutionRevisionId(),auth.getUserId(),uidNumStr,"FA");
 				
