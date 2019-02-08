@@ -35,5 +35,6 @@ public class APINames {
 	
 	public static final String OPENSTACK_AUTH_PUSH_SINGLE_IMAGE = "/openstack/singleImageOpenstackDeployment";
 	public static final String OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE = "/openstack/compositeSolutionOpenstackDeployment";
+	public static final String OPENSTACK_AUTH_PUSH_EXISTING_VM = "/openstack/openstackExistingVMDeployment";
 	
 }

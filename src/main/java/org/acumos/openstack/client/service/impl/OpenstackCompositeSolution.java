@@ -381,31 +381,31 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 logger.debug("SingletonMapClass.getInstance() "+SingletonMapClass.getInstance());
 	 
 	 
-	 byte[] bytesArray=readBytesFromFile(keyName);
+	 byte[] bytesArray=commonUtil.readBytesFromFile(keyName);
 	 commonUtil.getProtoDetails(tbean);
 	 logger.debug("Protomap "+tbean.getProtoMap());
-	 sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray,22);
+	 commonUtil.sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray,22,openStackIP);
 	 for(int i=0;i<listSize;i++){
 		 String portTunnel=portArr[i];
 		 int portTunnelInt=Integer.parseInt(portTunnel);
 		 vmBindCount=vmBindCount+1;
 		 portMap.put(portTunnel, String.valueOf(vmBindCount));
 		 logger.debug("portTunnel "+portTunnel+"vmBindCount "+vmBindCount);
-		 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,portTunnelInt);
+		 commonUtil.sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,portTunnelInt,openStackIP);
 		 logger.debug("portTunnel "+portTunnel+"vmBindCount "+vmBindCount);
 	 }
 	 vmBindCount=vmBindCount+1;
 	 logger.debug("vmBindCount "+vmBindCount);
-	 sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,bluePrintPorInt);
+	 commonUtil.sshOpenStackCore(vmBindCount,floatingIp,hostOpenStack,hostUserName,bytesArray,bluePrintPorInt,openStackIP);
 	 portMap.put(bluePrintPortNumber, String.valueOf(vmBindCount));
 	 logger.debug("portMap "+portMap);
 	 SingletonMapClass.getInstance().put("vmBindNum", String.valueOf(vmBindCount));
 	 logger.debug("SingletonMapClass.getInstance() "+SingletonMapClass.getInstance());
 	 
 	 //bluePrintPort.sshOpenStackCore(vmBind,floatingIp,hostOpenStack,hostUserName,bytesArray);
-	 installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
+	 commonUtil.installDockerOpenstack(vmBind,hostOpenStack,vmUserName,bytesArray,repositoryDetails);
 	 //Map Nginx folder
-	 protoFileVM(hostOpenStack,vmUserName,bytesArray,tbean,vmBind);
+	 commonUtil.protoFileVM(hostOpenStack,vmUserName,bytesArray,tbean,vmBind);
 	 String portNumber="";
 	 int count=0;
 	 DockerInfoList  dockerList=new DockerInfoList();
@@ -462,8 +462,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            		portNumberString=portNumber+":"+portNumber;
 	 		            		logger.debug("imageNameVal "+imageNameVal);
 	 		            		logger.debug("portNumberString "+portNumberString);
-	 		            		deploymentImageVM(hostOpenStack,vmUserName,repositaryName,bluePrintUserName,bluePrintPd,repositryImageName,vmBind,bytesArray,
-	 		            				finalContainerName,portNumberString,11,sleepTimeInt,probeNexusEndPoint);
+	 		            		commonUtil.deploymentImageVM(hostOpenStack,vmUserName,repositaryName,bluePrintUserName,bluePrintPd,repositryImageName,vmBind,bytesArray,
+	 		            				finalContainerName,portNumberString,11,sleepTimeInt,probeNexusEndPoint,tbean);
 	 		            	}else{
 	 		            		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
 	 		            			portNumber=probeInternalPort;
@@ -490,18 +490,18 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 	 		            		
 	 		            		if(containerInstanceProbe!=null && containerInstanceProbe.equalsIgnoreCase(finalContainerName)){
 	 		            			logger.debug("Deploying Probe container finalContainerName "+finalContainerName);
-	 		            			deploymentImageVM(hostOpenStack,vmUserName,repositaryName,probUser,probePass,repositryImageName,vmBind,bytesArray,
-		 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
+	 		            			commonUtil.deploymentImageVM(hostOpenStack,vmUserName,repositaryName,probUser,probePass,repositryImageName,vmBind,bytesArray,
+		 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint,tbean);
 	 		            		}else if(nexusRepo){
 	 		            			logger.debug("Deploying Container else if finalContainerName "+finalContainerName);
 	 		            			//dockerinfo.setNodeType("Probe");
-	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,nexusRegistyUserName,nexusRegistyPd,repositryImageName,vmBind,bytesArray,
-	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
+	 		            			commonUtil.deploymentImageVM(hostOpenStack,vmUserName,repositaryName,nexusRegistyUserName,nexusRegistyPd,repositryImageName,vmBind,bytesArray,
+	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint,tbean);
 	 		            		}else{
 	 		            			logger.debug(" Deploying Container finalContainerName "+finalContainerName);
 	 		            			//dockerinfo.setNodeType("Probe");
-	 		            		  deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPd,repositryImageName,vmBind,bytesArray,
-	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint);
+	 		            			commonUtil.deploymentImageVM(hostOpenStack,vmUserName,repositaryName,dockerUserName,dockerPd,repositryImageName,vmBind,bytesArray,
+	 		            				finalContainerName,portNumberString,count,sleepTimeInt,probeNexusEndPoint,tbean);
 	 		            		}
 	 		            	}
 	 		            	dockerinfo.setIpAddress(floatingIp);
@@ -644,290 +644,6 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		  
 	  }
 	 logger.debug("CompositeSolution Run End");	
-	}
-	
-	public void sshOpenStackCore(int vmNumber,String floatingIp,String hostName,String user,byte[] bytesArray,int hostPort)throws Exception{
-		logger.debug("Start sshOpenStackCore");
-		 SSHShell sshShell = null;
-		 final String host=hostName; 
-		 final String userName=user;
-		try {
-			 Thread th = new Thread() {
-
-                 public synchronized void run() {
-                         SSHShell sshShell=null;
-                      try{
-                               logger.debug("host "+host);
-                               logger.debug("userName "+userName);
-                               logger.debug("vmNumber "+vmNumber);
-                               logger.debug("floatingIp "+floatingIp);
-                               logger.debug("hostPort "+hostPort);
-                               logger.debug("openStackIP "+openStackIP);
-                               sshShell = SSHShell.open(host, 22, userName, bytesArray);
-
-                               String regiterVM = "" + "ssh -L "+vmNumber+":"+floatingIp+":"+hostPort+" "+openStackIP+" -g -T -N & \n";
-                               logger.debug("start regiterVM check point 2 regiterVM " + regiterVM);
-
-                                      //sshShell = SSHShell.open(host, 2201, userName, bytesArray);
-                                      sshShell.upload(new ByteArrayInputStream(regiterVM.getBytes()), "regiterVM_"+vmNumber+".sh",
-                                                      ".openstackdocker", true, "4095");
-                                      logger.debug("start regiterVM check point 3 ");
-
-                                      String output = sshShell
-                                                      .executeCommand("bash -c ~/.openstackdocker/regiterVM_"+vmNumber+".sh", true, true);
-
-                 }catch(Exception e){
-                	 logger.error("Exception in sshOpenStackCore in composite solution in new thread "+e);
-                 }finally {
-                      if (sshShell != null) {
-                              sshShell.close();
-                              sshShell = null;
-                       }
-                 }
-               }
-
-              };
-               th.start();
-               Thread.sleep(60000);
-               th.stop();
-
-              
-		} catch (Exception ex) {
-			logger.error("Exception in sshOpenStackCore in composite solution "+ex);
-			throw ex;
-		} finally {
-			if (sshShell != null) {
-				sshShell.close();
-				sshShell = null;
-			}
-		}
-		logger.debug("sshOpenStackCore End");
-	}
-	public  void installDockerOpenstack(int vmNum,String host,String userName,byte[] bytesArray,String repositoryDetails)throws Exception{
-		logger.debug("installDockerOpenstack Start");
-		SSHShell sshShell = null;
-		try {
-			 logger.debug("vmNum "+vmNum);
-			 logger.debug("host "+host);
-			 logger.debug("userName "+userName);
-			 String repArray[]=repositoryDetails.split(",");
-			 String daemon_file="";
-			 String INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS = ""
-						+ "echo Running: \"if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi\" \n"
-						+ "if [ ! -d ~/.azuredocker/tls ]; then mkdir -p ~/.azuredocker/tls ; fi \n"
-						+ "echo Running: sudo apt-get update \n" + "sudo apt-get update \n"
-						+ "echo Running: sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
-						+ "sudo apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common \n"
-						+ "echo Running: curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
-						+ "curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add - \n"
-						+ "echo Running: sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main\" \n"
-						+ "sudo add-apt-repository \"deb https://apt.dockerproject.org/repo/ ubuntu-xenial main\" \n"
-						+ "echo Running: sudo apt-get update \n" + "sudo apt-get update \n"
-						+ "echo Running: sudo apt-get -y install docker-engine \n" + "sudo apt-get -y install docker-engine \n"
-						+ "echo Running: sudo groupadd docker \n" + "sudo groupadd docker \n"
-						+ "echo Running: sudo usermod -aG docker $USER \n" + "sudo usermod -aG docker $USER \n"
-						+ "sudo usermod -aG docker $USER \n"
-						+ "sudo sudo chmod 777 /var/run/docker.sock \n"
-						+ "echo Code for nexus repository \n"
-						+ "sudo chmod 777 /etc/docker \n"
-						+ "sudo cp -f ~/.azuredocker/daemon.json /etc/docker/daemon.json"
-						+ "sudo chmod 777 /etc/docker \n"
-						+"sudo service docker restart \n"
-						+ "echo Daemon restart done \n"
-						+ "sudo sudo chmod 777 /var/run/docker.sock \n";
-			 
-			 
-			 String daemonFirstPart=""
-					    +	"{ \n"
-						+	 " \"insecure-registries\": [ \n";
-			String daemonSecondpart="";
-			for(int i=0;i<repArray.length;i++ ){
-				if(daemonSecondpart!=null && !"".equalsIgnoreCase(daemonSecondpart)){
-					daemonSecondpart=daemonSecondpart+","+"\""+repArray[i]+"\"";
-				}else{
-					daemonSecondpart=daemonSecondpart+"\""+repArray[i]+"\"";
-				}
-				
-			 }
-			String daemonThirdPart=	  "], \n"
-			+	 " \"disable-legacy-registry\": true \n"
-			+	"} \n";
-			
-			 daemon_file=daemonFirstPart+daemonSecondpart+daemonThirdPart;
-			 
-			 sshShell = SSHShell.open(host, vmNum, userName, bytesArray);
-			 sshShell.upload(new ByteArrayInputStream(INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.getBytes()),
-						"INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh", ".azuredocker", true, "4095");
-			 logger.debug("Upload docker install script check point 1");
-			
-			 sshShell.upload(new ByteArrayInputStream(daemon_file.getBytes()),
-						"daemon.json", ".azuredocker", true, "4095");
-			 logger.debug("Upload docker install script check point 2");
-			 logger.debug("Start installing docker");
-			 String output = sshShell
-						.executeCommand("bash -c ~/.azuredocker/INSTALL_DOCKER_FOR_UBUNTU_SERVER_16_04_LTS.sh", true, true);
-			 
-			 
-			 logger.debug("SSH Cmplete output "+output);
-		} catch (JSchException jSchException) {
-			logger.error("JSchException in installDockerOpenstack "+jSchException);
-			throw jSchException;
-		} catch (IOException ioException) {
-			logger.error("IOException in installDockerOpenstack "+ioException);
-			throw ioException;
-		} catch (Exception exception) {
-			logger.error("Exception in installDockerOpenstack "+exception);
-			throw exception;
-		} finally {
-			if (sshShell != null) {
-				sshShell.close();
-				sshShell = null;
-			}
-		}
-		logger.debug("installDockerOpenstack End");
-	}
-	public  byte[] readBytesFromFile(String fileName)throws Exception {
-		logger.debug("Start readBytesFromFile ");
-        FileInputStream fileInputStream = null;
-        byte[] bytesArray = null;
-
-        try {
-        	
-            File file = new File(fileName);
-            bytesArray = new byte[(int) file.length()];
-
-            fileInputStream = new FileInputStream(file);
-            fileInputStream.read(bytesArray);
-            
-
-        } catch (IOException e) {
-        	logger.error("Exception in readBytesFromFile CompositeSolution "+e);
-        	throw e;
-        } finally {
-            if (fileInputStream != null) {
-                try {
-                    fileInputStream.close();
-                } catch (IOException e) {
-                	logger.error("Exception in readBytesFromFile Finally CompositeSolution "+e);
-                	throw e;
-                }
-            }
-
-        }
-        logger.debug("bytesArray.length "+bytesArray.length);
-        logger.debug("readBytesFromFile End");
-        return bytesArray;
-
-    }
-	
-	public  String deploymentImageVM(String dockerHostIP, String vmUserName,String registryServerUrl, String username, String userPd, 
-			 String repositoryName,int vmNum,byte[] bytesArray,String finalContainerName,String portNumberString,int count,
-			 int sleepTime,String probeNexusEndPoint)throws Exception {
-		logger.debug(" dockerHostIP " + dockerHostIP);
-		logger.debug("vmUserName " + vmUserName);
-		logger.debug("registryServerUrl " + registryServerUrl);
-		logger.debug("username " + username);
-		logger.debug("userPd " + userPd);
-		logger.debug("repositoryName " + repositoryName);
-		logger.debug("finalContainerName " + finalContainerName);
-		logger.debug("portNumberString " + portNumberString);
-		logger.debug("vmNum " + vmNum);
-		logger.debug("count " + count);
-		logger.debug("probeNexusEndPoint " + probeNexusEndPoint);
-		logger.debug("start deploymentImageVM CompositeSolution ");
-		SSHShell sshShell = null;
-		try {
-			String PULL_IMAGE = "" + "docker login --username=" + username + " --password=" + userPd + " "
-					+ registryServerUrl + " \n" + "docker pull " + repositoryName + " \n";
-			logger.debug("start deploymentImageVM 2 PULL_IMAGE " + PULL_IMAGE);
-
-			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
-			sshShell.upload(new ByteArrayInputStream(PULL_IMAGE.getBytes()), "PULL_IMAGE_"+count+".sh", ".azuredocker", true,
-					"4095");
-			logger.debug("start deploymentImageVM 3 File "+"PULL_IMAGE_"+count+".sh");
-
-			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
-			String output2 = sshShell.executeCommand("bash -c ~/.azuredocker/PULL_IMAGE_"+count+".sh", true, true);
-			logger.debug("start deploymentImageVM 4 output2 " + output2);
-			Thread.sleep(30000);
-			logger.debug(" start deploymentImageVM Container Name "+finalContainerName);
-			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
-			String RUN_IMAGE="";
-			if(finalContainerName!=null && finalContainerName.trim().equalsIgnoreCase("Probe")){
-				RUN_IMAGE = "" + "docker run --name " + finalContainerName + " -itd -p 0.0.0.0:" + portNumberString
-						+ "  -e NEXUSENDPOINTURL='"+probeNexusEndPoint+"' " + repositoryName + " \n";
-			}else if(finalContainerName!=null && finalContainerName.equalsIgnoreCase(OpenStackConstants.NGINX_CONTAINER)){
-				logger.debug("nginx Condition");
-				RUN_IMAGE = "" + "docker run --name "+finalContainerName+" -v "+tbean.getNginxMapFolder()+":"+tbean.getNginxWebFolder()+":ro  -d -p 0.0.0.0:" + portNumberString
-						+ "  " + repositoryName + " \n";
-				
-			}else{
-				RUN_IMAGE = "" + "docker run --name " + finalContainerName + " -d -p 0.0.0.0:" + portNumberString
-						+ "  " + repositoryName + " \n";
-			}
-			logger.debug("output Start  RUN_IMAGE "+RUN_IMAGE);
-			sshShell.upload(new ByteArrayInputStream(RUN_IMAGE.getBytes()), "RUN_DOCKER_IMAGE_"+count+".sh", ".azuredocker", true,
-					"4095");
-			sshShell = SSHShell.open(dockerHostIP, vmNum, vmUserName, bytesArray);
-			String output3 = sshShell.executeCommand("bash -c ~/.azuredocker/RUN_DOCKER_IMAGE_"+count+".sh", true, true);
-			logger.debug("output Start 5 output3 " + output3);
-			Thread.sleep(30000);
-		} catch (JSchException jSchException) {
-			logger.error("JSchException in deploymentImageVM "+jSchException);
-			throw jSchException;
-		} catch (IOException ioException) {
-			logger.error("JSchException in deploymentImageVM  "+ioException);
-			throw ioException;
-		} catch (Exception exception) {
-			logger.error("JSchException in deploymentImageVM "+exception);
-			throw exception;
-		} finally {
-			if (sshShell != null) {
-				sshShell.close();
-				sshShell = null;
-			}
-		}
-		logger.debug("End deploymentImageVM CompositeSolution");
-		return "sucess";
-	}
-	
-	public void protoFileVM(String dockerHostIP, String vmUserName, byte[] bytesArray,TransportBean tbean,int vmBind)
-			throws Exception{
-		SSHShell sshShell = null;
-		logger.debug("protoFileVM Start");
-		try{
-		sshShell = SSHShell.open(dockerHostIP, vmBind, vmUserName, bytesArray);
-		String createFolderScript = sshShell.executeCommand("sudo mkdir -p "+tbean.getNginxMapFolder()+" ", true,true);
-		logger.debug("createFolderScript  " + createFolderScript);
-		Iterator protoItr = tbean.getProtoMap().entrySet().iterator();
-	    while (protoItr.hasNext()) {
-	        Map.Entry protoPair = (Map.Entry)protoItr.next();
-	        if(protoPair!=null && protoPair.getKey()!=null && protoPair.getValue()!=null){
-	        	logger.debug(protoPair.getKey() + " keyAndValue " + protoPair.getValue());
-	        	String protoFilePathName=(String)protoPair.getKey();
-	        	String protoDetails=(String)protoPair.getValue();
-	        	int index = protoFilePathName.lastIndexOf("/");
-	        	String protoFileName=protoFilePathName.substring(index+1);
-	        	String protoUriFolder= protoFilePathName.substring(0,index);
-	        	String copyFolderName=tbean.getNginxMapFolder()+"/"+protoUriFolder;
-	        	logger.debug("protoFileName "+protoFileName);
-	        	logger.debug("protoUriFolder "+protoUriFolder);
-	        	logger.debug("copyFolderName "+copyFolderName);
-	        	createFolderScript = sshShell.executeCommand("sudo mkdir -p "+copyFolderName+" ", true,true);
-	        	logger.debug("createFolderScript folder " + createFolderScript);
-	    		
-	    		sshShell.upload(new ByteArrayInputStream(protoDetails.getBytes()), protoFileName,
-	        			"OpenStackDataFiles", true, "4095");
-	    		logger.debug("File uploaded in AzureDataFiles folder " );
-	        	String copyScript = sshShell.executeCommand("sudo cp -R "+tbean.getAzureDataFiles()+"/"+protoFileName+" "+ copyFolderName, true,true);
-	        	logger.debug("copy file in folder finish"+copyScript);
-	        }
-	    }
-		}catch(Exception e){
-			logger.error("protoFileVM failed", e);
-			throw e;
-		}
-		logger.debug("protoFileVM End");
 	}
 
 }

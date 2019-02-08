@@ -30,13 +30,6 @@ import org.slf4j.LoggerFactory;
 
 public class OpenstackSimpleSolutionTest {
 	Logger logger = LoggerFactory.getLogger(OpenstackSimpleSolutionTest.class);
-	@Test	
-	public void readBytesFromFileTest()throws Exception{
-		logger.debug("Start OpenstackSimpleSolutionTest");
-		OpenstackSimpleSolution solution=new OpenstackSimpleSolution();
-		byte[] bytesArray=solution.readBytesFromFile("e6e-key.pem");
-		assertNotNull(bytesArray);
-		logger.debug("End OpenstackSimpleSolutionTest");
-	}
+	
 
 }
