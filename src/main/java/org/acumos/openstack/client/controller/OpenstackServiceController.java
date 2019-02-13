@@ -40,6 +40,7 @@ import org.acumos.openstack.client.transport.TransportBean;
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.CommonUtil;
 import org.acumos.openstack.client.util.DataBrokerBean;
+import org.acumos.openstack.client.util.LoggerUtil;
 import org.acumos.openstack.client.util.OpenStackConstants;
 import org.acumos.openstack.client.util.ParseJSON;
 import org.acumos.openstack.client.util.ProbeIndicator;
@@ -67,80 +68,39 @@ public class OpenstackServiceController extends AbstractController {
 	public String singleImageOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
 		logger.debug(" singleImageOpenstackDeployment Start");
 		String uidNumStr="";
-		String flavourName="";
-		String securityGropName="";
-		String endpoint="";
-		String userName="";
-		String userPd="";
-		String scopeProject="";
-		String key="";
-		String keyName="";
-		String IdentifierName="";
-		String vmRegisterNumber="";
-		String hostOpenStack="";
-		String hostUserName="";
-		String vmUserName="";
-		String dockerUserName="";
-		String dockerPd="";
-		String dataSource="";
-		String cmndatasvcuser="";
-		String cmndatasvcpd="";
-		String proxyIP="";
-		String proxyPort="";
-		String openStackIP="";
-		String repositoryNames="";
-		String repositoryDetails="";
 		JSONObject  jsonOutput = new JSONObject();
+		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
-			 flavourName=env.getProperty(OpenStackConstants.OPENSTACK_FLAVOURNAME);
-			 securityGropName=env.getProperty(OpenStackConstants.OPENSTACK_SECURITYGROUPNAME);
-			 endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
-			 userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
-			 userPd=env.getProperty(OpenStackConstants.OPENSTACK_PD);
-			 scopeProject=env.getProperty(OpenStackConstants.OPENSTACK_SCOPEPROJECT);
-			 key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
-			 keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
-			 IdentifierName=env.getProperty(OpenStackConstants.OPENSTACK_IDENTIFIERNAME);
-			 vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
-			 hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
-			 hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
-			 vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
-			 dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
-			 dockerPd=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPD);
+			 String flavourName=env.getProperty(OpenStackConstants.OPENSTACK_FLAVOURNAME);
+			 String securityGropName=env.getProperty(OpenStackConstants.OPENSTACK_SECURITYGROUPNAME);
+			 String endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
+			 String userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
+			 String userPd=env.getProperty(OpenStackConstants.OPENSTACK_PD);
+			 String scopeProject=env.getProperty(OpenStackConstants.OPENSTACK_SCOPEPROJECT);
+			 String key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
+			 String keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
+			 String IdentifierName=env.getProperty(OpenStackConstants.OPENSTACK_IDENTIFIERNAME);
+			 String vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
+			 String hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
+			 String hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
+			 String vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
+			 String dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
+			 String dockerPd=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPD);
 			 
-			 proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
-			 proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
-			 openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
-			 repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
-			 repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
+			 String proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
+			 String proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
+			 String openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
+			 String repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
+			 String repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
 			 
-			 dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
-			 cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
-			 cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
+			 String dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
+			 String cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
+			 String cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
 			 
-			 logger.debug("flavourName "+flavourName);
-			 logger.debug("securityGropName "+securityGropName);
-			 logger.debug("endpoint "+endpoint);
-			 logger.debug("userName "+userName);
-			 logger.debug("userPd "+userPd);
-			 logger.debug("scopeProject "+scopeProject);
-			 logger.debug("key "+key);
-			 logger.debug("keyName "+keyName);
-			 logger.debug("IdentifierName "+IdentifierName);
-			 logger.debug("vnRegisterNumber "+vmRegisterNumber);
-			 logger.debug("hostOpenStack "+hostOpenStack);
-			 logger.debug("hostUserName "+hostUserName);
-			 logger.debug("vmUserName "+vmUserName);
-			 logger.debug("dockerUserName "+dockerUserName);
-			 logger.debug("dockerPd "+dockerPd);
-			 logger.debug("dataSource "+dataSource);
-			 logger.debug("cmndatasvcuser "+cmndatasvcuser);
-			 logger.debug("cmndatasvcpd "+cmndatasvcpd);
-			 logger.debug("proxyIP "+proxyIP);
-			 logger.debug("proxyPort "+proxyPort);
-			 logger.debug("openStackIP "+openStackIP);
-			 logger.debug("repositoryNames "+repositoryNames);
-			 logger.debug("repositoryDetails "+repositoryDetails);
+			 loggerUtil.printsingleImageDetails(flavourName, securityGropName, endpoint, userName, userPd, scopeProject,
+					 key, keyName, IdentifierName, vmRegisterNumber, hostOpenStack, hostUserName, vmUserName, 
+					 dockerUserName, dockerPd, dataSource, cmndatasvcuser, cmndatasvcpd, proxyIP, proxyPort, 
+					 openStackIP, repositoryNames);
 			 
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
@@ -169,175 +129,80 @@ public class OpenstackServiceController extends AbstractController {
 		logger.debug("compositeOpenstackDeployment Start");
 		
 		String uidNumStr="";
-		String flavourName="";
-		String securityGropName="";
-		String endpoint="";
-		String userName="";
-		String userPd="";
-		String scopeProject="";
-		String key="";
-		String keyName="";
-		String IdentifierName="";
-		String vmRegisterNumber="";
-		String hostOpenStack="";
-		String hostUserName="";
-		String vmUserName="";
-		String dockerUserName="";
-		String dockerPd="";
-		String bluePrintImage="";
-		String bluePrintName="";
-		String bluePrintUserName="";
-		String bluePrintPd="";
-		String dataSource="";
-		String cmndatasvcuser="";
-		String cmndatasvcpd="";
-		String nexusUrl="";
-		String nexusUserName="";
-		String nexusPd="";
-		String solutionPort="";
-		String Sleeptime="";
-		String proxyIP="";
-		String proxyPort="";
-		String openStackIP="";
-		String bluePrintPortNumber="";
-		String probePrintImage="";
-		String probePrintName="";
-		String probUser="";
-		String probePass="";
-		String jsonFileName="blueprint.json";
-		String probeNexusEndPoint="";
-		String probeInternalPort="";
-		String repositoryNames="";
-		String exposeDataBrokerPort="";
-		String internalDataBrokerPort="";
-		String nexusRegistyName="";
-		String nexusRegistyUserName="";
-		String nexusRegistyPd="";
-		String repositoryDetails="";
-		String nginxMapFolder="";
-		String nginxWebFolder="";
-		String nginxImageName="";
-		String nginxInternalPort="";
-		String azureDataFiles="";
+		
 		TransportBean tbean=new TransportBean();
 		JSONObject  jsonOutput = new JSONObject();
+		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
 			 ParseJSON parseJson=new ParseJSON();
 			 CommonUtil commonUtil=new CommonUtil();
-			 flavourName=env.getProperty(OpenStackConstants.OPENSTACK_FLAVOURNAME);
-			 securityGropName=env.getProperty(OpenStackConstants.OPENSTACK_SECURITYGROUPNAME);
-			 endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
-			 userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
-			 userPd=env.getProperty(OpenStackConstants.OPENSTACK_PD);
-			 scopeProject=env.getProperty(OpenStackConstants.OPENSTACK_SCOPEPROJECT);
-			 key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
-			 keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
-			 IdentifierName=env.getProperty(OpenStackConstants.OPENSTACK_IDENTIFIERNAME);
-			 vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
-			 hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
-			 hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
-			 vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
-			 dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
-			 dockerPd=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPD);
-			 solutionPort=env.getProperty(OpenStackConstants.OPENSTACK_SOLUTIONPORT);
-			 Sleeptime=env.getProperty(OpenStackConstants.OPENSTACK_SLEEPTIME);
-			 proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
-			 proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
-			 openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
-			 repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
-			 exposeDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_EXPOSEDATABROKERPORT);
-			 internalDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_INTERNALDATABROKERPORT);
-			 nexusRegistyName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYNAME);
-			 nexusRegistyUserName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYUSERNAME);
-			 nexusRegistyPd=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYPD);
-			 repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
-			 nginxMapFolder=env.getProperty(OpenStackConstants.NGINX_MAPFOLDER);
-			 nginxWebFolder=env.getProperty(OpenStackConstants.NGINX_WEBFOLDER);
-			 nginxImageName=env.getProperty(OpenStackConstants.NGINX_IMAGENAME);
-			 nginxInternalPort=env.getProperty(OpenStackConstants.NGINX_INTERNALPORT);
-			 azureDataFiles=env.getProperty(OpenStackConstants.DATAFILE_FOLDER);
+			 String flavourName=env.getProperty(OpenStackConstants.OPENSTACK_FLAVOURNAME);
+			 String securityGropName=env.getProperty(OpenStackConstants.OPENSTACK_SECURITYGROUPNAME);
+			 String endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
+			 String userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
+			 String userPd=env.getProperty(OpenStackConstants.OPENSTACK_PD);
+			 String scopeProject=env.getProperty(OpenStackConstants.OPENSTACK_SCOPEPROJECT);
+			 String key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
+			 String keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
+			 String IdentifierName=env.getProperty(OpenStackConstants.OPENSTACK_IDENTIFIERNAME);
+			 String vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
+			 String hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
+			 String hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
+			 String vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
+			 String dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
+			 String dockerPd=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPD);
+			 String solutionPort=env.getProperty(OpenStackConstants.OPENSTACK_SOLUTIONPORT);
+			 String Sleeptime=env.getProperty(OpenStackConstants.OPENSTACK_SLEEPTIME);
+			 String proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
+			 String proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
+			 String openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
+			 String repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
+			 String exposeDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_EXPOSEDATABROKERPORT);
+			 String internalDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_INTERNALDATABROKERPORT);
+			 String nexusRegistyName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYNAME);
+			 String nexusRegistyUserName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYUSERNAME);
+			 String nexusRegistyPd=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYPD);
+			 String repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
+			 String nginxMapFolder=env.getProperty(OpenStackConstants.NGINX_MAPFOLDER);
+			 String nginxWebFolder=env.getProperty(OpenStackConstants.NGINX_WEBFOLDER);
+			 String nginxImageName=env.getProperty(OpenStackConstants.NGINX_IMAGENAME);
+			 String nginxInternalPort=env.getProperty(OpenStackConstants.NGINX_INTERNALPORT);
+			 String azureDataFiles=env.getProperty(OpenStackConstants.DATAFILE_FOLDER);
 			 
-			 bluePrintImage=env.getProperty(OpenStackConstants.BLUEPRINT_IMAGENAME);
-			 bluePrintName=env.getProperty(OpenStackConstants.BLUEPRINT_NAME);
-			 bluePrintUserName=env.getProperty(OpenStackConstants.BLUEPRINT_USERNAME);
-			 bluePrintPd=env.getProperty(OpenStackConstants.BLUEPRINT_PD);
-			 bluePrintPortNumber=env.getProperty(OpenStackConstants.BLUEPRINT_PORTNUMBER);
+			 String bluePrintImage=env.getProperty(OpenStackConstants.BLUEPRINT_IMAGENAME);
+			 String bluePrintName=env.getProperty(OpenStackConstants.BLUEPRINT_NAME);
+			 String bluePrintUserName=env.getProperty(OpenStackConstants.BLUEPRINT_USERNAME);
+			 String bluePrintPd=env.getProperty(OpenStackConstants.BLUEPRINT_PD);
+			 String bluePrintPortNumber=env.getProperty(OpenStackConstants.BLUEPRINT_PORTNUMBER);
 			 
-			 dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
-			 cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
-			 cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
+			 String dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
+			 String cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
+			 String cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
 			 
-			 nexusUrl=env.getProperty(OpenStackConstants.NEXUS_URL);
-			 nexusUserName=env.getProperty(OpenStackConstants.NEXUS_USERNAME);
-			 nexusPd=env.getProperty(OpenStackConstants.NEXUS_PD);
+			 String nexusUrl=env.getProperty(OpenStackConstants.NEXUS_URL);
+			 String nexusUserName=env.getProperty(OpenStackConstants.NEXUS_USERNAME);
+			 String nexusPd=env.getProperty(OpenStackConstants.NEXUS_PD);
 			 //probe
-			 probePrintImage=env.getProperty(OpenStackConstants.PROBE_IMAGENAME);
-			 probePrintName=env.getProperty(OpenStackConstants.PROBE_NAME);
-			 probUser=env.getProperty(OpenStackConstants.PROBE_USERNAME);
-			 probePass=env.getProperty(OpenStackConstants.PROBE_PD);
-			 probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
-			 probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
+			 String probePrintImage=env.getProperty(OpenStackConstants.PROBE_IMAGENAME);
+			 String probePrintName=env.getProperty(OpenStackConstants.PROBE_NAME);
+			 String probUser=env.getProperty(OpenStackConstants.PROBE_USERNAME);
+			 String probePass=env.getProperty(OpenStackConstants.PROBE_PD);
+			 String probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
+			 String probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
 			 
-			 logger.debug("nginxMapFolder "+nginxMapFolder);
-			 logger.debug("nginxWebFolder "+nginxWebFolder);
-			 logger.debug("nginxImageName "+nginxImageName);
-			 logger.debug("nginxInternalPort "+nginxInternalPort);
-			 logger.debug("azureDataFiles "+azureDataFiles);
-			 logger.debug("azureDataFiles "+azureDataFiles);
-			 logger.debug("repositoryDetails "+repositoryDetails);
-			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
-			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
-			 logger.debug("nexusRegistyName "+nexusRegistyName);
-			 logger.debug("probePrintImage "+probePrintImage);
-			 logger.debug("probePrintName "+probePrintName);
-			 logger.debug("probUser "+probUser);
-			 logger.debug("probePass "+probePass);
-			 logger.debug("probeNexusEndPoint "+probeNexusEndPoint);
-			 logger.debug("probeInternalPort "+probeInternalPort);
-			 logger.debug("flavourName "+flavourName);
-			 logger.debug("securityGropName "+securityGropName);
-			 logger.debug("endpoint "+endpoint);
-			 logger.debug("userName "+userName);
-			 logger.debug("userPd "+userPd);
-			 logger.debug("scopeProject "+scopeProject);
-			 logger.debug("key "+key);
-			 logger.debug("keyName "+keyName);
-			 logger.debug("IdentifierName "+IdentifierName);
-			 logger.debug("vnRegisterNumber "+vmRegisterNumber);
-			 logger.debug("hostOpenStack "+hostOpenStack);
-			 logger.debug("hostUserName "+hostUserName);
-			 logger.debug("vmUserName "+vmUserName);
-			 logger.debug("dockerUserName "+dockerUserName);
-			 logger.debug("dockerPd "+dockerPd);
-			 logger.debug("bluePrintImage "+bluePrintImage);
-			 logger.debug("bluePrintName "+bluePrintName);
-			 logger.debug("bluePrintUserName "+bluePrintUserName);
-			 logger.debug("bluePrintPd "+bluePrintPd);
-			 logger.debug("dataSource "+dataSource);
-			 logger.debug("cmndatasvcuser "+cmndatasvcuser);
-			 logger.debug("cmndatasvcpd "+cmndatasvcpd);
-			 logger.debug("nexusUrl "+nexusUrl);
-			 logger.debug("nexusUserName "+nexusUserName);
-			 logger.debug("nexusPd "+nexusPd);
-			 logger.debug("solutionPort "+solutionPort);
-			 logger.debug("Sleeptime "+Sleeptime);
-			 logger.debug("SolutionId "+auth.getSolutionId());
-			 logger.debug("proxyIP "+proxyIP);
-			 logger.debug("proxyPort "+proxyPort);
-			 logger.debug("openStackIP "+openStackIP);
-			 logger.debug("bluePrintPortNumber "+bluePrintPortNumber);
-			 logger.debug("authObject.getSolutionRevisionId() "+auth.getSolutionRevisionId());
-			 logger.debug("repositoryNames "+repositoryNames);
-			 logger.debug("nexusRegistyUserName "+nexusRegistyUserName);
-			 logger.debug("nexusRegistyPd "+nexusRegistyPd);
-			 
-			 
-			 
+			 loggerUtil.printCompositeDetails(nginxMapFolder, nginxWebFolder, nginxImageName, nginxInternalPort, azureDataFiles,
+					 repositoryDetails, exposeDataBrokerPort, internalDataBrokerPort, nexusRegistyName, probePrintImage, 
+					 probePrintName, probUser, probePass, probeNexusEndPoint, probeInternalPort, flavourName, securityGropName, 
+					 probeNexusEndPoint, userName, userPd, scopeProject, key, keyName, IdentifierName, vmRegisterNumber, 
+					 hostOpenStack, hostUserName, vmUserName, dockerUserName, dockerPd, bluePrintImage, bluePrintName, 
+					 bluePrintUserName, bluePrintPd, dataSource, cmndatasvcuser, cmndatasvcpd, nexusUrl, nexusUserName, 
+					 nexusPd, solutionPort, Sleeptime, auth.getSolutionId(), proxyIP, proxyPort, openStackIP, bluePrintPortNumber, 
+					 auth.getSolutionRevisionId(), repositoryNames, nexusRegistyUserName, nexusRegistyPd);
 			 String bluePrintStr=commonUtil.getBluePrintNexus(auth.getSolutionId(), auth.getSolutionRevisionId(),dataSource,
 					 cmndatasvcuser,cmndatasvcpd,nexusUrl,nexusUserName,nexusPd);
 			 logger.debug("bluePrintStr "+bluePrintStr);
 			 
-			    boolean probeIndicator=parseJson.checkProbeIndicator(jsonFileName);
+			    boolean probeIndicator=parseJson.checkProbeIndicator(OpenStackConstants.JSON_FILE_NAME);
 				Blueprint bluePrintProbe=null;
 				HashMap<String,String> imageMap=null;
 				HashMap<String,DeploymentBean> nodeTypeContainerMap=null;
@@ -345,53 +210,27 @@ public class OpenstackServiceController extends AbstractController {
 				LinkedList<String> sequenceList=null;
 				DataBrokerBean dataBrokerBean=null;
 				logger.debug("probeIndicator "+probeIndicator);
-                if(probeIndicator){
-					
-					imageMap=parseJson.parseJsonFileImageMap(OpenStackConstants.JSON_FILE_NAME);
-					//Node Type and container Name in nodes
-					nodeTypeContainerMap=parseJson.getNodeTypeContainerMap(OpenStackConstants.JSON_FILE_NAME);
-					// images list
-					list=commonUtil.iterateImageMap(imageMap);
-					dataBrokerBean=parseJson.getDataBrokerContainer(OpenStackConstants.JSON_FILE_NAME);
-					if(dataBrokerBean!=null){
-						if(dataBrokerBean!=null){
-							ByteArrayOutputStream byteArrayOutputStream=commonUtil.getNexusUrlFile(nexusUrl, nexusUserName, nexusPd, dataBrokerBean.getProtobufFile());
-							logger.debug("byteArrayOutputStream "+byteArrayOutputStream);
-							if(byteArrayOutputStream!=null){
-								dataBrokerBean.setProtobufFile(byteArrayOutputStream.toString());
-							}else{
-								dataBrokerBean.setProtobufFile("");
-								
-							}
-							
-						 }
-					}
-					//For new blueprint.json
+				if(probeIndicator){
 					 bluePrintProbe =parseJson.jsonFileToObjectProbe(OpenStackConstants.JSON_FILE_NAME,dataBrokerBean);
-					//sequence
-					sequenceList=parseJson.getSequenceListFromJSON(OpenStackConstants.JSON_FILE_NAME);
-				}else{
-					//old code 
-					imageMap=parseJson.parseJsonFileImageMap(OpenStackConstants.JSON_FILE_NAME);
-					//Node Type and container Name in nodes
-					nodeTypeContainerMap=parseJson.getNodeTypeContainerMap(OpenStackConstants.JSON_FILE_NAME);
-					list=commonUtil.iterateImageMap(imageMap);
-					sequenceList=parseJson.getSequenceListFromJSON(OpenStackConstants.JSON_FILE_NAME);
-					dataBrokerBean=parseJson.getDataBrokerContainer(OpenStackConstants.JSON_FILE_NAME);
-					if(dataBrokerBean!=null){
-						if(dataBrokerBean!=null){
-							ByteArrayOutputStream byteArrayOutputStream=commonUtil.getNexusUrlFile(nexusUrl, nexusUserName, nexusPd, dataBrokerBean.getProtobufFile());
-							logger.debug("byteArrayOutputStream "+byteArrayOutputStream);
-							if(byteArrayOutputStream!=null){
-								dataBrokerBean.setProtobufFile(byteArrayOutputStream.toString());
-							}else{
-								dataBrokerBean.setProtobufFile("");
-								
-							}
-							
-						 }
-					}
+				 }else{
 					bluePrintProbe=parseJson.jsonFileToObject(OpenStackConstants.JSON_FILE_NAME,dataBrokerBean);
+				}
+			    imageMap=parseJson.parseJsonFileImageMap(OpenStackConstants.JSON_FILE_NAME);
+				nodeTypeContainerMap=parseJson.getNodeTypeContainerMap(OpenStackConstants.JSON_FILE_NAME);
+				list=commonUtil.iterateImageMap(imageMap);
+				sequenceList=parseJson.getSequenceListFromJSON(OpenStackConstants.JSON_FILE_NAME);
+				dataBrokerBean=parseJson.getDataBrokerContainer(OpenStackConstants.JSON_FILE_NAME);
+				if(dataBrokerBean!=null){
+					if(dataBrokerBean!=null){
+						ByteArrayOutputStream byteArrayOutputStream=commonUtil.getNexusUrlFile(tbean.getNexusUrl(),tbean.getNexusUserName(),tbean.getNexusPd(),dataBrokerBean.getProtobufFile());
+						logger.debug("byteArrayOutputStream "+byteArrayOutputStream);
+						if(byteArrayOutputStream!=null){
+							dataBrokerBean.setProtobufFile(byteArrayOutputStream.toString());
+						}else{
+							dataBrokerBean.setProtobufFile("");
+						}
+						
+					 }
 				}
 			
 				logger.debug("bluePrintProbe.getProbeIndocator() "+bluePrintProbe.getProbeIndicator());
@@ -458,56 +297,10 @@ public class OpenstackServiceController extends AbstractController {
 	public String openstackExistingVMDeployment(@RequestParam("solutionId")String solutionId,@RequestParam("solutionRevisionId")String solutionRevisionId,
 			@RequestParam("vmHostIP")String vmHostIP,@RequestParam("vmHostName")String vmHostName,
 			@RequestParam("userId")String userId,@RequestParam("urlAttribute")String urlAttribute,@RequestParam("jsonPosition")String jsonPosition,
-			@RequestParam("jsonMapping")String jsonMapping,@RequestParam("username")String username,@RequestParam("userPd")String userPd,
-			@RequestParam("host")String host,@RequestParam("port")String port,HttpServletRequest request,HttpServletResponse response) throws Exception {
+			@RequestParam("jsonMapping")String jsonMapping,@RequestParam("dataBrokerUserName")String dataBrokerUserName,@RequestParam("dataBrokerUserPd")String dataBrokerUserPd,
+			@RequestParam("dataBrokerHost")String dataBrokerHost,@RequestParam("dataBrokerPort")String dataBrokerPort,HttpServletRequest request,HttpServletResponse response) throws Exception {
 			String uidNumStr="";
-			String endpoint="";
-			String userName="";
-			String scopeProject="";
-			String key="";
-			String keyName="";
-			String IdentifierName="";
-			String vmRegisterNumber="";
-			String hostOpenStack="";
-			String hostUserName="";
-			String vmUserName="";
-			String dockerUserName="";
-			String dockerPd="";
-			String bluePrintImage="";
-			String bluePrintName="";
-			String bluePrintUserName="";
-			String bluePrintPd="";
-			String dataSource="";
-			String cmndatasvcuser="";
-			String cmndatasvcpd="";
-			String nexusUrl="";
-			String nexusUserName="";
-			String nexusPd="";
-			String solutionPort="";
-			String Sleeptime="";
-			String proxyIP="";
-			String proxyPort="";
-			String openStackIP="";
-			String bluePrintPortNumber="";
-			String probePrintImage="";
-			String probePrintName="";
-			String probUser="";
-			String probePass="";
-			String jsonFileName="blueprint.json";
-			String probeNexusEndPoint="";
-			String probeInternalPort="";
-			String repositoryNames="";
-			String exposeDataBrokerPort="";
-			String internalDataBrokerPort="";
-			String nexusRegistyName="";
-			String nexusRegistyUserName="";
-			String nexusRegistyPd="";
-			String repositoryDetails="";
-			String nginxMapFolder="";
-			String nginxWebFolder="";
-			String nginxImageName="";
-			String nginxInternalPort="";
-			String azureDataFiles="";
+			
 			logger.debug("openstackExistingVMDeployment Start");
 			logger.debug("solutionId "+solutionId);
 			logger.debug("solutionRevisionId "+solutionRevisionId);
@@ -517,64 +310,65 @@ public class OpenstackServiceController extends AbstractController {
 			logger.debug("urlAttribute "+urlAttribute);
 			logger.debug("jsonPosition "+jsonPosition);
 			logger.debug("jsonMapping "+jsonMapping);
-			logger.debug("username "+username);
-			logger.debug("userPd "+userPd);
-			logger.debug("host "+host);
-			logger.debug("port "+port);
-			logger.debug("openstackExistingVMDeployment end");
+			logger.debug("dataBrokerUserName "+dataBrokerUserName);
+			logger.debug("dataBrokerUserPd "+dataBrokerUserPd);
+			logger.debug("dataBrokerHost "+dataBrokerHost);
+			logger.debug("dataBrokerPort "+dataBrokerPort);
+			
 			UUID uidNumber = UUID.randomUUID();
 			JSONObject  jsonOutput = new JSONObject();
 			TransportBean tbean=new TransportBean();
+			LoggerUtil loggerUtil=new LoggerUtil();
 			try{
-				 endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
-				 userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
-				 userPd=env.getProperty(OpenStackConstants.OPENSTACK_PD);
-				 key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
-				 keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
-				 vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
-				 hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
-				 hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
-				 vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
-				 dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
-				 dockerPd=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPD);
-				 solutionPort=env.getProperty(OpenStackConstants.OPENSTACK_SOLUTIONPORT);
-				 Sleeptime=env.getProperty(OpenStackConstants.OPENSTACK_SLEEPTIME);
-				 proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
-				 proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
-				 openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
-				 repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
-				 exposeDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_EXPOSEDATABROKERPORT);
-				 internalDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_INTERNALDATABROKERPORT);
-				 nexusRegistyName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYNAME);
-				 nexusRegistyUserName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYUSERNAME);
-				 nexusRegistyPd=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYPD);
-				 repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
-				 nginxMapFolder=env.getProperty(OpenStackConstants.NGINX_MAPFOLDER);
-				 nginxWebFolder=env.getProperty(OpenStackConstants.NGINX_WEBFOLDER);
-				 nginxImageName=env.getProperty(OpenStackConstants.NGINX_IMAGENAME);
-				 nginxInternalPort=env.getProperty(OpenStackConstants.NGINX_INTERNALPORT);
-				 azureDataFiles=env.getProperty(OpenStackConstants.DATAFILE_FOLDER);
+				String endpoint=env.getProperty(OpenStackConstants.OPENSTACK_ENDPOINT);
+				String userName=env.getProperty(OpenStackConstants.OPENSTACK_USERNAME);
+				String userPd=env.getProperty(OpenStackConstants.OPENSTACK_PD);
+				String key=env.getProperty(OpenStackConstants.OPENSTACK_KEY);
+				String keyName=env.getProperty(OpenStackConstants.OPENSTACK_KEYNAME);
+				String vmRegisterNumber=env.getProperty(OpenStackConstants.OPENSTACK_VMREGISTERNUMBER);
+				String hostOpenStack=env.getProperty(OpenStackConstants.OPENSTACK_HOSTOPENSTACK);
+				String hostUserName=env.getProperty(OpenStackConstants.OPENSTACK_HOSTUSERNAME);
+				String vmUserName=env.getProperty(OpenStackConstants.OPENSTACK_VMUSERNAME);
+				String dockerUserName=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERUSERNAME);
+				String dockerPd=env.getProperty(OpenStackConstants.OPENSTACK_DOCKERPD);
+				String solutionPort=env.getProperty(OpenStackConstants.OPENSTACK_SOLUTIONPORT);
+				String Sleeptime=env.getProperty(OpenStackConstants.OPENSTACK_SLEEPTIME);
+				String proxyIP=env.getProperty(OpenStackConstants.OPENSTACK_PROXYIP);
+				String proxyPort=env.getProperty(OpenStackConstants.OPENSTACK_PROXYPORT);
+				String openStackIP=env.getProperty(OpenStackConstants.OPENSTACK_OPENSTACKIP);
+				String repositoryNames=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYNAMES);
+				String exposeDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_EXPOSEDATABROKERPORT);
+				String internalDataBrokerPort=env.getProperty(OpenStackConstants.OPENSTACK_INTERNALDATABROKERPORT);
+				String nexusRegistyName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYNAME);
+				String nexusRegistyUserName=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYUSERNAME);
+				String nexusRegistyPd=env.getProperty(OpenStackConstants.OPENSTACK_NEXUSREGISTYPD);
+				String repositoryDetails=env.getProperty(OpenStackConstants.OPENSTACK_REPOSITYDETAILS);
+				String nginxMapFolder=env.getProperty(OpenStackConstants.NGINX_MAPFOLDER);
+				String nginxWebFolder=env.getProperty(OpenStackConstants.NGINX_WEBFOLDER);
+				String nginxImageName=env.getProperty(OpenStackConstants.NGINX_IMAGENAME);
+				String nginxInternalPort=env.getProperty(OpenStackConstants.NGINX_INTERNALPORT);
+				String azureDataFiles=env.getProperty(OpenStackConstants.DATAFILE_FOLDER);
 				 
-				 bluePrintImage=env.getProperty(OpenStackConstants.BLUEPRINT_IMAGENAME);
-				 bluePrintName=env.getProperty(OpenStackConstants.BLUEPRINT_NAME);
-				 bluePrintUserName=env.getProperty(OpenStackConstants.BLUEPRINT_USERNAME);
-				 bluePrintPd=env.getProperty(OpenStackConstants.BLUEPRINT_PD);
-				 bluePrintPortNumber=env.getProperty(OpenStackConstants.BLUEPRINT_PORTNUMBER);
+				String bluePrintImage=env.getProperty(OpenStackConstants.BLUEPRINT_IMAGENAME);
+				String bluePrintName=env.getProperty(OpenStackConstants.BLUEPRINT_NAME);
+				String bluePrintUserName=env.getProperty(OpenStackConstants.BLUEPRINT_USERNAME);
+				String bluePrintPd=env.getProperty(OpenStackConstants.BLUEPRINT_PD);
+				String bluePrintPortNumber=env.getProperty(OpenStackConstants.BLUEPRINT_PORTNUMBER);
 				 
-				 dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
-				 cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
-				 cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
+				String dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
+				String cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
+				String cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
 				 
-				 nexusUrl=env.getProperty(OpenStackConstants.NEXUS_URL);
-				 nexusUserName=env.getProperty(OpenStackConstants.NEXUS_USERNAME);
-				 nexusPd=env.getProperty(OpenStackConstants.NEXUS_PD);
+				String nexusUrl=env.getProperty(OpenStackConstants.NEXUS_URL);
+				String nexusUserName=env.getProperty(OpenStackConstants.NEXUS_USERNAME);
+				String nexusPd=env.getProperty(OpenStackConstants.NEXUS_PD);
 				 //probe
-				 probePrintImage=env.getProperty(OpenStackConstants.PROBE_IMAGENAME);
-				 probePrintName=env.getProperty(OpenStackConstants.PROBE_NAME);
-				 probUser=env.getProperty(OpenStackConstants.PROBE_USERNAME);
-				 probePass=env.getProperty(OpenStackConstants.PROBE_PD);
-				 probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
-				 probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
+				String probePrintImage=env.getProperty(OpenStackConstants.PROBE_IMAGENAME);
+				String probePrintName=env.getProperty(OpenStackConstants.PROBE_NAME);
+				String probUser=env.getProperty(OpenStackConstants.PROBE_USERNAME);
+				String probePass=env.getProperty(OpenStackConstants.PROBE_PD);
+				String probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
+				String probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
 				 
 				 tbean.setUidNumStr(uidNumStr);
 				 tbean.setEndpoint(endpoint);
@@ -625,56 +419,14 @@ public class OpenstackServiceController extends AbstractController {
 				 tbean.setVmHostIP(vmHostIP);
 				 tbean.setUserId(userId);
 				 
-				 logger.debug("nginxMapFolder "+tbean.getNginxMapFolder());
-				 logger.debug("nginxImageName "+tbean.getNginxImageName());
-				 logger.debug("nginxInternalPort "+tbean.getNginxInternalPort());
-				 logger.debug("azureDataFiles "+azureDataFiles);
-				 logger.debug("azureDataFiles "+azureDataFiles);
-				 logger.debug("repositoryDetails "+repositoryDetails);
-				 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
-				 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
-				 logger.debug("nexusRegistyName "+nexusRegistyName);
-				 logger.debug("probePrintImage "+probePrintImage);
-				 logger.debug("probePrintName "+probePrintName);
-				 logger.debug("probUser "+probUser);
-				 logger.debug("probePass "+probePass);
-				 logger.debug("probeNexusEndPoint "+probeNexusEndPoint);
-				 logger.debug("probeInternalPort "+probeInternalPort);
-				 logger.debug("endpoint "+endpoint);
-				 logger.debug("userName "+userName);
-				 logger.debug("userPd "+userPd);
-				 logger.debug("scopeProject "+scopeProject);
-				 logger.debug("key "+key);
-				 logger.debug("keyName "+keyName);
-				 logger.debug("IdentifierName "+IdentifierName);
-				 logger.debug("vnRegisterNumber "+vmRegisterNumber);
-				 logger.debug("hostOpenStack "+hostOpenStack);
-				 logger.debug("hostUserName "+hostUserName);
-				 logger.debug("vmUserName "+vmUserName);
-				 logger.debug("dockerUserName "+dockerUserName);
-				 logger.debug("dockerPd "+dockerPd);
-				 logger.debug("bluePrintImage "+bluePrintImage);
-				 logger.debug("bluePrintName "+bluePrintName);
-				 logger.debug("bluePrintUserName "+bluePrintUserName);
-				 logger.debug("bluePrintPd "+bluePrintPd);
-				 logger.debug("dataSource "+dataSource);
-				 logger.debug("cmndatasvcuser "+cmndatasvcuser);
-				 logger.debug("cmndatasvcpd "+cmndatasvcpd);
-				 logger.debug("nexusUrl "+nexusUrl);
-				 logger.debug("nexusUserName "+nexusUserName);
-				 logger.debug("nexusPd "+nexusPd);
-				 logger.debug("solutionPort "+solutionPort);
-				 logger.debug("Sleeptime "+Sleeptime);
-				 logger.debug("SolutionId "+solutionId);
-				 logger.debug("proxyIP "+proxyIP);
-				 logger.debug("proxyPort "+proxyPort);
-				 logger.debug("openStackIP "+openStackIP);
-				 logger.debug("bluePrintPortNumber "+bluePrintPortNumber);
-				 logger.debug("SolutionRevisionId() "+solutionRevisionId);
-				 logger.debug("repositoryNames "+repositoryNames);
-				 logger.debug("nexusRegistyUserName "+nexusRegistyUserName);
-				 logger.debug("nexusRegistyPd "+nexusRegistyPd);
-				 
+				 tbean.setUrlAttribute(urlAttribute);
+				 tbean.setJsonMapping(jsonMapping);
+				 tbean.setJsonPosition(jsonPosition);
+				 tbean.setDataBrokerHost(dataBrokerHost);
+				 tbean.setDataBrokerHost(dataBrokerHost);
+				 tbean.setDataBrokerUserName(dataBrokerUserName);
+				 tbean.setDataBrokerUserPd(dataBrokerUserPd);
+				 loggerUtil.printExistingVMDeployment(tbean);
 				 ExistingVMSolution solutionObj=new ExistingVMSolution(tbean);
 				 Thread t = new Thread(solutionObj);
 		         t.start();
@@ -686,7 +438,7 @@ public class OpenstackServiceController extends AbstractController {
 			}
 			jsonOutput.put("UIDNumber", uidNumStr);
 			logger.debug("jsonOutput.toString() "+jsonOutput.toString());
-			logger.debug("compositeOpenstackDeployment End");
+			logger.debug("openstackExistingVMDeployment end");
 			return jsonOutput.toString();
 	}
 }

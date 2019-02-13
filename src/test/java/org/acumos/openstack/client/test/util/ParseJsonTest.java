@@ -48,16 +48,6 @@ public class ParseJsonTest {
 	
 	private static Logger logger = LoggerFactory.getLogger(ParseJsonTest.class);
 	@Test	
-	public void parseJsonFileTest()throws Exception{
-		logger.info("parseJsonFileTest Start");
-		HashMap<String,String> imageMap=null;
-		ParseJSON parse=new ParseJSON();
-		imageMap=parse.parseJsonFile(OpenStackTestConstants.TEST_BLUEPRINT_OLD_FILE);
-		assertNotNull(imageMap);
-		logger.info("parseJsonFileTest End");
-	}
-   
-	@Test	
 	public void jsonFileToObjectTest()throws Exception{
 		logger.info("jsonFileToObjectTest Start");
 		HashMap<String,String> imageMap=null;
