@@ -28,6 +28,7 @@ public class OpenStackTestConstants {
 	public static final String TEST_CLIENT="testclient";
 	public static final String TEST_TENANT="testtenant";
 	public static final String TEST_KEY="testkey";
+	public static final String TEST_OBJ="test";
 	public static final String TEST_SUBSCRIPTION_KEY="testsubscriptionKey";
 	public static final String TEST_RG_NAME="testrg";
 	public static final String TEST_ACR_NAME="testacr";

@@ -82,8 +82,59 @@ public class TransportBean {
 	private String vmHostIP;
 	private String userId;
 	
+	private String urlAttribute;
+	private String jsonPosition;
+	private String jsonMapping;
+	private String dataBrokerUserName;
+	private String dataBrokerUserPd;
+	private String dataBrokerHost;
+	private String dataBrokerPort;
 	
 	
+	
+	
+	public String getUrlAttribute() {
+		return urlAttribute;
+	}
+	public void setUrlAttribute(String urlAttribute) {
+		this.urlAttribute = urlAttribute;
+	}
+	public String getJsonPosition() {
+		return jsonPosition;
+	}
+	public void setJsonPosition(String jsonPosition) {
+		this.jsonPosition = jsonPosition;
+	}
+	public String getJsonMapping() {
+		return jsonMapping;
+	}
+	public void setJsonMapping(String jsonMapping) {
+		this.jsonMapping = jsonMapping;
+	}
+	public String getDataBrokerUserName() {
+		return dataBrokerUserName;
+	}
+	public void setDataBrokerUserName(String dataBrokerUserName) {
+		this.dataBrokerUserName = dataBrokerUserName;
+	}
+	public String getDataBrokerUserPd() {
+		return dataBrokerUserPd;
+	}
+	public void setDataBrokerUserPd(String dataBrokerUserPd) {
+		this.dataBrokerUserPd = dataBrokerUserPd;
+	}
+	public String getDataBrokerHost() {
+		return dataBrokerHost;
+	}
+	public void setDataBrokerHost(String dataBrokerHost) {
+		this.dataBrokerHost = dataBrokerHost;
+	}
+	public String getDataBrokerPort() {
+		return dataBrokerPort;
+	}
+	public void setDataBrokerPort(String dataBrokerPort) {
+		this.dataBrokerPort = dataBrokerPort;
+	}
 	public String getSolutionId() {
 		return solutionId;
 	}

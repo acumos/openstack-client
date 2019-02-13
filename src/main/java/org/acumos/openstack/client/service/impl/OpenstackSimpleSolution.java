@@ -32,6 +32,7 @@ import java.util.Map;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.acumos.openstack.client.util.CommonUtil;
+import org.acumos.openstack.client.util.LoggerUtil;
 import org.acumos.openstack.client.util.SSHShell;
 import org.acumos.openstack.client.util.SingletonMapClass;
 import org.openstack4j.api.Builders;
@@ -132,32 +133,13 @@ public class OpenstackSimpleSolution implements Runnable{
 		String repositryImageName="";
 		OpanStackContainerBean containerBean=new OpanStackContainerBean();
 		CommonUtil commonUtil=new CommonUtil();
+		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
-			 logger.debug("flavourName "+flavourName);
-			 logger.debug("securityGropName "+securityGropName);
-			 logger.debug("endpoint "+endpoint);
-			 logger.debug("userName "+userName);
-			 logger.debug("userPd "+userPd);
-			 logger.debug("scopeProject "+scopeProject);
-			 logger.debug("key "+key);
-			 logger.debug("keyName "+keyName);
-			 logger.debug("IdentifierName "+IdentifierName);
-			 logger.debug("vmRegisterNumber "+vmRegisterNumber);
-			 logger.debug("vmUserName "+vmUserName);
-			 logger.debug("dockerUserName "+dockerUserName);
-			 logger.debug("dockerPd "+dockerPd);
-			 logger.debug("SoulutionId "+auth.getSolutionId());
-			 logger.debug("SolutionRevisionId "+auth.getSolutionRevisionId());
-			 logger.debug("getImagetag() "+auth.getImagetag());
-			 logger.debug("uidNumStr "+uidNumStr);
-			 logger.debug("dataSource "+dataSource);
-			 logger.debug("cmndatasvcuser "+cmndatasvcuser);
-			 logger.debug(" cmndatasvcpd "+cmndatasvcpd);
-			 logger.debug("proxyIP "+proxyIP);
-			 logger.debug("proxyPort "+proxyPort);
-			 logger.debug("openStackIP "+openStackIP);
-			 logger.debug("repositoryNames "+repositoryNames);
-			 logger.debug("SimpleSolution repositoryDetails "+repositoryDetails);
+			loggerUtil.printSingleImageImplDetails(flavourName,securityGropName,endpoint,userName,userPd,
+					scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,
+					hostUserName,vmUserName,dockerUserName,dockerPd,dataSource,
+					cmndatasvcuser,cmndatasvcpd,proxyIP,proxyPort,openStackIP,repositoryNames,
+					auth.getSolutionId(),auth.getSolutionRevisionId(),auth.getImagetag(),uidNumStr,repositoryDetails);
 			 if(proxyPort==null){
 				 proxyPort="3128"; 
 			 }

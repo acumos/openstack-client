@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.acumos.openstack.client.util.Blueprint;
 import org.acumos.openstack.client.util.OperationSignature;
-import org.acumos.openstack.client.util.Orchestrator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -42,7 +41,6 @@ public class BluePrintTest {
 			String version = "1";
 			
 	        List<OperationSignature> inputs=(List)new ArrayList<OperationSignature>();
-			Orchestrator orchestrator=new Orchestrator();
 			List<Node> nodes=(List)new ArrayList<Node>();
 			
 			Blueprint blueprint=new Blueprint();

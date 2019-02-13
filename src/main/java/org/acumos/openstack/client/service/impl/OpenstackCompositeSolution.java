@@ -40,6 +40,7 @@ import org.acumos.openstack.client.util.CommonUtil;
 import org.acumos.openstack.client.util.DataBrokerBean;
 import org.acumos.openstack.client.util.DockerInfo;
 import org.acumos.openstack.client.util.DockerInfoList;
+import org.acumos.openstack.client.util.LoggerUtil;
 import org.acumos.openstack.client.util.OpenStackConstants;
 import org.acumos.openstack.client.util.ProbeIndicator;
 import org.acumos.openstack.client.util.SSHShell;
@@ -217,41 +218,16 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		String containerInstanceProbe="Probe";
 		List<ContainerInfo> probeContainerBeanList=new ArrayList<ContainerInfo>();
 		List<DeploymentBean> deploymentList=new ArrayList<DeploymentBean>();
+		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
+			loggerUtil.printCompositeImplDetails(flavourName,securityGropName,endpoint,userName,userPd,
+					scopeProject,key,keyName,IdentifierName,vmRegisterNumber,vmUserName,
+					dockerUserName,dockerPd,solutionPort,Sleeptime,proxyIP,proxyPort,
+					openStackIP,bluePrintPortNumber,probePrintName,probUser,probePass,
+					auth.getSolutionId(),auth.getSolutionRevisionId(),probeNexusEndPoint,probeInternalPort,nexusRegistyName,
+					exposeDataBrokerPort,internalDataBrokerPort,nexusRegistyUserName,nexusRegistyPd,bluePrintStr);
 			
-			 logger.debug("flavourName "+flavourName);
-			 logger.debug("securityGropName "+securityGropName);
-			 logger.debug("endpoint "+endpoint);
-			 logger.debug("userName "+userName);
-			 logger.debug("userPd "+userPd);
-			 logger.debug("scopeProject "+scopeProject);
-			 logger.debug("key "+key);
-			 logger.debug("keyName "+keyName);
-			 logger.debug("IdentifierName "+IdentifierName);
-			 logger.debug("vmRegisterNumber "+vmRegisterNumber);
-			 logger.debug("vmUserName "+vmUserName);
-			 logger.debug("dockerUserName "+dockerUserName);
-			 logger.debug("dockerPd "+dockerPd);
-			 logger.debug("solutionPort "+solutionPort);
-			 logger.debug("Sleeptime "+Sleeptime);
-			 logger.debug("proxyIP "+proxyIP);
-			 logger.debug("proxyPort "+proxyPort);
-			 logger.debug("openStackIP "+openStackIP);
-			 logger.debug("bluePrintPortNumber "+bluePrintPortNumber);
-			 logger.debug("probePrintName "+probePrintName);
-			 logger.debug("probUser "+probUser);
-			 logger.debug("probePass "+probePass);
-			 logger.debug("nodeTypeContainerMap "+nodeTypeContainerMap);
-			 logger.debug("SoulutionId "+auth.getSolutionId());
-			 logger.debug("SolutionRevisionId "+auth.getSolutionRevisionId());
-			 logger.debug("probeNexusEndPoint "+probeNexusEndPoint);
-			 logger.debug("probeInternalPort "+probeInternalPort);
-			 logger.debug("nexusRegistyName "+nexusRegistyName);
-			 logger.debug("exposeDataBrokerPort "+exposeDataBrokerPort);
-			 logger.debug("internalDataBrokerPort "+internalDataBrokerPort);
-			 logger.debug("nexusRegistyUserName "+nexusRegistyUserName);
-			 logger.debug("nexusRegistyPd "+nexusRegistyPd);
-			 logger.debug(" JSON FROM DS bluePrintStr "+bluePrintStr);
+			logger.debug("nodeTypeContainerMap "+nodeTypeContainerMap);
 			 int proxyPortInt=Integer.parseInt(proxyPort);
 			 int bluePrintPorInt=Integer.parseInt(bluePrintPortNumber);
 			 int listSize=list.size();
@@ -595,11 +571,11 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		  
 		  if(csvDataBrokerTunnel!=null && !"".equalsIgnoreCase(csvDataBrokerTunnel)){
 			  logger.debug("Inside csv Data Broker ConfigDB  "); 
-			  commonUtil.callCsvConfigDB(auth,csvDataBrokerUrl,dataBrokerBean);
+			  commonUtil.callCsvConfigDB(auth.getUsername(),auth.getUserPd(),auth.getHost(),auth.getPort(),csvDataBrokerUrl,dataBrokerBean);
 			 }
 		  if(dataBrokerTunnelNum!=null &&  !"".equals(dataBrokerTunnelNum)){
 				 logger.debug("Inside putDataBrokerDetails ");
-				 commonUtil.putDataBrokerDetails(auth,urlDataBroker);
+				 commonUtil.putDataBrokerDetails(auth.getUrlAttribute(),auth.getJsonMapping(),auth.getJsonPosition(),urlDataBroker);
 			  }
 		  if(bluePrint!=null){
 				 commonUtil.putBluePrintDetailsJSON(bluePrintStr,urlBluePrint);

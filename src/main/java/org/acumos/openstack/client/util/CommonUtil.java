@@ -47,6 +47,7 @@ import org.acumos.cds.domain.MLPSolutionDeployment;
 import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
+import org.acumos.openstack.client.transport.ContainerInfo;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.MLNotification;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
@@ -460,20 +461,20 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 			logger.debug("getDataBrokerTunnelCSV End");
 			return dataBrokerTunnel;
 		}
-		public void putDataBrokerDetails(OpenstackCompositeDeployBean deployDataObject,String apiUrl)throws Exception{
+		public void putDataBrokerDetails(String urlAttribute,String jsonMapping,String jsonPosition,String apiUrl)throws Exception{
 			logger.debug("Start putDataBrokerDetails ");
 			try {
 				logger.debug("apiUrl "+apiUrl);
-				logger.debug("UrlAttribute "+deployDataObject.getUrlAttribute());
-				logger.debug("JsonMapping "+deployDataObject.getJsonMapping());
-				logger.debug("JsonPosition "+deployDataObject.getJsonPosition());
+				logger.debug("UrlAttribute "+urlAttribute);
+				logger.debug("JsonMapping "+jsonMapping);
+				logger.debug("JsonPosition "+jsonPosition);
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 				RestTemplate restTemplate = new RestTemplate();
 				MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
-				map.add("jsonUrl", deployDataObject.getUrlAttribute());
-				map.add("jsonMapping", deployDataObject.getJsonMapping());
-				map.add("jsonPosition", deployDataObject.getJsonPosition());
+				map.add("jsonUrl", urlAttribute);
+				map.add("jsonMapping", jsonMapping);
+				map.add("jsonPosition", jsonPosition);
 				HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 				restTemplate.exchange(apiUrl, HttpMethod.PUT, request, String.class);
 			    
@@ -512,17 +513,15 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		logger.debug("getNexusUrlFile ");
 		return byteArrayOutputStream;
    }
-	public void callCsvConfigDB(OpenstackCompositeDeployBean deployDataObject,String apiUrl,DataBrokerBean dataBrokerBean)throws Exception{
+	public void callCsvConfigDB(String userName,String userPd,String host,String port,String apiUrl,DataBrokerBean dataBrokerBean)throws Exception{
 		logger.debug("callCsvConfigDB Start");
 		try {
 			logger.debug("apiUrl "+apiUrl);
 			final String url = apiUrl;
-			if(deployDataObject!=null){
-				dataBrokerBean.setUserName(deployDataObject.getUsername());
-				dataBrokerBean.setUserPd(deployDataObject.getUserPd());
-				dataBrokerBean.setHost(deployDataObject.getHost());
-				dataBrokerBean.setPort(deployDataObject.getPort());
-			}
+			dataBrokerBean.setUserName(userName);
+			dataBrokerBean.setUserPd(userPd);
+			dataBrokerBean.setHost(host);
+			dataBrokerBean.setPort(port);
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
@@ -1079,5 +1078,5 @@ Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 		logger.debug("End deploymentImageVM SimpleSolution");
 		return "sucess";
 	}
-
+	
 }

@@ -44,71 +44,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ParseJSON {
 	
 	Logger log =LoggerFactory.getLogger(ParseJSON.class);
-public  HashMap<String,String> parseJsonFile(String jsonFileName)throws  Exception{
-		
-		log.debug(" parseJsonFile in ParseJSON Start");
-		log.debug("jsonFileName "+jsonFileName);
-		HashMap<String,String> imageMap=new HashMap<String,String>();
-		ArrayList<String> list=new ArrayList<String>();	
-		try
-		{
-		 
-        Object obj = new JSONParser().parse(new FileReader(jsonFileName));
-        JSONObject jo = (JSONObject) obj;
-        JSONArray nodes = (JSONArray) jo.get(OpenStackConstants.NODES);
-        if(nodes!=null && !nodes.isEmpty()){
-        	Iterator itr3 = nodes.iterator();
-	        int nodeCount=0; 
-	        while (itr3.hasNext()) 
-	        {
-	        	Iterator<Map.Entry> itr4 = ((Map) itr3.next()).entrySet().iterator();
-	        	log.debug("Nodes "+ ++nodeCount);
-	        	String containerName="";
-	        	String imageName="";
-	            while (itr4.hasNext()) {
-	                Map.Entry pair = itr4.next();
-	                String key=(String)pair.getKey();
-	                String val=(String)pair.getValue().toString();
-	                if(key!=null && key.equalsIgnoreCase(OpenStackConstants.DEPENDS_ON)){
-	                	jsonArrayParse(pair.getValue());
-	                }if(key!=null && key.equalsIgnoreCase(OpenStackConstants.CONTAINER_NAME)){
-	                	containerName=val;
-	                }else{
-	                	log.debug("key "+pair.getKey() + " value" + pair.getValue());
-	                }
-	                if(key!=null && key.equalsIgnoreCase(OpenStackConstants.IMAGE)){
-	                	imageName=val;
-	                	list.add(val);
-	                 }
-	                if(containerName!=null && imageName!=null && !"".equals(containerName) && !"".equals(imageName)){
-	                	imageMap.put(imageName, containerName);
-	                }
-	                
-	            }
-	        }
-         }
-        }catch(Exception e){
-        	log.error("parseJsonFile failed", e);
-    	    throw e;
-       }
-		log.debug("imageMap "+imageMap);
-		log.debug("parseJsonFile in ParseJSON End");
-		return imageMap;	
-	}
-	
-	public  void jsonArrayParse(Object obj){
-		JSONArray jsonArr = (JSONArray) obj;
-		Iterator itr = jsonArr.iterator();
-		Iterator<Map.Entry> itr1=null;
-		 while (itr.hasNext()) {
-			 itr1 = ((Map) itr.next()).entrySet().iterator();
-	            while (itr1.hasNext()) {
-	                Map.Entry pair = itr1.next();
-	                log.debug("Key "+pair.getKey() + "  " + pair.getValue());
-	            }
-         }
-	}
-	
+
 	public  Blueprint jsonFileToObject(String jsonFileName,DataBrokerBean dataBrokerBean)throws  Exception{
 		log.debug(" jsonFileToObject Start");
 		log.debug("jsonFileName "+jsonFileName);
@@ -126,26 +62,6 @@ public  HashMap<String,String> parseJsonFile(String jsonFileName)throws  Excepti
         blueprint.setName(name);
         blueprint.setVersion(version);
         Iterator<Map.Entry> itr1=null;
-        Orchestrator orchestratorBean=new Orchestrator();
-        Map orchestrator = ((Map)jo.get(OpenStackConstants.ORCHESTRATOR));
-        if(orchestrator!=null){
-	        itr1 = orchestrator.entrySet().iterator();
-	        while (itr1.hasNext()) {
-	            Map.Entry pair = itr1.next();
-	            String key=(String)pair.getKey();
-	            String value=(String)pair.getValue();
-	            log.debug("pair key "+pair.getKey() + " : " + pair.getValue());
-	            if(key!=null && key.equalsIgnoreCase(OpenStackConstants.NAME)){
-	            	orchestratorBean.setName(value);
-	             }
-	            if(key!=null && key.equalsIgnoreCase(OpenStackConstants.VERSION)){
-	            	orchestratorBean.setVersion(value);
-	             }
-	            if(key!=null && key.equalsIgnoreCase(OpenStackConstants.IMAGE)){
-	            	orchestratorBean.setImage(value);
-	             }
-	           }
-        }
         
         ArrayList<ProbeIndicator> list_of_pb_indicators = new ArrayList<ProbeIndicator>();
 		ProbeIndicator prbIndicator = new ProbeIndicator();
