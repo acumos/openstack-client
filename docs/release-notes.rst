@@ -20,6 +20,10 @@
 Openstack Client Release Notes
 =================================
 
+Version 2.0.5, 15 February 2019
+---------------------------------
+* update CDS 2.0.7 for Openstack-client (`ACUMOS-2528 <https://jira.acumos.org/browse/ACUMOS-2528>`_)
+
 Version 2.0.2, 4 February 2019
 ---------------------------------
 * IST2: Deploy to Azure : Message Improvements(`ACUMOS-863 <https://jira.acumos.org/browse/ACUMOS-863>`_)
