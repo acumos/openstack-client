@@ -89,10 +89,24 @@ public class TransportBean {
 	private String dataBrokerUserPd;
 	private String dataBrokerHost;
 	private String dataBrokerPort;
+	private String userDetail;
+	private String requestId;
 	
 	
 	
 	
+	public String getUserDetail() {
+		return userDetail;
+	}
+	public void setUserDetail(String userDetail) {
+		this.userDetail = userDetail;
+	}
+	public String getRequestId() {
+		return requestId;
+	}
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
 	public String getUrlAttribute() {
 		return urlAttribute;
 	}

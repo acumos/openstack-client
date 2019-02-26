@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.acumos.openstack.client.logging.ONAPLogDetails;
 import org.acumos.openstack.client.transport.ContainerInfo;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
@@ -60,6 +61,7 @@ import org.openstack4j.model.compute.Server;
 import org.openstack4j.openstack.OSFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.jcraft.jsch.JSchException;
 
@@ -220,6 +222,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		List<DeploymentBean> deploymentList=new ArrayList<DeploymentBean>();
 		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
+			ONAPLogDetails.setMDCDetails(tbean.getRequestId(), tbean.getUserDetail());
 			loggerUtil.printCompositeImplDetails(flavourName,securityGropName,endpoint,userName,userPd,
 					scopeProject,key,keyName,IdentifierName,vmRegisterNumber,vmUserName,
 					dockerUserName,dockerPd,solutionPort,Sleeptime,proxyIP,proxyPort,
@@ -608,7 +611,9 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
       		  
         }
 	  }catch(Exception e){
+		  MDC.put("ClassName", "OpenstackSimpleSolution");
 		  logger.error("Exception in openstackCompositeSolution " +e);
+		  MDC.remove("ClassName");
 		  try{
 			  commonUtil.generateNotification("Error in vm for composite solution in rackspace ",auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpd,openStackContainerBeanList,auth.getSolutionId(),
@@ -619,7 +624,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			}
 		  
 	  }
+	 ONAPLogDetails.clearMDCDetails();
 	 logger.debug("CompositeSolution Run End");	
 	}
-
+	
 }

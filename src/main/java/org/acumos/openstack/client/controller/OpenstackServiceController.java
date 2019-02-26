@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.acumos.openstack.client.api.APINames;
+import org.acumos.openstack.client.logging.ONAPLogConstants;
 import org.acumos.openstack.client.service.impl.ExistingVMSolution;
 import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
 import org.acumos.openstack.client.service.impl.OpenstackSimpleSolution;
@@ -47,6 +48,7 @@ import org.acumos.openstack.client.util.ProbeIndicator;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -96,6 +98,11 @@ public class OpenstackServiceController extends AbstractController {
 			 String dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
 			 String cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
 			 String cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
+			 String userDetail=MDC.get(ONAPLogConstants.MDCs.USER); 
+			 String requestId=MDC.get(ONAPLogConstants.MDCs.REQUEST_ID); 
+			 
+			 logger.debug("userDetail "+userDetail);
+			 logger.debug("requestId "+requestId);
 			 
 			 loggerUtil.printsingleImageDetails(flavourName, securityGropName, endpoint, userName, userPd, scopeProject,
 					 key, keyName, IdentifierName, vmRegisterNumber, hostOpenStack, hostUserName, vmUserName, 
@@ -107,13 +114,16 @@ public class OpenstackServiceController extends AbstractController {
 			 jsonOutput.put("status", APINames.SUCCESS_RESPONSE);
 			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,userPd,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
-					 vmUserName,dockerUserName,dockerPd,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpd,proxyIP,proxyPort,openStackIP,repositoryNames,repositoryDetails);
+					 vmUserName,dockerUserName,dockerPd,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpd,proxyIP,proxyPort,
+					 openStackIP,repositoryNames,repositoryDetails,userDetail,requestId);
 			 Thread t = new Thread(opSingleSolution);
 	         t.start();
 		 
 		 
 		}catch(Exception e){
+			MDC.put("ClassName", "OpenstackServiceController");
 			logger.error("Exception in singleImageOpenstackDeployment "+e);
+			MDC.remove("ClassName");
 			response.setStatus(401);
 			jsonOutput.put("status", APINames.FAILED);
 		}
@@ -189,6 +199,11 @@ public class OpenstackServiceController extends AbstractController {
 			 String probePass=env.getProperty(OpenStackConstants.PROBE_PD);
 			 String probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
 			 String probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
+			 String userDetail=MDC.get(ONAPLogConstants.MDCs.USER); 
+			 String requestId=MDC.get(ONAPLogConstants.MDCs.REQUEST_ID); 
+			 
+			 logger.debug("userDetail "+userDetail);
+			 logger.debug("requestId "+requestId);
 			 
 			 loggerUtil.printCompositeDetails(nginxMapFolder, nginxWebFolder, nginxImageName, nginxInternalPort, azureDataFiles,
 					 repositoryDetails, exposeDataBrokerPort, internalDataBrokerPort, nexusRegistyName, probePrintImage, 
@@ -265,6 +280,8 @@ public class OpenstackServiceController extends AbstractController {
 			 tbean.setNginxImageName(nginxImageName);
 			 tbean.setNginxInternalPort(nginxInternalPort);
 			 tbean.setAzureDataFiles(azureDataFiles);
+			 tbean.setUserDetail(userDetail);
+			 tbean.setRequestId(requestId);
 			 
 			 UUID uidNumber = UUID.randomUUID();
 			 uidNumStr=uidNumber.toString();
@@ -282,8 +299,10 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		 
 		}catch(Exception e){
+			MDC.put("ClassName", "OpenstackServiceController");
 			logger.error("Exception in compositeOpenstackDeployment "+e);
 			response.setStatus(401);
+			MDC.remove("ClassName");
 			jsonOutput.put("status", APINames.FAILED);
 		}
 		jsonOutput.put("UIDNumber", uidNumStr);

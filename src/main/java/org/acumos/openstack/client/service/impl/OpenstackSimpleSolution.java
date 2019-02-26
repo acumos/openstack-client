@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.acumos.openstack.client.logging.ONAPLogDetails;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.acumos.openstack.client.util.CommonUtil;
@@ -50,6 +51,7 @@ import org.openstack4j.model.compute.Server;
 import org.openstack4j.openstack.OSFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.jcraft.jsch.JSchException;
 
@@ -82,6 +84,8 @@ public class OpenstackSimpleSolution implements Runnable{
 	private String openStackIP;
 	private String repositoryNames;
 	private String repositoryDetails;
+	private String userDetail;
+	private String requestId;
 	
 	public OpenstackSimpleSolution(){
 		
@@ -91,7 +95,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			 ,String userName,String userPd,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPd,
 			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpd,String proxyIP,String proxyPort,
-			 String openStackIP,String repositoryNames,String repositoryDetails){
+			 String openStackIP,String repositoryNames,String repositoryDetails,String userDetail,String requestId){
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
 		this.auth = auth;
@@ -117,6 +121,8 @@ public class OpenstackSimpleSolution implements Runnable{
 		this.openStackIP=openStackIP;
 		this.repositoryNames=repositoryNames;
 		this.repositoryDetails=repositoryDetails;
+		this.userDetail=userDetail;
+		this.requestId=requestId;
 	}
 	
 	public void run() {
@@ -135,6 +141,7 @@ public class OpenstackSimpleSolution implements Runnable{
 		CommonUtil commonUtil=new CommonUtil();
 		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
+			ONAPLogDetails.setMDCDetails(requestId, userDetail);
 			loggerUtil.printSingleImageImplDetails(flavourName,securityGropName,endpoint,userName,userPd,
 					scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,
 					hostUserName,vmUserName,dockerUserName,dockerPd,dataSource,
@@ -278,9 +285,12 @@ public class OpenstackSimpleSolution implements Runnable{
 	 }
 	 commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpd, containerBean,auth.getSolutionId(), 
 			 auth.getSolutionRevisionId(),auth.getUserId(), uidNumStr, "DP");
+	 
 	 logger.debug("End Simple Image deployment");
 	  }catch(Exception e){
+		  MDC.put("ClassName", "OpenstackSimpleSolution");
 		  logger.error("Exception in openstackSimpleSolution RUN " +e);
+		  MDC.remove("ClassName");
 		  try{
 			  commonUtil.generateNotification("Error in vm for single solution in rackspace ",auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpd, containerBean,auth.getSolutionId(), 
@@ -290,6 +300,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			}
 		  
 	  }
+	 ONAPLogDetails.clearMDCDetails();
 	}
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName, 
 			String registryServerUrl, String username, String userPd, String repositoryName,int vmNum,byte[] bytesArray)throws Exception {
