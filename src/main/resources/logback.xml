@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="3 seconds" debug="false">
 
   <!--  specify the component name -->
-  <property name="componentName" value="openstack_log"></property>
+  <property name="componentName" value="openstack-client"></property>
   
   <!--  specify the base path of the log directory -->
   <property name="logDirPrefix" value="logs"></property>
