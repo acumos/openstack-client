@@ -19,6 +19,10 @@
 =================================
 Openstack Client Release Notes
 =================================
+Version 2.0.10, 7 March 2019
+---------------------------------
+* Logging Standardization (`ACUMOS-2330 <https://jira.acumos.org/browse/ACUMOS-2330>`_)
+* Increase Sonar coverage to at least 40% (`ACUMOS-2367 <https://jira.acumos.org/browse/ACUMOS-2367>`_)
 
 Version 2.0.8, 1 March 2019
 ---------------------------------

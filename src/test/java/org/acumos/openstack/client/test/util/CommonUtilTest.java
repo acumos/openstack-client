@@ -21,6 +21,8 @@ package org.acumos.openstack.client.test.util;
 
 import static org.junit.Assert.*;
 
+import java.time.Instant;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
+import org.acumos.cds.domain.MLPNotification;
 import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.openstack.client.transport.DeploymentBean;
@@ -169,6 +172,30 @@ public class CommonUtilTest {
 		bytesArray=cutil.readBytesFromFile(OpenStackConstants.JSON_FILE_NAME);
 		assertNotNull(bytesArray);
 		logger.info("readBytesFromFileTest End"+bytesArray);
+	}
+	
+	@Test	
+	public void createNotificationTest()throws Exception{
+		logger.info("createNotificationTest Start");
+		Instant startDate = Instant.now();
+		Instant endDate = startDate.plus(Period.ofDays(365));
+		CommonUtil cutil=new CommonUtil();
+		MLPNotification mlpNotification=new MLPNotification();
+		mlpNotification.setNotificationId(OpenStackTestConstants.TEST_OBJ);
+		mlpNotification.setTitle(OpenStackTestConstants.TEST_OBJ);
+		mlpNotification.setMessage(OpenStackTestConstants.TEST_OBJ);
+		mlpNotification.setUrl(OpenStackTestConstants.TEST_OBJ);
+		mlpNotification.setStart(startDate);
+		mlpNotification.setEnd(endDate);
+		org.acumos.openstack.client.transport.MLNotification ml=cutil.convertToMLNotification(mlpNotification);
+		assertNotNull(ml);
+		 Assert.assertEquals(OpenStackTestConstants.TEST_OBJ, mlpNotification.getNotificationId());
+		 Assert.assertEquals(OpenStackTestConstants.TEST_OBJ, mlpNotification.getTitle());
+		 Assert.assertEquals(OpenStackTestConstants.TEST_OBJ, mlpNotification.getMessage());
+		 Assert.assertEquals(OpenStackTestConstants.TEST_OBJ, mlpNotification.getUrl());
+		 Assert.assertEquals(startDate, mlpNotification.getStart());
+		 Assert.assertEquals(endDate, mlpNotification.getEnd());
+		logger.info("createNotificationTest End"+ml);
 	}
 	
 	

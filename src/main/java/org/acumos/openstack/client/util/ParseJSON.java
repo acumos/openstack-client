@@ -208,40 +208,7 @@ public class ParseJSON {
 	  return value;	
 	}
 
-	public  ArrayList<Component> jsonArrayParseObject(Object obj){
-		log.debug("jsonArrayParseObject Start");
-		JSONArray jsonArr = (JSONArray) obj;
-		Iterator itr = jsonArr.iterator();
-		ArrayList<Component> listComponent=new ArrayList<Component>();
-		Iterator<Map.Entry> itr1=null;
-		 while (itr.hasNext()) {
-			 itr1 = ((Map) itr.next()).entrySet().iterator();
-			 Component component=new Component();
-	            while (itr1.hasNext()) {
-	                Map.Entry pair = itr1.next();
-	                String key=(String)pair.getKey();
-	                
-	                if(key!=null && key.equalsIgnoreCase(OpenStackConstants.OPERATION_SIGNATURE)){
-	                	JSONObject objVar =(JSONObject)pair.getValue();
-	                	if(objVar!=null){
-	                		String operation=(String)objVar.get(OpenStackConstants.OPERATION);
-	                		OperationSignature opr=new OperationSignature();
-	                		opr.setOperationName(operation);
-	                		log.debug("operation "+operation);
-	                		component.setOperationSignature(opr);
-	                	}
-	                }
-	                if(key!=null && key.equalsIgnoreCase(OpenStackConstants.NAME)){
-	                	component.setName((String)pair.getValue());
-	                }
-	                
-	            }
-	            listComponent.add(component); 
-         }
-	  log.debug("listComponent "+listComponent);	 
-	  log.debug("jsonArrayParseObject End"+listComponent);	 
-	  return listComponent;	 
-	}
+
 	
 	/**
 	 * 
