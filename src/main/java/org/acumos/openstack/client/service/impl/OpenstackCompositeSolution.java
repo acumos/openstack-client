@@ -19,10 +19,6 @@
  */
 package org.acumos.openstack.client.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,7 +40,6 @@ import org.acumos.openstack.client.util.DockerInfoList;
 import org.acumos.openstack.client.util.LoggerUtil;
 import org.acumos.openstack.client.util.OpenStackConstants;
 import org.acumos.openstack.client.util.ProbeIndicator;
-import org.acumos.openstack.client.util.SSHShell;
 import org.acumos.openstack.client.util.SingletonMapClass;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
@@ -62,8 +57,6 @@ import org.openstack4j.openstack.OSFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
-import com.jcraft.jsch.JSchException;
 
 public class OpenstackCompositeSolution implements Runnable {
 	

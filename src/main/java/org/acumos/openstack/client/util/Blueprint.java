@@ -35,16 +35,7 @@ public class Blueprint implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Blueprint(String name, String version, List<InputPort> inputPorts, List<Node> nodes,
-			ArrayList<ProbeIndicator> probeIndicator) {
-		super();
-		this.name = name;
-		this.version = version;
-		this.inputPorts = inputPorts;
-		this.nodes = nodes;
-		this.probeIndicator = probeIndicator;
-		
-	}
+
 	
 	
 

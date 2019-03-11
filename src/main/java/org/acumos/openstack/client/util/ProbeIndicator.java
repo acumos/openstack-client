@@ -37,15 +37,7 @@ public class ProbeIndicator implements Serializable {
 		super();
 	}
 
-	/**
-	 * 
-	 * @param value
-	 *            Indicates whether Probe is present in the solution.
-	 */
-	public ProbeIndicator(String value) {
-		super();
-		this.value = value;
-	}
+
 
 	@JsonProperty("value")
 	public String getValue() {

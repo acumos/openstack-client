@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.acumos.openstack.client.util.DockerInfo;
+import org.acumos.openstack.client.util.DockerInfoList;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,5 +32,27 @@ import org.slf4j.LoggerFactory;
 public class DockerInfoListTest {
 	
 	private static Logger logger = LoggerFactory.getLogger(DockerInfoListTest.class);
+	
+	@Test	
+	public void dockerinfoListTestparameter(){
+		    logger.info("Start dockerinfoListTestparameter ");
+			String container = "Adder1";
+	        String ipAddress ="10.21.13.63";
+	        String port = "8557";
+	        DockerInfoList infolist=new DockerInfoList();
+	        DockerInfo dockerInfo=new DockerInfo();
+	        dockerInfo.setContainer(container);
+	        dockerInfo.setIpAddress(ipAddress);
+	        dockerInfo.setPort(port);
+	        List<DockerInfo> list=new ArrayList<DockerInfo>();
+	        list.add(dockerInfo);
+	        infolist.setDockerList(list);
+	        logger.info("infolist "+infolist);
+	        Assert.assertEquals(list, infolist.getDockerList());
+	        Assert.assertEquals(dockerInfo, infolist.findDockerInfoByContainer("Adder1"));
+		    logger.debug("End dockerinfoListTestparameter ");
+
+	}
+
 	
 }

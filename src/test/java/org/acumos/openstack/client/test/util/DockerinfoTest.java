@@ -40,6 +40,7 @@ public class DockerinfoTest {
 	        dockerInfo.setContainer(container);
 	        dockerInfo.setIpAddress(ipAddress);
 	        dockerInfo.setPort(port);
+	        logger.info("dockerInfo "+dockerInfo);
 	        Assert.assertEquals(container, dockerInfo.getContainer());
 	        Assert.assertEquals(ipAddress, dockerInfo.getIpAddress());
 	        Assert.assertEquals(port, dockerInfo.getPort());

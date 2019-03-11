@@ -1,6 +1,5 @@
 package org.acumos.openstack.client.service.impl;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;

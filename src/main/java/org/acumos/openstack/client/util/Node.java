@@ -41,10 +41,8 @@ public class Node implements Serializable {
 																				// Arraylist.
 	@JsonProperty("script")
 	private String script = null;
-	@JsonProperty("mapping_table")
-	private MappingTable mappingTable = null;
-	@JsonProperty("data_sources")
-	private List<DataSource> dataSources = null;
+	
+
 	
 	@JsonProperty("data_broker_map")
 	private DataBrokerMap dataBrokerMap;
@@ -56,41 +54,7 @@ public class Node implements Serializable {
 		super();
 	}
 
-	/**
-	 * @param operationSignatureList
-	 *            List of operations supported by the node
-	 * @param mappingTable
-	 *            Required by the data broker
-	 * @param protoUri
-	 *            Url of protofile : required to be passed to the Probe
-	 * @param container
-	 *            Name of the container
-	 * @param image
-	 *            Url of the docker image of the named node in Nexus. Information
-	 *            consumed by deployer
-	 * @param dataSources
-	 *            Required by the data broker
-	 * @param script
-	 *            Required by the data broker
-	 * @param nodeType
-	 *            Type of the node: DataMapper or MLModel or DataBroker or
-	 *            TrainingClient or Probe
-	 * 
-	 */
-	public Node(String container, String nodeType, String image, String protoUri,
-			ArrayList<OperationSignatureList> operationSignatureList, String script, MappingTable mappingTable,
-			List<DataSource> dataSources,DataBrokerMap dataBrokerMap) {
-		super();
-		this.container = container;
-		this.nodeType = nodeType;
-		this.image = image;
-		this.protoUri = protoUri;
-		this.operationSignatureList = operationSignatureList;
-		this.script = script;
-		this.mappingTable = mappingTable;
-		this.dataSources = dataSources;
-		this.dataBrokerMap = dataBrokerMap;
-	}
+
 
 	@JsonProperty("container_name")
 	public String getContainerName() {
@@ -152,25 +116,9 @@ public class Node implements Serializable {
 		this.script = script;
 	}
 
-	@JsonProperty("mapping_table")
-	public MappingTable getMappingTable() {
-		return mappingTable;
-	}
 
-	@JsonProperty("mapping_table")
-	public void setMappingTable(MappingTable mappingTable) {
-		this.mappingTable = mappingTable;
-	}
 
-	@JsonProperty("data_sources")
-	public List<DataSource> getDataSources() {
-		return dataSources;
-	}
 
-	@JsonProperty("data_sources")
-	public void setDataSources(List<DataSource> dataSources) {
-		this.dataSources = dataSources;
-	}
 	@JsonProperty("data_broker_map")
 	public DataBrokerMap getDataBrokerMap() {
 		return dataBrokerMap;

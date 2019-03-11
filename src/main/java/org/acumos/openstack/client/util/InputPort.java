@@ -44,19 +44,6 @@ public class InputPort implements Serializable {
 		super();
 	}
 
-	/**
-	 * 
-	 * @param operationSignature
-	 *            An operation - it further has a name, input message and output
-	 *            message
-	 * @param container
-	 *            Name of the container in the dockerinfo.json
-	 */
-	public InputPort(String container, OperationSignature operationSignature) {
-		super();
-		this.container = container;
-		this.operationSignature = operationSignature;
-	}
 
 	@JsonProperty("container_name")
 	public String getContainerName() {

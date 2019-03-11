@@ -32,10 +32,7 @@ public class DockerInfoList implements Serializable {
 	@JsonProperty("docker_info_list")
 	private List<DockerInfo> dockerList = null;
 
-	public DockerInfoList(List<DockerInfo> dockerList) {
-		super();
-		this.dockerList = dockerList;
-	}
+	
 
 	public DockerInfoList() {
 		super();

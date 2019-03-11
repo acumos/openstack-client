@@ -2,13 +2,12 @@ package org.acumos.openstack.client.config;
 
 
 import java.lang.invoke.MethodHandles;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.acumos.openstack.client.logging.ONAPLogAdapter;
-import org.acumos.openstack.client.logging.ONAPLogConstants;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

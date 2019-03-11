@@ -35,11 +35,7 @@ public class MapOutputs implements Serializable {
 	@JsonProperty("output_field")
 	private OutputField outputField = null;
 	
-	public MapOutputs(OutputField outputField) {
-		super();
-		this.outputField = outputField;
-	}
-	
+
 	public MapOutputs(){
 		super();
 	}

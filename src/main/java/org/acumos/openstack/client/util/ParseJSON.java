@@ -96,6 +96,7 @@ public class ParseJSON {
 					}
 					
 				}
+				log.debug("inputPortObj "+inputPortObj);
 				inputPortList.add(inputPortObj);
 			}
 			
@@ -622,6 +623,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 						}
 						
 					}
+					log.debug("inputPortObj "+inputPortObj);
 					inputPortList.add(inputPortObj);
 				}
 				
@@ -1124,6 +1126,7 @@ public  NodeTree<String> findDataInTree(NodeTree node, String searchQuery) {
 		                    dataBrokerBean.setDataBrokerMap(dataBrokerMap);
 		
 						}
+						log.debug("dataBrokerMap "+dataBrokerMap);
 				 }	
 			   }	
 			}

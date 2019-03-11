@@ -37,13 +37,7 @@ public class DockerInfo implements Serializable {
 	@JsonProperty("port")
 	private String port = null;
 
-	public DockerInfo(String container, String ipAddress, String port) {
-		super();
-		this.container = container;
-		this.ipAddress = ipAddress;
-		this.port = port;
-	}
-
+	
 	public DockerInfo() {
 		super();
 		// TODO Auto-generated constructor stub
