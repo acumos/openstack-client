@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.acumos.openstack.client.logging.LogConfig;
 import org.acumos.openstack.client.transport.ContainerInfo;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
@@ -36,6 +37,7 @@ public class ExistingVMSolution implements Runnable {
 		CommonUtil commonUtil=new CommonUtil();
 		int sshBindNumber=0;
 		try {
+			LogConfig.setEnteringMDCs("acumos-openstack-client","openstackExistingVMDeployment",tbean.getRequestId());
 			String solutionToolKitType=commonUtil.getSolutionCode(tbean.getSolutionId(), 
 					tbean.getDataSource(),tbean.getCmndatasvcuser(),tbean.getCmndatasvcpd());
 			logger.debug("solutionToolKitType "+solutionToolKitType);
@@ -65,8 +67,10 @@ public class ExistingVMSolution implements Runnable {
 			}
 		}catch(Exception e) {
 			logger.error("Exception in ExistingVMSolution RUN " +e);
+			LogConfig.clearMDCDetails();
 			
 		}
+		LogConfig.clearMDCDetails();
 	}
 	public void singleSolutionDetails(TransportBean tbean,CommonUtil commonUtil,int sshBindNumber,byte[] bytesArray)throws Exception{
 		logger.debug("singleSolutionDetails Start");

@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LoggerUtil {
-	Logger log = LoggerFactory.getLogger(OpenstackServiceController.class);
+	Logger log = LoggerFactory.getLogger(LoggerUtil.class);
 	
 	public String printExistingVMDeployment(TransportBean tbean) {
 		 log.debug("openstackExistingVMDeployment start");

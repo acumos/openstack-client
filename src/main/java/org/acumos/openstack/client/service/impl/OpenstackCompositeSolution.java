@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.acumos.openstack.client.logging.ONAPLogDetails;
+import org.acumos.openstack.client.logging.LogConfig;
 import org.acumos.openstack.client.transport.ContainerInfo;
 import org.acumos.openstack.client.transport.DeploymentBean;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
@@ -215,7 +215,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 		List<DeploymentBean> deploymentList=new ArrayList<DeploymentBean>();
 		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
-			ONAPLogDetails.setMDCDetails(tbean.getRequestId(), tbean.getUserDetail());
+			LogConfig.setEnteringMDCs("acumos-openstack-client","compositeSolutionOpenstackDeployment",tbean.getRequestId());
 			loggerUtil.printCompositeImplDetails(flavourName,securityGropName,endpoint,userName,userPd,
 					scopeProject,key,keyName,IdentifierName,vmRegisterNumber,vmUserName,
 					dockerUserName,dockerPd,solutionPort,Sleeptime,proxyIP,proxyPort,
@@ -604,9 +604,8 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
       		  
         }
 	  }catch(Exception e){
-		  MDC.put("ClassName", "OpenstackSimpleSolution");
 		  logger.error("Exception in openstackCompositeSolution " +e);
-		  MDC.remove("ClassName");
+		  LogConfig.clearMDCDetails();
 		  try{
 			  commonUtil.generateNotification("Error in vm for composite solution in rackspace ",auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 			  commonUtil.createDeploymentCompositeData(dataSource,cmndatasvcuser,cmndatasvcpd,openStackContainerBeanList,auth.getSolutionId(),
@@ -617,7 +616,7 @@ Logger logger = LoggerFactory.getLogger(OpenstackCompositeSolution.class);
 			}
 		  
 	  }
-	 ONAPLogDetails.clearMDCDetails();
+	 LogConfig.clearMDCDetails();
 	 logger.debug("CompositeSolution Run End");	
 	}
 	

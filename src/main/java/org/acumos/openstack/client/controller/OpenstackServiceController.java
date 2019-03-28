@@ -30,7 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.acumos.openstack.client.api.APINames;
-import org.acumos.openstack.client.logging.ONAPLogConstants;
+import org.acumos.openstack.client.logging.ACUMOSLogConstants.MDCs;
+import org.acumos.openstack.client.logging.LogConfig;
 import org.acumos.openstack.client.service.impl.ExistingVMSolution;
 import org.acumos.openstack.client.service.impl.OpenstackCompositeSolution;
 import org.acumos.openstack.client.service.impl.OpenstackSimpleSolution;
@@ -68,6 +69,7 @@ public class OpenstackServiceController extends AbstractController {
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_SINGLE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String singleImageOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackDeployBean auth,HttpServletResponse response) throws Exception {
+		LogConfig.setEnteringMDCs("acumos-openstack-client","singleImageOpenstackDeployment","");
 		logger.debug(" singleImageOpenstackDeployment Start");
 		String uidNumStr="";
 		JSONObject  jsonOutput = new JSONObject();
@@ -98,10 +100,8 @@ public class OpenstackServiceController extends AbstractController {
 			 String dataSource=env.getProperty(OpenStackConstants.CMNDATASVC_ENDPOINURL);
 			 String cmndatasvcuser=env.getProperty(OpenStackConstants.CMNDATASVC_USER);
 			 String cmndatasvcpd=env.getProperty(OpenStackConstants.CMNDATASVC_PD);
-			 String userDetail=MDC.get(ONAPLogConstants.MDCs.USER); 
-			 String requestId=MDC.get(ONAPLogConstants.MDCs.REQUEST_ID); 
+			 String requestId=MDC.get(MDCs.REQUEST_ID); 
 			 
-			 logger.debug("userDetail "+userDetail);
 			 logger.debug("requestId "+requestId);
 			 
 			 loggerUtil.printsingleImageDetails(flavourName, securityGropName, endpoint, userName, userPd, scopeProject,
@@ -115,27 +115,28 @@ public class OpenstackServiceController extends AbstractController {
 			 OpenstackSimpleSolution opSingleSolution=new OpenstackSimpleSolution(flavourName,securityGropName,auth,endpoint
 					 ,userName,userPd,scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,hostUserName,
 					 vmUserName,dockerUserName,dockerPd,uidNumStr,dataSource,cmndatasvcuser,cmndatasvcpd,proxyIP,proxyPort,
-					 openStackIP,repositoryNames,repositoryDetails,userDetail,requestId);
+					 openStackIP,repositoryNames,repositoryDetails,requestId);
 			 Thread t = new Thread(opSingleSolution);
 	         t.start();
 		 
 		 
 		}catch(Exception e){
-			MDC.put("ClassName", "OpenstackServiceController");
 			logger.error("Exception in singleImageOpenstackDeployment "+e);
-			MDC.remove("ClassName");
+			LogConfig.clearMDCDetails();
 			response.setStatus(401);
 			jsonOutput.put("status", APINames.FAILED);
 		}
 		jsonOutput.put("UIDNumber", uidNumStr);
 		logger.debug("jsonOutput.toString() "+jsonOutput.toString());
 		logger.debug("singleImageOpenstackDeployment End");
+		LogConfig.clearMDCDetails();
 		return jsonOutput.toString();
 	}
 	
 	@RequestMapping(value = APINames.OPENSTACK_AUTH_PUSH_COMPOSITE_IMAGE, method = RequestMethod.POST, produces = APPLICATION_JSON)
 	@ResponseBody
 	public String compositeOpenstackDeployment(HttpServletRequest request,@RequestBody OpenstackCompositeDeployBean auth,HttpServletResponse response) throws Exception {
+		LogConfig.setEnteringMDCs("acumos-openstack-client","compositeSolutionOpenstackDeployment","");
 		logger.debug("compositeOpenstackDeployment Start");
 		
 		String uidNumStr="";
@@ -199,10 +200,8 @@ public class OpenstackServiceController extends AbstractController {
 			 String probePass=env.getProperty(OpenStackConstants.PROBE_PD);
 			 String probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
 			 String probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
-			 String userDetail=MDC.get(ONAPLogConstants.MDCs.USER); 
-			 String requestId=MDC.get(ONAPLogConstants.MDCs.REQUEST_ID); 
+			 String requestId=MDC.get(MDCs.REQUEST_ID); 
 			 
-			 logger.debug("userDetail "+userDetail);
 			 logger.debug("requestId "+requestId);
 			 
 			 loggerUtil.printCompositeDetails(nginxMapFolder, nginxWebFolder, nginxImageName, nginxInternalPort, azureDataFiles,
@@ -280,7 +279,6 @@ public class OpenstackServiceController extends AbstractController {
 			 tbean.setNginxImageName(nginxImageName);
 			 tbean.setNginxInternalPort(nginxInternalPort);
 			 tbean.setAzureDataFiles(azureDataFiles);
-			 tbean.setUserDetail(userDetail);
 			 tbean.setRequestId(requestId);
 			 
 			 UUID uidNumber = UUID.randomUUID();
@@ -299,8 +297,8 @@ public class OpenstackServiceController extends AbstractController {
 		 
 		 
 		}catch(Exception e){
-			MDC.put("ClassName", "OpenstackServiceController");
 			logger.error("Exception in compositeOpenstackDeployment "+e);
+			LogConfig.clearMDCDetails();
 			response.setStatus(401);
 			MDC.remove("ClassName");
 			jsonOutput.put("status", APINames.FAILED);
@@ -308,6 +306,7 @@ public class OpenstackServiceController extends AbstractController {
 		jsonOutput.put("UIDNumber", uidNumStr);
 		logger.debug("jsonOutput.toString() "+jsonOutput.toString());
 		logger.debug("compositeOpenstackDeployment End");
+		LogConfig.clearMDCDetails();
 		return jsonOutput.toString();
 	}
 	
@@ -319,7 +318,7 @@ public class OpenstackServiceController extends AbstractController {
 			@RequestParam("jsonMapping")String jsonMapping,@RequestParam("dataBrokerUserName")String dataBrokerUserName,@RequestParam("dataBrokerUserPd")String dataBrokerUserPd,
 			@RequestParam("dataBrokerHost")String dataBrokerHost,@RequestParam("dataBrokerPort")String dataBrokerPort,HttpServletRequest request,HttpServletResponse response) throws Exception {
 			String uidNumStr="";
-			
+			LogConfig.setEnteringMDCs("acumos-openstack-client","openstackExistingVMDeployment","");
 			logger.debug("openstackExistingVMDeployment Start");
 			logger.debug("solutionId "+solutionId);
 			logger.debug("solutionRevisionId "+solutionRevisionId);
@@ -388,6 +387,7 @@ public class OpenstackServiceController extends AbstractController {
 				String probePass=env.getProperty(OpenStackConstants.PROBE_PD);
 				String probeNexusEndPoint=env.getProperty(OpenStackConstants.PROBE_PROBENEXUSENDPOINT);
 				String probeInternalPort=env.getProperty(OpenStackConstants.PROBE_INTERNALPORT);
+				String requestId=MDC.get(MDCs.REQUEST_ID); 
 				 
 				 tbean.setUidNumStr(uidNumStr);
 				 tbean.setEndpoint(endpoint);
@@ -445,6 +445,7 @@ public class OpenstackServiceController extends AbstractController {
 				 tbean.setDataBrokerHost(dataBrokerHost);
 				 tbean.setDataBrokerUserName(dataBrokerUserName);
 				 tbean.setDataBrokerUserPd(dataBrokerUserPd);
+				 tbean.setRequestId(requestId);
 				 loggerUtil.printExistingVMDeployment(tbean);
 				 ExistingVMSolution solutionObj=new ExistingVMSolution(tbean);
 				 Thread t = new Thread(solutionObj);
@@ -452,12 +453,14 @@ public class OpenstackServiceController extends AbstractController {
 				jsonOutput.put("status", APINames.SUCCESS_RESPONSE);
 			}catch(Exception e){
 				logger.error("Exception in openstackExistingVMDeployment "+e);
+				LogConfig.clearMDCDetails();
 				response.setStatus(401);
 				jsonOutput.put("status", APINames.FAILED);
 			}
 			jsonOutput.put("UIDNumber", uidNumStr);
 			logger.debug("jsonOutput.toString() "+jsonOutput.toString());
 			logger.debug("openstackExistingVMDeployment end");
+			LogConfig.clearMDCDetails();
 			return jsonOutput.toString();
 	}
 }

@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.acumos.openstack.client.logging.ONAPLogDetails;
+import org.acumos.openstack.client.logging.LogConfig;
 import org.acumos.openstack.client.transport.OpanStackContainerBean;
 import org.acumos.openstack.client.transport.OpenstackDeployBean;
 import org.acumos.openstack.client.util.CommonUtil;
@@ -82,7 +82,6 @@ public class OpenstackSimpleSolution implements Runnable{
 	private String openStackIP;
 	private String repositoryNames;
 	private String repositoryDetails;
-	private String userDetail;
 	private String requestId;
 	
 	public OpenstackSimpleSolution(){
@@ -93,7 +92,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			 ,String userName,String userPd,String scopeProject,String key,String keyName,String IdentifierName,String vmRegisterNumber,
 			 String hostOpenStack,String hostUserName,String vmUserName,String dockerUserName,String dockerPd,
 			 String uidNumStr,String dataSource,String cmndatasvcuser,String cmndatasvcpd,String proxyIP,String proxyPort,
-			 String openStackIP,String repositoryNames,String repositoryDetails,String userDetail,String requestId){
+			 String openStackIP,String repositoryNames,String repositoryDetails,String requestId){
 		this.flavourName = flavourName;
 		this.securityGropName = securityGropName;
 		this.auth = auth;
@@ -119,7 +118,6 @@ public class OpenstackSimpleSolution implements Runnable{
 		this.openStackIP=openStackIP;
 		this.repositoryNames=repositoryNames;
 		this.repositoryDetails=repositoryDetails;
-		this.userDetail=userDetail;
 		this.requestId=requestId;
 	}
 	
@@ -139,7 +137,7 @@ public class OpenstackSimpleSolution implements Runnable{
 		CommonUtil commonUtil=new CommonUtil();
 		LoggerUtil loggerUtil=new LoggerUtil();
 		try{
-			ONAPLogDetails.setMDCDetails(requestId, userDetail);
+			LogConfig.setEnteringMDCs("acumos-openstack-client","singleImageOpenstackDeployment",requestId);
 			loggerUtil.printSingleImageImplDetails(flavourName,securityGropName,endpoint,userName,userPd,
 					scopeProject,key,keyName,IdentifierName,vmRegisterNumber,hostOpenStack,
 					hostUserName,vmUserName,dockerUserName,dockerPd,dataSource,
@@ -286,9 +284,8 @@ public class OpenstackSimpleSolution implements Runnable{
 	 
 	 logger.debug("End Simple Image deployment");
 	  }catch(Exception e){
-		  MDC.put("ClassName", "OpenstackSimpleSolution");
 		  logger.error("Exception in openstackSimpleSolution RUN " +e);
-		  MDC.remove("ClassName");
+		  LogConfig.clearMDCDetails();
 		  try{
 			  commonUtil.generateNotification("Error in vm for single solution in rackspace ",auth.getUserId(),dataSource,cmndatasvcuser,cmndatasvcpd);
 			  commonUtil.createDeploymentData(dataSource, cmndatasvcuser, cmndatasvcpd, containerBean,auth.getSolutionId(), 
@@ -298,7 +295,7 @@ public class OpenstackSimpleSolution implements Runnable{
 			}
 		  
 	  }
-	 ONAPLogDetails.clearMDCDetails();
+		LogConfig.clearMDCDetails();
 	}
 	public  String deploymentImageVM(String dockerHostIP, String vmUserName, 
 			String registryServerUrl, String username, String userPd, String repositoryName,int vmNum,byte[] bytesArray)throws Exception {
