@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aac4bd00_381494e4",
+        "filename": "src/main/java/org/acumos/openstack/client/util/ParseJSON.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-04-10T17:43:57Z",
+      "side": 1,
+      "message": "Please consider using the Eclipse / STS code formatter to clean up al your code, it will remove trailing whitespace like this, thanks.",
+      "range": {
+        "startLine": 206,
+        "startChar": 30,
+        "endLine": 206,
+        "endChar": 32
+      },
+      "revId": "3a7e7047e2f4f03c002c30c4ff79fbe9d3ad4749",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "13aea9b3_f8e8758c",
+        "filename": "src/test/java/org/acumos/openstack/client/test/transport/ContainerInfoTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-04-10T17:43:57Z",
+      "side": 1,
+      "message": "Must add license header, sorry I have to give -1 :(",
+      "revId": "3a7e7047e2f4f03c002c30c4ff79fbe9d3ad4749",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
