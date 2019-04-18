@@ -19,14 +19,20 @@
 =================================
 Openstack Client Release Notes
 =================================
+Version 2.0.12, 18 April 2019
+---------------------------------
+* Openstack client migrate Docker base image away from frolvlad/alpine-oracle (`ACUMOS-2543 <https://jira.acumos.org/browse/ACUMOS-2543>`_)
+
+Version 2.0.11, 18 April 2019
+---------------------------------
+* update CDS 2.2.1 for openstack-client (`ACUMOS-2767 <https://jira.acumos.org/browse/ACUMOS-2767>`_)
+
+
 Version 2.0.10, 7 March 2019
 ---------------------------------
 * Logging Standardization (`ACUMOS-2330 <https://jira.acumos.org/browse/ACUMOS-2330>`_)
 * Increase Sonar coverage to at least 40% (`ACUMOS-2367 <https://jira.acumos.org/browse/ACUMOS-2367>`_)
 
-Version 2.0.11, 18 April 2019
----------------------------------
-* update CDS 2.2.1 for openstack-client (`ACUMOS-2767 <https://jira.acumos.org/browse/ACUMOS-2767>`_)
 
 
 Version 2.0.10, 28 March 2019
