@@ -19,6 +19,11 @@
 =================================
 Openstack Client Release Notes
 =================================
+
+Version 3.0.0, 19 September 2019
+---------------------------------
+* update CDS 3.0.0 for openstack-client (`ACUMOS-3448 <https://jira.acumos.org/browse/ACUMOS-3448>`_)
+
 Version 2.0.12, 18 April 2019
 ---------------------------------
 * Openstack client migrate Docker base image away from frolvlad/alpine-oracle (`ACUMOS-2543 <https://jira.acumos.org/browse/ACUMOS-2543>`_)
