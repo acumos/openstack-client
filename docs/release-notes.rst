@@ -20,6 +20,10 @@
 Openstack Client Release Notes
 =================================
 
+Version 3.0.1, 11 December 2019
+---------------------------------
+* update acumos-azure-client, acumos-openstack-client,kubernetis-client and deployment-client for cds 3.1.0 (`ACUMOS-3835 <https://jira.acumos.org/browse/ACUMOS-3835>`_)
+
 Version 3.0.0, 19 September 2019
 ---------------------------------
 * update CDS 3.0.0 for openstack-client (`ACUMOS-3448 <https://jira.acumos.org/browse/ACUMOS-3448>`_)
