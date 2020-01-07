@@ -290,23 +290,16 @@
 					<!-- LF credentials are not supplied here -->
 					<images>
 						<image>
+							<!-- Prefix must be "acumos/" -->
 							<!-- Specify a tag to avoid default tag "latest" -->
-							<name>openstack-client:${project.version}</name>
-							<!-- <run>
-							   <env>
-							     <http_proxy>http://10.1.0.6:3128</http_proxy>
-							   </env>
-							</run> -->
+							<name>acumos/openstack-client:${project.version}</name>
 							<build>
-							 <env>
-							   <http_proxy>http://10.1.0.6:3128</http_proxy>
-							 </env> 
 								<from>openjdk:8-jre-slim</from>
 								<tags>
 									<!-- Add tag with build number -->
 									<tag>${project.version}-b${build.number}</tag>
 								</tags>
-						        <assembly>
+								<assembly>
 									<inline>
 										<files>
 											<file>
