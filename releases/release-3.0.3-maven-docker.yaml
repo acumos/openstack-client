@@ -1,10 +1,10 @@
 ---
 distribution_type: container
-container_release_tag: 3.0.2
+container_release_tag: 3.0.3
 container_pull_registry: nexus3.acumos.org:10004
 container_push_registry: nexus3.acumos.org:10002
 project: openstack-client
-ref: 15bb54f2d856b0c7af77a1eb864497344ef54cd2
+ref: 0b7e744ae4226cefcaccba5c6a8cd5b46b6e4962
 containers:
         - name: openstack-client
-          version: 3.0.2
+          version: 3.0.3
